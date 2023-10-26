@@ -6,6 +6,7 @@
     box-sizing: border-box;
 }
 
+
 body {
     font-family: 'Poppins', sans-serif;
     font-size: 0.875rem;
@@ -22,6 +23,12 @@ a {
 
 li {
     list-style: none;
+}
+
+h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.275rem;
+    color: var(--bg-emphasis-color);
 }
 
 .wrapper {
@@ -97,4 +104,47 @@ a.sidebar-link {
 .sidebar-link[data-bs-toggle="collapse"].collapsed::after {
     transform: rotate(45deg);
     transition: all .2s ease-out;
+}
+
+.avatar {
+    height: 40px;
+    width: 40px;
+}
+
+.navbar-expand .navbar-nav {
+    margin-left: auto;
+}
+
+.content {
+    flex: 1;
+    max-width: 100vw;
+    width: 100vw;
+}
+
+@media (min-width: 768px) {
+    .content {
+        max-width: auto;
+        width: auto;
+    }
+}
+
+.card {
+    box-shadow: 0 0 .875rem 0 rgba(34, 46, 60, .05);
+    margin-bottom: 24px;
+}
+
+.illustration {
+    background-color: var(--bs-primary-bg-subtle);
+    color: var(--bs-emphasis-color);
+}
+
+.illustration-img {
+    max-width: 150px;
+
+}
+
+/* Sidebar Toggle */
+
+#sidebar.collapsed {
+    margin-left: -264px;
 }
