@@ -52,7 +52,7 @@ h4 {
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     width: 100%;
-    background: var(--bs-dark-bg-subtle);
+    background: #EDF1F5;
 }
 
 /* Sidebar Elements Style */
@@ -151,6 +151,98 @@ i{
 .illustration-img {
     max-width: 150px;
 
+}
+
+/* Dashboard Card Styles */
+
+.card-logo{
+    margin-top: 1.15rem;
+    display: flex;
+    justify-content: center; /* căn giữa theo chiều ngang (hoàn toàn giữa) */
+    align-items: center; /* căn giữa theo chiều dọc (hoàn toàn giữa) */
+}
+.card-green{
+    border: 2px solid #03A280;
+    background-color: #A6DBCB;
+}
+.card-yellow{
+    border: 2px solid #F2CE00;
+    background-color: #F2E9AC;
+}
+.card-blue{
+    border: 2px solid #03A9F5;
+    background-color: #A5D8F2;
+}
+.card-red{
+    border: 2px solid #F0483E;
+    background-color: #EEBEBE;
+}
+.card-content{
+    background-color: white;
+    border-radius: .375rem .375rem 0 0;
+}
+.card-name{
+    padding: 0rem 0.5rem;
+    margin-top: 0.35rem;
+    font-family: 'Poppins',sans-serif;
+    font-size: 1.15rem;
+    text-align: center;
+    font-weight: bold;
+}
+.card-border
+{
+    box-sizing: border-box;
+    border-radius: .375rem;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+.card-footer{
+    height: 100%;
+    text-align: center;
+    font-weight: 500;
+    cursor: pointer;
+}
+.card-footer:hover{
+    text-align: center;
+    font-weight: bold;
+    cursor: pointer;
+}
+.card-detail{
+    text-align: center;
+    padding: 0.5rem;
+}
+.i-green{
+    margin-left: auto;
+    margin-right: auto;
+    color: #03A280;
+    font-size: 2rem;
+}
+.i-yellow{
+    margin-left: auto;
+    margin-right: auto;
+    color: #F2CE00;
+    font-size: 2rem;
+}
+.i-blue{
+    margin-left: auto;
+    margin-right: auto;
+    color: #03A9F5;
+    font-size: 2rem;
+}
+.i-red{
+    margin-left: auto;
+    margin-right: auto;
+    color: #F0483E;
+    font-size: 2rem;
+}
+.row>*{
+    padding: 0rem !important;
+}
+
+.dashboard-title{
+    font-size:1.5rem;
+    font-weight: 600;
 }
 
 /* Sidebar Toggle */
