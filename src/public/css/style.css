@@ -56,6 +56,10 @@ h4 {
 }
 
 /* Sidebar Elements Style */
+li.sidebar-item:hover {
+    background-color: #3F464E;
+}
+
 .sidebar-logo {
     padding: 1.15rem;
 }
@@ -81,13 +85,19 @@ h4 {
 }
 
 a.sidebar-link {
-    padding: .625rem 1.625rem;
+    padding: .8rem 1.625rem;
     color: #E9ECEF;
     position: relative;
     display: block;
     font-size: 0.875rem;
 }
-
+i{
+    box-sizing: border-box;
+    text-align: center;
+    width: 1.7rem;
+    padding-left: 0.35rem;
+    padding-right: 0.35rem;
+}
 .sidebar-link[data-bs-toggle="collapse"]::after {
     border: solid;
     border-width: 0 .075rem 0.075rem 0;
