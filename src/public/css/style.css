@@ -52,14 +52,18 @@ h4 {
     overflow: hidden;
     transition: all 0.35s ease-in-out;
     width: 100%;
-    background: #EDF1F5;
+    background: white;
 }
-
+.bg-4-db{
+    background-color: #EDF1F5;
+}
 /* Sidebar Elements Style */
 li.sidebar-item:hover {
     background-color: #3F464E;
 }
-
+.sidebar-item.active{
+    background-color: #606A77;
+}
 .sidebar-logo {
     padding: 1.15rem;
 }
@@ -179,7 +183,7 @@ i{
 }
 .card-content{
     background-color: white;
-    border-radius: .375rem .375rem 0 0;
+    border-radius: 0.6rem 0.6rem 0 0;
 }
 .card-name{
     padding: 0rem 0.5rem;
@@ -189,10 +193,13 @@ i{
     text-align: center;
     font-weight: bold;
 }
+.card{
+    border-radius: .7rem !important;
+}
 .card-border
 {
     box-sizing: border-box;
-    border-radius: .375rem;
+    border-radius: .7rem;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
@@ -217,24 +224,28 @@ i{
     margin-right: auto;
     color: #03A280;
     font-size: 2rem;
+    width: fit-content;
 }
 .i-yellow{
     margin-left: auto;
     margin-right: auto;
     color: #F2CE00;
     font-size: 2rem;
+    width: fit-content;
 }
 .i-blue{
     margin-left: auto;
     margin-right: auto;
     color: #03A9F5;
     font-size: 2rem;
+    width: fit-content;
 }
 .i-red{
     margin-left: auto;
     margin-right: auto;
     color: #F0483E;
     font-size: 2rem;
+    width: fit-content;
 }
 .row>*{
     padding: 0rem !important;
@@ -245,6 +256,66 @@ i{
     font-weight: 600;
 }
 
+/* Square Dashboard*/
+.bg-white{
+    background-color: white;
+}
+.b-border{
+    margin: 0;
+    padding: 0;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: darkgray;
+}
+.s-card{
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (max-width: 767px) {
+    .s-card-border{
+        width: 80%;
+        box-sizing: border-box;
+        border: 1px solid darkgray;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media (min-width: 768px) {
+    .s-card-border{
+        width: 90%;
+        box-sizing: border-box;
+        border: 1px solid darkgray;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+.s-card-title{
+    padding: .5rem;
+    font-weight: bold;
+}
+.s-card-content{
+    padding: .55rem;
+}
+
+.s-card-left{
+    flex: 1;
+    padding: .5rem;
+}
+.s-card-right{
+    flex: 1;
+    padding: .5rem;
+}
+.cursor-pointer{
+    cursor: pointer;
+}
+.cursor-pointer:hover{
+    text-decoration: underline;
+}
+.text-heading{
+    font-size: 1.15rem;
+    font-weight: 600;
+}
 /* Sidebar Toggle */
 
 #sidebar.collapsed {

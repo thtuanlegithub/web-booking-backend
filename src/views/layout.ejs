@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://kit.fontawesome.com/ae360af17e.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+    
+</head>
+
+<body>
+    <div class="wrapper">
+        <aside id="sidebar">
+            <!-- Content for sidebar -->
+            <div class="h-100">
+                <div class="sidebar-logo">
+                    <a href="">Admin Dashboard</a>
+                </div>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-header">
+                        Admin Functions
+                    </li>
+                    <li class="sidebar-item dashboard">
+                        <a href="/" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-house"></i>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li class="sidebar-item travel">
+                        <a href="/travel" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-plane-departure"></i>
+                            Travel
+                        </a>
+                    </li>
+                    <li class="sidebar-item tour">
+                        <a href="/tour" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-clipboard-list"></i>
+                            Tour
+                        </a>
+                    </li>
+                    <li class="sidebar-item package">
+                        <a href="/package" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-briefcase"></i>
+                            Package
+                        </a>
+                    </li>
+                    <li class="sidebar-item discount">
+                        <a href="/discount" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-tag"></i>
+                            Discount
+                        </a>
+                    </li>
+                    <li class="sidebar-item account">
+                        <a href="/account" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-user-gear"></i>
+                            Account
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
+                        Customer Functions
+                    </li>
+                    <li class="sidebar-item booking">
+                        <a href="/booking" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-bag-shopping "></i>
+                            Booking
+                        </a>
+                    </li>
+                    <li class="sidebar-item invoice">
+                        <a href="/invoice" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-file-invoice-dollar"></i>
+                            Invoice
+                        </a>
+                    </li>
+                    <li class="sidebar-item customer">
+                        <a href="/customer" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-user"></i>
+                            Customer
+                        </a>
+                    </li>
+                    <li class="sidebar-item statistics">
+                        <a href="/statistics" class="sidebar-link collapsed">
+                            <i class="fa-solid fa-arrow-up-wide-short"></i>
+                            View Statistics
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+        <div class="main">
+            <nav class="navbar navbar-expand px-3 border-bottom">
+                <button class="btn" id="sidebar-toggle" type="button" onclick="handleSidebarToggle()">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse navbar">
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a href="#" data-bs-toggle="dropdown" class="nav-icon pe-md-0">
+                                <img src="/img/f1.jpg" alt="Profile" class="avatar img-fluid illustration-img rounded">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <a href="#" class="dropdown-item">Profile</a>
+                                <a href="#" class="dropdown-item">Setting</a>
+                                <a href="#" class="dropdown-item">Log out</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="content">
+                <%- include(content) %>
+            </main>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+    <script>
+        const handleSidebarToggle = () => {
+            document.getElementById("sidebar").classList.toggle("collapsed");
+        }
+        
+        const currentURL = window.location.pathname;
+        if (currentURL === '/') {
+            activeItemClass = 'dashboard';
+        } else{
+            activeItemClass = currentURL.slice(1);
+        }
+        
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        sidebarItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.classList.contains(activeItemClass)) {
+                item.classList.add('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
