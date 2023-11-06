@@ -1,0 +1,3 @@
+npx sequelize-cli model:generate --name Package --attributes packageName:string,packageType:string,packageCity:string,packageDescription:string,packageImage:string,packageDescription:string,packagePrice:decimal
+
+

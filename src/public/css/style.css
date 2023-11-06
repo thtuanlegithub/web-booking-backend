@@ -54,16 +54,20 @@ h4 {
     width: 100%;
     background: white;
 }
-.bg-4-db{
+
+.bg-4-db {
     background-color: #EDF1F5;
 }
+
 /* Sidebar Elements Style */
 li.sidebar-item:hover {
     background-color: #3F464E;
 }
-.sidebar-item.active{
+
+.sidebar-item.active {
     background-color: #606A77;
 }
+
 .sidebar-logo {
     padding: 1.15rem;
 }
@@ -95,13 +99,15 @@ a.sidebar-link {
     display: block;
     font-size: 0.875rem;
 }
-i{
+
+i {
     box-sizing: border-box;
     text-align: center;
     width: 1.7rem;
     padding-left: 0.35rem;
     padding-right: 0.35rem;
 }
+
 .sidebar-link[data-bs-toggle="collapse"]::after {
     border: solid;
     border-width: 0 .075rem 0.075rem 0;
@@ -159,121 +165,141 @@ i{
 
 /* Dashboard Card Styles */
 
-.card-logo{
+.card-logo {
     margin-top: 1.15rem;
     display: flex;
-    justify-content: center; /* căn giữa theo chiều ngang (hoàn toàn giữa) */
-    align-items: center; /* căn giữa theo chiều dọc (hoàn toàn giữa) */
+    justify-content: center;
+    /* căn giữa theo chiều ngang (hoàn toàn giữa) */
+    align-items: center;
+    /* căn giữa theo chiều dọc (hoàn toàn giữa) */
 }
-.card-green{
+
+.card-green {
     border: 2px solid #03A280;
     background-color: #A6DBCB;
 }
-.card-yellow{
+
+.card-yellow {
     border: 2px solid #F2CE00;
     background-color: #F2E9AC;
 }
-.card-blue{
+
+.card-blue {
     border: 2px solid #03A9F5;
     background-color: #A5D8F2;
 }
-.card-red{
+
+.card-red {
     border: 2px solid #F0483E;
     background-color: #EEBEBE;
 }
-.card-content{
+
+.card-content {
     background-color: white;
     border-radius: 0.6rem 0.6rem 0 0;
 }
-.card-name{
+
+.card-name {
     padding: 0rem 0.5rem;
     margin-top: 0.35rem;
-    font-family: 'Poppins',sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.15rem;
     text-align: center;
     font-weight: bold;
 }
-.card{
+
+.card {
     border-radius: .7rem !important;
 }
-.card-border
-{
+
+.card-border {
     box-sizing: border-box;
     border-radius: .7rem;
     margin-left: auto;
     margin-right: auto;
     width: 80%;
 }
-.card-footer{
+
+.card-footer {
     height: 100%;
     text-align: center;
     font-weight: 500;
     cursor: pointer;
 }
-.card-footer:hover{
+
+.card-footer:hover {
     text-align: center;
     font-weight: bold;
     cursor: pointer;
 }
-.card-detail{
+
+.card-detail {
     text-align: center;
     padding: 0.5rem;
 }
-.i-green{
+
+.i-green {
     margin-left: auto;
     margin-right: auto;
     color: #03A280;
     font-size: 2rem;
     width: fit-content;
 }
-.i-yellow{
+
+.i-yellow {
     margin-left: auto;
     margin-right: auto;
     color: #F2CE00;
     font-size: 2rem;
     width: fit-content;
 }
-.i-blue{
+
+.i-blue {
     margin-left: auto;
     margin-right: auto;
     color: #03A9F5;
     font-size: 2rem;
     width: fit-content;
 }
-.i-red{
+
+.i-red {
     margin-left: auto;
     margin-right: auto;
     color: #F0483E;
     font-size: 2rem;
     width: fit-content;
 }
-.row>*{
+
+.row>* {
     padding: 0rem !important;
 }
 
-.dashboard-title{
-    font-size:1.5rem;
+.dashboard-title {
+    font-size: 1.5rem;
     font-weight: 600;
 }
 
 /* Square Dashboard*/
-.bg-white{
+.bg-white {
     background-color: white;
 }
-.b-border{
+
+.b-border {
     margin: 0;
     padding: 0;
     border-width: 0 0 1px 0;
     border-style: solid;
     border-color: darkgray;
 }
-.s-card{
+
+.s-card {
     box-sizing: border-box;
     margin-left: auto;
     margin-right: auto;
 }
+
 @media (max-width: 767px) {
-    .s-card-border{
+    .s-card-border {
         width: 80%;
         box-sizing: border-box;
         border: 1px solid darkgray;
@@ -281,8 +307,9 @@ i{
         margin-right: auto;
     }
 }
+
 @media (min-width: 768px) {
-    .s-card-border{
+    .s-card-border {
         width: 90%;
         box-sizing: border-box;
         border: 1px solid darkgray;
@@ -290,34 +317,90 @@ i{
         margin-right: auto;
     }
 }
-.s-card-title{
+
+.s-card-title {
     padding: .5rem;
     font-weight: bold;
 }
-.s-card-content{
+
+.s-card-content {
     padding: .55rem;
 }
 
-.s-card-left{
+.s-card-left {
     flex: 1;
     padding: .5rem;
 }
-.s-card-right{
+
+.s-card-right {
     flex: 1;
     padding: .5rem;
 }
-.cursor-pointer{
+
+.cursor-pointer {
     cursor: pointer;
 }
-.cursor-pointer:hover{
+
+.cursor-pointer:hover {
     text-decoration: underline;
 }
-.text-heading{
+
+.text-heading {
     font-size: 1.15rem;
     font-weight: 600;
 }
+
 /* Sidebar Toggle */
 
 #sidebar.collapsed {
     margin-left: -264px;
+}
+
+/* Button CRUD */
+.rounded-circle {
+    height: 2rem;
+    width: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+    margin-left: .1rem;
+    margin-bottom: .2rem;
+}
+
+td {
+    vertical-align: middle;
+}
+
+.custom-width-select {
+    flex: 1;
+}
+
+.custom-width-input {
+    flex: 2;
+}
+
+.font-weight-bold {
+    font-weight: 600;
+}
+
+.float-right {
+    float: right;
+}
+
+.modal-custom {
+    max-width: 700px;
+    width: auto;
+}
+
+.flex-1 {
+    flex: 1
+}
+
+.flex-2 {
+    flex: 2;
+}
+
+.mr-2 {
+    margin-right: 1rem;
 }

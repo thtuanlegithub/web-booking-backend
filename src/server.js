@@ -1,16 +1,15 @@
 import express from "express";
-import configViewEngine from "./configs/viewEngine";
+import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
-// const expressLayouts = require('express-ejs-layouts');
+import connection from "./config/connectDB";
 
 const app = express();
 
 //config view engine
 configViewEngine(app);
 
-//layout
-// app.use(expressLayouts);
-// app.set('layout', 'layout.ejs')
+//set up db - sequelize
+connection();
 
 //init web routes
 initWebRoutes(app);
