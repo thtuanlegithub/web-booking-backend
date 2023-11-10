@@ -4,25 +4,37 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc --reporter=html mocha --require @babel/register src/test/server.test.js",
     "start": "nodemon --exec babel-node src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "chai-http": "^4.4.0",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
     "express-ejs-layouts": "^2.5.1",
     "mysql2": "^3.6.2",
     "nodemon": "^3.0.1",
+    "paginationjs": "^2.6.0",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.2",
+    "@babel/core": "^7.23.3",
     "@babel/node": "^7.22.19",
-    "@babel/preset-env": "^7.23.2"
+    "@babel/preset-env": "^7.23.3",
+    "@babel/register": "^7.22.15",
+    "chai": "^4.3.10",
+    "esm": "^3.2.25",
+    "istanbul": "^0.4.5",
+    "mocha": "^10.2.0",
+    "nyc": "^15.1.0",
+    "sinon": "^17.0.1",
+    "stryker": "^0.35.1",
+    "stryker-api": "^0.24.1",
+    "stryker-cli": "^1.0.2"
   }
 }

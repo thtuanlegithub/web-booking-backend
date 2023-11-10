@@ -1,7 +1,8 @@
-import express from "express";
+import express from 'express';
 import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import connection from "./config/connectDB";
+import initApiRoutes from "./routes/api";
 
 const app = express();
 
@@ -13,8 +14,11 @@ connection();
 
 //init web routes
 initWebRoutes(app);
+initApiRoutes(app);
 
 const PORT = 8080;
 app.listen(PORT, () => {
-    console.log(">>> Backend is running on the port ", PORT);
+    console.log(">>> Server is running at port ", PORT);
 })
+
+export default app;

@@ -372,6 +372,19 @@ td {
     vertical-align: middle;
 }
 
+/* Đổi màu nền của hàng chẵn trong bảng striped */
+.table-striped tr:nth-child(even) {
+    background-color: #015F8B;
+    /* Màu xám nhạt */
+}
+
+/* Đổi màu nền của hàng lẻ trong bảng striped (tùy chọn) */
+.table-striped tr:nth-child(odd) {
+    background-color: #9BC0D1;
+    /* Màu xám nhạt khác */
+}
+
+
 .custom-width-select {
     flex: 1;
 }
