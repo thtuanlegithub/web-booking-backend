@@ -9,7 +9,13 @@ const handleTourPage = async (req, res) => {
     return res.render("layout.ejs", { content: 'tour.ejs' });
 }
 const handlePackagePage = async (req, res) => {
-    const page = req.query.page || 1;
+    let page = 1;
+    if (req.query.page == null) {
+        page = 1;
+    }
+    else {
+        page = req.query.page;
+    }
     let packageList = await packageService.getPackageList(page);
     let totalNumber = await packageService.getTotalNumber();
     return res.render("layout.ejs", { content: 'package.ejs', packageList: packageList, totalNumber: totalNumber });

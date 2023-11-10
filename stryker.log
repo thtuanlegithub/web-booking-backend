@@ -1,0 +1,440 @@
+02:25:12 (26500) DEBUG ConfigReader Loading config from stryker.config.js
+02:25:12 (26500) DEBUG ConfigReader Loaded config: {
+  "mutate": [
+    "../src/**/*.js"
+  ],
+  "testRunner": "jest",
+  "reporters": [
+    "progress",
+    "clear-text",
+    "html"
+  ],
+  "jest": {
+    "projectType": "custom",
+    "configFile": "./jest.config.js"
+  },
+  "fileLogLevel": "trace",
+  "logLevel": "debug",
+  "allowConsoleColors": true,
+  "checkers": [],
+  "checkerNodeArgs": [],
+  "commandRunner": {
+    "command": "npm test"
+  },
+  "coverageAnalysis": "perTest",
+  "clearTextReporter": {
+    "allowColor": true,
+    "allowEmojis": false,
+    "logTests": true,
+    "maxTestsToLog": 3,
+    "reportTests": true,
+    "reportMutants": true,
+    "reportScoreTable": true
+  },
+  "dashboard": {
+    "baseUrl": "https://dashboard.stryker-mutator.io/api/reports",
+    "reportType": "full"
+  },
+  "dryRunOnly": false,
+  "eventReporter": {
+    "baseDir": "reports/mutation/events"
+  },
+  "ignorePatterns": [],
+  "ignoreStatic": false,
+  "incremental": false,
+  "incrementalFile": "reports/stryker-incremental.json",
+  "force": false,
+  "inPlace": false,
+  "maxConcurrentTestRunners": 9007199254740991,
+  "maxTestRunnerReuse": 0,
+  "mutator": {
+    "plugins": null,
+    "excludedMutations": []
+  },
+  "plugins": [
+    "@stryker-mutator/*"
+  ],
+  "appendPlugins": [],
+  "htmlReporter": {
+    "fileName": "reports/mutation/mutation.html"
+  },
+  "jsonReporter": {
+    "fileName": "reports/mutation/mutation.json"
+  },
+  "disableTypeChecks": true,
+  "symlinkNodeModules": true,
+  "tempDirName": ".stryker-tmp",
+  "cleanTempDir": true,
+  "testRunnerNodeArgs": [],
+  "thresholds": {
+    "high": 80,
+    "low": 60,
+    "break": null
+  },
+  "timeoutFactor": 1.5,
+  "timeoutMS": 5000,
+  "dryRunTimeoutMinutes": 5,
+  "tsconfigFile": "tsconfig.json",
+  "warnings": true,
+  "disableBail": false,
+  "allowEmpty": false,
+  "ignorers": []
+}
+02:25:12 (26500) DEBUG PluginLoader Loading @stryker-mutator/* from C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\node_modules\@stryker-mutator
+02:25:12 (26500) DEBUG PluginLoader Loading plugin "@stryker-mutator/jest-runner" (matched with expression @stryker-mutator/*)
+02:25:12 (26500) DEBUG PluginLoader Loading plugin "@stryker-mutator/karma-runner" (matched with expression @stryker-mutator/*)
+02:25:12 (26500) DEBUG PluginLoader Loading plugin "@stryker-mutator/mocha-runner" (matched with expression @stryker-mutator/*)
+02:25:12 (26500) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:12 (26500) DEBUG PluginLoader Loading plugin @stryker-mutator/karma-runner
+02:25:12 (26500) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:12 (26500) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:12 (26500) WARN PluginLoader Error during loading "@stryker-mutator/karma-runner" plugin:
+  Cannot find module 'karma'
+Require stack:
+- C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\node_modules\@stryker-mutator\util\dist\src\require-resolve.js
+02:25:12 (26500) DEBUG MetaSchemaBuilder Contributing 2 schemas from plugins to options validation.
+02:25:12 (26500) WARN ProjectReader Glob pattern "../src/**/*.js" did not result in any files.
+02:25:12 (26500) WARN ProjectReader Warning: No files found for mutation with the given glob expressions. As a result, a dry-run will be performed without actually modifying anything. If you intended to mutate files, please check and adjust the configuration. Current glob pattern(s) used: "../src/**/*.js". To enable file mutation, consider configuring the `mutate` property in your configuration file or using the --mutate option via the command line.
+02:25:12 (26500) DEBUG ProjectReader All input files: [
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.babelrc",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.env",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.gitignore",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.nyc_output\\32892495-bc38-49ca-9b8c-b528d3a7eb58.json",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.nyc_output\\processinfo\\32892495-bc38-49ca-9b8c-b528d3a7eb58.json",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.sequelizerc",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\base.css",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\block-navigation.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\favicon.png",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\prettify.css",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\prettify.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\sort-arrow-sprite.png",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\sorter.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\config\\connectDB.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\config\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\config\\viewEngine.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\controller\\apiController.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\controller\\homeController.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\controller\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\models\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\models\\index.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\models\\package.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\routes\\api.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\routes\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\routes\\web.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\server.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\services\\index.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\coverage\\src\\services\\packageService.js.html",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\createDatabase.txt",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\jest.config.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\package-lock.json",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\package.json",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\README.md",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\config\\config.json",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\config\\connectDB.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\config\\viewEngine.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\controller\\apiController.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\controller\\homeController.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\migrations\\20231110192406-create-package.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\models\\index.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\models\\package.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\public\\css\\style.css",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\public\\img\\f1.jpg",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\public\\img\\f2.JPG",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\public\\img\\imgPlaceHolder.jpg",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\routes\\api.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\routes\\web.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\seeders\\20231102145944-demo-user.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\server.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\services\\packageService.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\test\\server.test.js",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\account.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\booking.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\customer.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\discount.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\home.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\invoice.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\layout.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\login.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\package.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\statistics.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\tour.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\src\\views\\travel.ejs",
+  "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\stryker.config.js"
+]
+02:25:12 (26500) DEBUG ProjectReader Files to mutate: []
+02:25:12 (26500) DEBUG TemporaryDirectory Using temp directory "C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp"
+02:25:12 (26500) DEBUG Instrumenter Instrumenting 0 source files with mutants
+02:25:12 (26500) INFO Instrumenter Instrumented 0 source file(s) with 0 mutant(s)
+02:25:12 (26500) INFO ConcurrencyTokenProvider Creating 15 test runner process(es).
+02:25:12 (26500) DEBUG ChildProcessProxy Started CheckerWorker in worker process 0 with pid 5484 
+02:25:13 (5484) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:13 (5484) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:13 (5484) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:13 (26500) DEBUG Sandbox Creating a sandbox for files in C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:13 (26500) DEBUG Sandbox Start symlink node_modules
+02:25:13 (26500) DEBUG Sandbox Create symlink from C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\node_modules to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223\node_modules
+02:25:13 (26500) DEBUG BroadcastReporter Broadcasting to reporters ["progress","clear-text","html"]
+02:25:13 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 0 with pid 28000 
+02:25:13 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 1 with pid 23856 
+02:25:13 (23856) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:13 (23856) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:13 (23856) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:13 (28000) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:13 (28000) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:13 (28000) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:14 (23856) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:14 (28000) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:14 (23856) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:14 (28000) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:14 (28000) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:14 (23856) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:14 (23856) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:14 (23856) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:14 (28000) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:14 (28000) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:14 (26500) INFO DryRunExecutor Starting initial test run (jest test runner with "perTest" coverage analysis). This may take a while.
+02:25:14 (26500) DEBUG DryRunExecutor Using timeout of 300000 ms.
+02:25:14 (26500) DEBUG TimeoutDecorator Starting timeout timer (300000 ms) for a test run
+02:25:14 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 2 with pid 28368 
+02:25:14 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 3 with pid 27264 
+02:25:14 (23856) TRACE JestTestRunner Invoking Jest with config {"fileNamesUnderTest":[],"jestConfig":{"testEnvironment":"C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\node_modules\\@stryker-mutator\\jest-runner\\dist\\src\\jest-plugins\\jest-environment-generic.cjs","testMatch":["**/*.test.js"],"rootDir":"C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223","collectCoverage":false,"verbose":false,"notify":false,"bail":false,"reporters":[],"globals":{"__strykerGlobalNamespace__":"__stryker__"}},"testLocationInResults":true}
+02:25:14 (28368) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:14 (28368) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:14 (28368) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:14 (27264) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:14 (27264) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:14 (27264) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:14 (28368) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:14 (27264) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:14 (28368) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:14 (27264) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:14 (28368) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:14 (28368) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:14 (28368) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:14 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 4 with pid 28428 
+02:25:14 (27264) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:14 (27264) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:14 (27264) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:14 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 5 with pid 27360 
+02:25:15 (28428) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:15 (28428) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:15 (28428) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:15 (27360) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:15 (27360) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:15 (27360) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:15 (28428) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:15 (27360) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:15 (28428) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:15 (27360) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:15 (28428) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:15 (28428) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:15 (28428) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:15 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 6 with pid 24700 
+02:25:15 (27360) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:15 (27360) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:15 (27360) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:15 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 7 with pid 24836 
+02:25:16 (24700) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:16 (24700) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:16 (24700) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:16 (24836) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:16 (24836) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:16 (24836) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:16 (24700) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:16 (24836) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:16 (24700) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:16 (24836) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:16 (24700) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:16 (24700) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:16 (24700) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:16 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 8 with pid 26984 
+02:25:16 (24836) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:16 (24836) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:16 (24836) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:16 (26500) DEBUG ChildProcessProxy Started ChildProcessTestRunnerWorker in worker process 9 with pid 584 
+02:25:16 (26500) INFO DryRunExecutor Initial test run succeeded. Ran 12 tests in 2 seconds (net 129 ms, overhead 2527 ms).
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 5484
+02:25:16 (26500) DEBUG HtmlReporter Using file "reports/mutation/mutation.html"
+02:25:16 (26500) DEBUG MutationTestReportHelper No breaking threshold configured. Won't fail the build no matter how low your mutation score is. Set `thresholds.break` to change this behavior.
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 5484
+02:25:16 (26984) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:16 (26984) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:16 (26984) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:16 (584) DEBUG PluginLoader Loading plugin @stryker-mutator/jest-runner
+02:25:16 (584) DEBUG PluginLoader Loading plugin @stryker-mutator/mocha-runner
+02:25:16 (584) DEBUG PluginLoader Loading plugin file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/node_modules/@stryker-mutator/core/dist/src/reporters/index.js
+02:25:16 (26500) INFO HtmlReporter Your report can be found at: file:///C:/Users/FPT/Documents/HK5/SE347/TravelBookingProject/backend/reports/mutation/mutation.html
+02:25:16 (26500) INFO MutationTestExecutor Done in 4 seconds.
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 23856
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 28000
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 28368
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 27264
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 27360
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 28428
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 24700
+02:25:16 (26500) DEBUG ChildProcessProxy Disposing of worker process 24836
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 23856
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 28000
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 28368
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 27264
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 27360
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 28428
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 24700
+02:25:16 (26500) DEBUG ChildProcessProxy Kill 24836
+02:25:17 (26984) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:17 (584) DEBUG ChildProcessProxyWorker Changing current working directory for this process to C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp\sandbox1239223
+02:25:17 (26984) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:17 (584) DEBUG jestTestAdapterFactory Detected Jest version 29.7.0
+02:25:17 (26984) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:17 (26984) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:17 (26984) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:17 (26500) DEBUG ChildProcessProxy Disposing of worker process 26984
+02:25:17 (26500) DEBUG ChildProcessProxy Kill 26984
+02:25:17 (584) DEBUG JestTestRunner Running jest with --findRelatedTests flag. Set jest.enableFindRelatedTests to false to run all tests on every mutant.
+02:25:17 (584) DEBUG CustomJestConfigLoader Read config from "jest.config.js" (used native `readInitialOptions` from jest-config).
+02:25:17 (584) DEBUG JestTestRunner Merging file-based config {
+  "testEnvironment": "node",
+  "testMatch": [
+    "**/*.test.js"
+  ],
+  "rootDir": "C:\\Users\\FPT\\Documents\\HK5\\SE347\\TravelBookingProject\\backend\\.stryker-tmp\\sandbox1239223"
+}
+      with custom config {}
+      and default (internal) stryker config {
+  "collectCoverage": false,
+  "verbose": false,
+  "notify": false,
+  "bail": false,
+  "reporters": []
+}
+02:25:17 (26500) DEBUG ChildProcessProxy Disposing of worker process 584
+02:25:17 (26500) DEBUG ChildProcessProxy Kill 584
+02:25:17 (26500) DEBUG TemporaryDirectory Deleting stryker temp directory C:\Users\FPT\Documents\HK5\SE347\TravelBookingProject\backend\.stryker-tmp

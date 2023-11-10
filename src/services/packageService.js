@@ -2,7 +2,7 @@ import db from '../models/index.js'
 const getAllPackageList = async () => {
     try {
         let packages = [];
-        packages = await db.Package.findAll();
+        packages = await db.Packages.findAll();
         return packages;
     } catch (error) {
         console.log(error);
@@ -13,7 +13,7 @@ const getPackageList = async (page) => {
         let packages = [];
         const itemsPerPage = 1;
         const offset = (page - 1) * itemsPerPage;
-        packages = await db.Package.findAll({
+        packages = await db.Packages.findAll({
             offset,
             limit: itemsPerPage
         });
@@ -25,7 +25,7 @@ const getPackageList = async (page) => {
 const getTotalNumber = async () => {
     try {
         let totalNumber = 0;
-        totalNumber = await db.Package.count();
+        totalNumber = await db.Packages.count();
         return totalNumber;
     } catch (error) {
         console.log(error);
