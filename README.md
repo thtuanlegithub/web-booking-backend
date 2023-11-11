@@ -1,5 +1,5 @@
 ## Lê  Thanh Tuấn - 21520519
-### LAB 1 - UNIT TEST & MUTATION
+### LAB 1 - UNIT TEST & MUTATION TEST
 #### Unit Test
 ![Unit Test](/src/public/img/testLab1UnitTest.png)
 
