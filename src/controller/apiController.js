@@ -8,6 +8,7 @@ const getPackageList = async (req, res) => {
             DT: data,
         });
     } catch (error) {
+        console.log('Error caught:', error);
         return res.status(500).json({
             EM: 'error from server', //error message
             EC: '-1', //error code

@@ -1,9 +1,14 @@
 // Import thư viện kiểm thử
 const chai = require('chai');
+const nock = require('nock');
+const sequelize = require('sequelize')
+nock.enableNetConnect(); // Kích hoạt intercepting network requests
+
 const chaiHttp = require('chai-http');
 const sinon = require('sinon');
 import app from '../server';
 import packageService from '../services/packageService'
+import apiController from '../controller/apiController';
 // Sử dụng Chai HTTP
 chai.use(chaiHttp);
 const expect = chai.expect;
@@ -16,7 +21,6 @@ describe('Server', () => {
 });
 
 describe('Rendered Page', () => {
-
     it('should render the home page', async () => {
         const res = await chai.request(app).get('/');
         expect(res).to.have.status(200);
@@ -106,7 +110,6 @@ describe('Rendered Page', () => {
         // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
     }, 10000);
 });
-
 describe('API Routes', () => {
     describe('GET /api/package-data', () => {
         it('should return a list of packages', (done) => {
@@ -115,9 +118,34 @@ describe('API Routes', () => {
                 .end((err, res) => {
                     expect(res).to.have.status(200);
                     // Add more assertions based on your specific response structure
-
                     done();
                 });
         }, 10000);
+        it('should handle server error', async () => {
+            // Giả mạo hàm getAllPackageList để trả về một promise bị reject với error giả định
+            const errorMock = new Error('Simulated server error');
+            const getAllPackageListStub = sinon.stub(packageService, 'getAllPackageList').rejects(errorMock);
+
+            // Tạo mock request và mock response
+            const mockRequest = sinon.request;
+            const mockResponse = {
+                status: sinon.stub().returnsThis(),
+                json: sinon.stub(),
+            };
+
+            // Gọi hàm kiểm thử với req và res giả mạo
+            await apiController.getPackageList(mockRequest, mockResponse);
+
+            // Kiểm tra các điều kiện mong muốn
+            expect(mockResponse.status.calledWith(500)).to.be.true;
+            expect(mockResponse.json.calledWith({
+                EM: 'error from server',
+                EC: '-1',
+                DT: '',
+            })).to.be.true;
+
+            // Khôi phục hàm getAllPackageList để tránh ảnh hưởng đến các test case khác
+            getAllPackageListStub.restore();
+        });
     });
 });
