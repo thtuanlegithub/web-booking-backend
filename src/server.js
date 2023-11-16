@@ -3,7 +3,7 @@ import configViewEngine from "./config/viewEngine";
 import initWebRoutes from "./routes/web";
 import connection from "./config/connectDB";
 import initApiRoutes from "./routes/api";
-
+import bodyParser from 'body-parser';
 const app = express();
 
 //config view engine
@@ -11,7 +11,9 @@ configViewEngine(app);
 
 //set up db - sequelize
 connection();
-
+//config body-parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 //init web routes
 initWebRoutes(app);
 initApiRoutes(app);

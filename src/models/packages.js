@@ -19,7 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     packageCity: DataTypes.STRING,
     packageDescription: DataTypes.STRING,
     packageImage: DataTypes.STRING,
-    packageDescription: DataTypes.STRING,
     packagePrice: DataTypes.DECIMAL
   }, {
     sequelize,

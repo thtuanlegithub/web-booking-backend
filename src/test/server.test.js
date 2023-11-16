@@ -35,7 +35,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others
     }, 10000);
 
     it('should render travel pages', async () => {
@@ -44,7 +44,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others tùy thuộc vào nhu cầu kiểm thử
     }, 10000);
 
     it('should render tour pages', async () => {
@@ -53,7 +53,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others tùy thuộc vào nhu cầu kiểm thử
     }, 10000);
 
     it('should render discount pages', async () => {
@@ -62,7 +62,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others tùy thuộc vào nhu cầu kiểm thử
     }, 10000);
 
     it('should render account pages', async () => {
@@ -71,7 +71,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others tùy thuộc vào nhu cầu kiểm thử
     }, 10000);
 
     it('should render booking pages', async () => {
@@ -80,7 +80,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others tùy thuộc vào nhu cầu kiểm thử
     }, 10000);
 
     it('should render invoice pages', async () => {
@@ -89,7 +89,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others
     }, 10000);
 
     it('should render customer pages', async () => {
@@ -98,7 +98,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others
     }, 10000);
 
     it('should render statistics pages', async () => {
@@ -107,7 +107,7 @@ describe('Rendered Page', () => {
         expect(res).to.have.status(200);
         // Kiểm tra xem nội dung của trang có chứa các đoạn div hay không
         expect(res.text).to.include('<div>');
-        // Kiểm tra các điều kiện khác tùy thuộc vào nhu cầu kiểm thử
+        // Others
     }, 10000);
 });
 describe('API Routes', () => {
@@ -117,7 +117,7 @@ describe('API Routes', () => {
                 .get('/api/package-data')
                 .end((err, res) => {
                     expect(res).to.have.status(200);
-                    // Add more assertions based on your specific response structure
+
                     done();
                 });
         }, 10000);
@@ -144,7 +144,7 @@ describe('API Routes', () => {
                 DT: '',
             })).to.be.true;
 
-            // Khôi phục hàm getAllPackageList để tránh ảnh hưởng đến các test case khác
+            // Khôi phục hàm getAllPackageList
             getAllPackageListStub.restore();
         });
     });

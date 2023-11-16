@@ -1,5 +1,6 @@
 import express from "express";
 import homeController from "../controller/homeController";
+import packageController from "../controller/packageController";
 const router = express.Router();
 
 /**
@@ -18,6 +19,7 @@ const initWebRoutes = (app) => {
     router.get("/invoice", homeController.handleInvoicePage);
     router.get("/customer", homeController.handleCustomerPage);
     router.get("/statistics", homeController.handleStatisticsPage);
+    router.post("/package/create-package", packageController.handleCreatePackage);
     return app.use("/", router);
 }
 
