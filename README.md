@@ -1,5 +1,9 @@
-## Lê  Thanh Tuấn - 21520519
-### LAB 1 - UNIT TEST & MUTATION TEST
+### Develop Team
+`• 21520519 - Lê Thanh Tuấn`
+### Test Team
+`• 21520519 - Lê Thanh Tuấn`
+`• 21521776 - Chu Văn Cường`
+### **LAB 1 - UNIT TEST & MUTATION TEST**
 #### Unit Test
 ![Unit Test](/src/public/img/testLab1UnitTest.png)
 
