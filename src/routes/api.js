@@ -9,7 +9,7 @@ const router = express.Router();
 
 const initApiRoutes = (app) => {
     router.get("/package-data", apiController.getPackageList);
-
+    router.get("/read-package/:packageId", apiController.getPackageById);
     return app.use("/api", router);
 }
 

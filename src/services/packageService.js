@@ -41,35 +41,15 @@ const getPackageCityById = (packageCityId) => {
             return "Khác";
     }
 }
-const getPackageTypeById = (packageTypeId) => {
-    switch (packageTypeId) {
-        case '1':
-            return "Thăm thắng cảnh";
-        case '2':
-            return "Ăn uống";
-        case '3':
-            return "Mua sắm";
-        case '4':
-            return "Giải trí";
-        case '5':
-            return "Thể thao";
-        case '6':
-            return "Kiến thức";
-        case '7':
-            return "Giao lưu văn hóa";
-        default:
-            return "Khác";
-    }
-}
 const createNewPackage = async (data) => {
     try {
         console.log(data);
         if (data) {
-            let packageType = getPackageTypeById(data.packageType);
+            // let packageType = getPackageTypeById(data.packageType);
             let packageCity = getPackageCityById(data.packageCity);
             await db.Packages.create({
                 packageName: data.packageName,
-                packageType: packageType,
+                packageType: data.packageType,
                 packageCity: packageCity,
                 packageImage: data.packageImage,
             })

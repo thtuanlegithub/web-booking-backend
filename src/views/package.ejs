@@ -13,24 +13,26 @@
     <div class="px-2 mb-2 dashboard-title">
         Package
     </div>
+    <button type="button" class="btn btn-success justify-content-end d-block float-right p-2" data-bs-toggle="modal"
+        data-bs-target="#addNewPackage">Add new package</button>
     <div class="d-flex mb-3">
-        <select class="form-select custom-width-select" id="packageFilter">
+        <select class="shadow-textbox form-select custom-width-select" id="packageFilter">
             <option disabled selected>Choose Filter...</option>
-            <option value="1" class="font-weight-bold">Name</option>
-            <option value="2" class="font-weight-bold">Type</option>
-            <option value="3" class="font-weight-bold">City</option>
+            <option value="Name" class="font-weight-bold">Name</option>
+            <option value="Type" class="font-weight-bold">Type</option>
+            <option value="City" class="font-weight-bold">City</option>
         </select>
-        <input placeholder="Search with filter..." type="text" class="form-control custom-width-input mx-2"
-            aria-label="Text input with dropdown button">
+        <input placeholder="Search with filter..." type="text"
+            class="shadow-textbox form-control custom-width-input mx-2" aria-label="Text input with dropdown button">
     </div>
     <table id="packageTable" class="table table-hover table-bordered table-striked">
         <thead>
             <tr>
                 <th class="col-1">#</th>
-                <th class="col-4">Name</th>
+                <th class="col-6">Name</th>
                 <th class="col-2">Type</th>
                 <th class="col-2">City</th>
-                <th class="col-3">Operations</th>
+                <th class="col-1">Operations</th>
             </tr>
         </thead>
         <tbody id="table-content">
@@ -48,11 +50,8 @@
                     <td>
                         <%=item.packageCity%>
                     </td>
-                    <td>
-                        <button class="btn btn-primary rounded-circle">
-                            <i class="fa-solid fa-info btn-icon"></i>
-                        </button>
-                        <button class="btn btn-success rounded-circle">
+                    <td class="flex-center">
+                        <button class="btn btn-primary rounded-circle" onclick="loadPackageData(<%=item.id%>)">
                             <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
                         </button>
                         <button class="btn btn-danger rounded-circle">
@@ -63,18 +62,16 @@
                 <% }) %>
         </tbody>
     </table>
-
+    <div class="table-footer-height"></div>
     <!-- Pagination -->
-    <nav id="paging" aria-label="Page navigation example">
-        <ul class="pagination justify-content-end" id="pagination-container">
-            <!-- Các trang của phân trang sẽ được tạo ở đây -->
-        </ul>
-    </nav>
+    <div class="paging-parent">
+        <nav id="paging" class="foot-align" aria-label="Page navigation example">
+        </nav>
+    </div>
 
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-success justify-content-end d-block float-right p-2" data-bs-toggle="modal"
-        data-bs-target="#addNewPackage">Add new package</button>
-    <!-- Modal -->
+
+    <!-- Add Modal -->
     <div class="modal fade" id="addNewPackage" tabindex="-1" aria-labelledby="addNewPackageLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-custom">
             <div class="modal-content">
@@ -89,18 +86,15 @@
                             <!--Image-->
                             <div>
                                 <div class="mb-4 d-flex justify-content-center">
-                                    <img id="selectedImage" src="img/imgPlaceHolder.jpg" alt="example placeholder"
+                                    <img id="selectedImaged" src="img/imgPlaceHolder.jpg" alt="example placeholder"
                                         style="width: 300px;" />
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <div class="btn btn-primary btn-rounded">
-                                        <label class="form-label text-white m-1" style="cursor: pointer;"
-                                            for="fileInput">Choose
-                                            file</label>
-                                        <input type="file" class="form-control d-none" id="fileInput"
-                                            content="Choose File"
-                                            onchange="displaySelectedImage(event, 'selectedImage')" />
-                                    </div>
+                                    <label class="btn btn-primary btn-rounded text-white m-1" style="cursor: pointer;"
+                                        for="fileInput">Choose
+                                        file</label>
+                                    <input type="file" class="form-control d-none" id="fileInput" content="Choose File"
+                                        onchange="displaySelectedImage(event, 'selectedImage')" />
                                 </div>
                             </div>
                             <input type="hidden" name="packageImage" id="packageImage" />
@@ -115,14 +109,14 @@
                                 <label for="packageType" class="col-form-label">Type: </label>
                                 <select name="packageType" class="form-select custom-width-select" id="packageType">
                                     <option disabled selected>Choose type...</option>
-                                    <option value="1">Thăm thắng cảnh</option>
-                                    <option value="2">Ăn uống</option>
-                                    <option value="3">Mua sắm</option>
-                                    <option value="4">Giải trí</option>
-                                    <option value="5">Thể thao</option>
-                                    <option value="6">Kiến thức</option>
-                                    <option value="7">Giao lưu văn hóa</option>
-                                    <option value="8">Khác</option>
+                                    <option value="Tham quan">Tham quan</option>
+                                    <option value="Ăn uống">Ăn uống</option>
+                                    <option value="Mua sắm">Mua sắm</option>
+                                    <option value="Giải trí">Giải trí</option>
+                                    <option value="Thể thao">Thể thao</option>
+                                    <option value="Kiến thức">Kiến thức</option>
+                                    <option value="Giao lưu văn hóa">Giao lưu văn hóa</option>
+                                    <option value="Khác">Khác</option>
                                 </select>
                             </div>
                             <div class="mb-3 flex-2">
@@ -149,18 +143,95 @@
             </div>
         </div>
     </div>
+
+    <!-- Update Modal -->
+    <div class="modal fade" id="updatePackage" tabindex="-1" aria-labelledby="updatePackageLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-custom">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updatePackageLabel">Detail - Update package</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form method="POST" action="package/update-package/">
+                        <div class="mb-3">
+                            <label class="col-form-label">Package Image:</label>
+                            <!--Image-->
+                            <div>
+                                <div class="mb-4 d-flex justify-content-center">
+                                    <img id="selectedImageUpdate" src="img/imgPlaceHolder.jpg" alt="example placeholder"
+                                        style="width: 300px;" />
+                                </div>
+                                <div class="d-flex justify-content-center">
+                                    <label class="btn btn-primary btn-rounded text-white m-1" style="cursor: pointer;"
+                                        for="fileInput">Choose
+                                        file</label>
+                                    <input type="file" class="form-control d-none" id="fileInput" content="Choose File"
+                                        onchange="displaySelectedImage(event, 'selectedImage')" />
+                                </div>
+                            </div>
+                            <input type="hidden" name="packageImageUpdate" id="packageImageUpdate" />
+
+                        </div>
+                        <div class="mb-3">
+                            <label for="packageNameUpdate" class="col-form-label">Package Name:</label>
+                            <input name="packageNameUpdate" type="text" class="form-control" id="packageNameUpdate">
+                        </div>
+                        <div class="d-flex">
+                            <div class="mb-3 flex-1 mr-2">
+                                <label for="packageTypeUpdate" class="col-form-label">Type: </label>
+                                <select name="packageTypeUpdate" class="form-select custom-width-select"
+                                    id="packageTypeUpdate">
+                                    <option disabled selected>Choose type...</option>
+                                    <option value="Tham quan">Tham quan</option>
+                                    <option value="Ăn uống">Ăn uống</option>
+                                    <option value="Mua sắm">Mua sắm</option>
+                                    <option value="Giải trí">Giải trí</option>
+                                    <option value="Thể thao">Thể thao</option>
+                                    <option value="Kiến thức">Kiến thức</option>
+                                    <option value="Giao lưu văn hóa">Giao lưu văn hóa</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                            <div class="mb-3 flex-2">
+                                <label for="packageCityUpdate" class="col-form-label">City: </label>
+                                <select name="packageCityUpdate" class="form-select custom-width-select"
+                                    id="packageCityUpdate">
+                                    <option disabled selected>Choose City...</option>
+                                    <option value="1">Type 1</option>
+                                    <option value="2">Type 2</option>
+                                    <option value="3">Type 3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="packageDescriptionUpdate" class="col-form-label">Description:</label>
+                            <textarea name="packageDescriptionUpdate" class="form-control"
+                                id="packageDescription"></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" id="submitBtn" class="btn btn-success">Save</button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
 </div>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-<meta name="referrer" content="origin-when-cross-origin">
+<!-- <meta name="referrer" content="origin-when-cross-origin"> -->
 
 <script defer>
     $('#paging').pagination({
         dataSource: '/api/package-data',
         locator: 'DT',
-        totalNumberLocator: function (response) {
-            return response.TotalPage;
+        totalNumberLocator: (response) => {
+            const totalPage = response.TotalPage * 10;
+            return totalPage;
         },
         pageSize: 10,
         afterPageOnClick: function (event, pageNumber) {
@@ -184,15 +255,12 @@
 
                 data.DT.forEach((item, index) => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<th scope="row">${index + 1}</th>
+                    row.innerHTML = `<th scope="row">${parseInt(page - 1) * 10 + index + 1}</th>
                                 <td>${item.packageName}</td>
                                 <td>${item.packageType}</td>
                                 <td>${item.packageCity}</td>
                                 <td>
-                                    <button class="btn btn-primary rounded-circle">
-                                        <i class="fa-solid fa-info btn-icon"></i>
-                                    </button>
-                                    <button class="btn btn-success rounded-circle">
+                                    <button class="btn btn-primary rounded-circle" onclick="loadPackageData(${item.id})">
                                         <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
                                     </button>
                                     <button class="btn btn-danger rounded-circle">
@@ -275,6 +343,61 @@
         // Lấy tham chiếu đến biểu mẫu và gọi phương thức submit()
         document.querySelector('form').submit();
     });
+    // Function to load and display image in modal
+    const loadImageIntoUpdateModal = (imageId) => {
+        // Reference to the image in Firebase Storage
+        const imageRef = storage.ref().child(imageId);
 
+        // Get the download URL of the image
+        imageRef.getDownloadURL()
+            .then((url) => {
+                // Update the image element in the modal
+                let imgElement = document.getElementById('selectedImageUpdate');
+                imgElement.setAttribute("src", url);
+                console.log(imgElement.src);
 
+                // Open the updatePackage modal
+                $('#updatePackage').modal('show');
+            })
+            .catch((error) => {
+                console.error('Error getting download URL:', error);
+            });
+    }
+
+    // Example of how to call the function
+
+    function loadPackageData(packageId) {
+        // Thực hiện Ajax request để lấy dữ liệu của package
+        $.ajax({
+            url: `/api/read-package/${packageId}`, // Điều chỉnh URL tùy thuộc vào cách bạn cài đặt API
+            method: 'GET',
+            success: async function (data) {
+                console.log(data.DT);
+                // Xử lý dữ liệu nhận được từ server
+                // Hiển thị dữ liệu trong modal, bạn có thể sử dụng jQuery hoặc JavaScript thuần túy tùy thuộc vào yêu cầu của bạn
+
+                // Ví dụ: Hiển thị tên gói trong một thẻ div có id là "packageName"
+                document.getElementById("packageNameUpdate").value = data.DT.packageName;
+                if (data.DT.packageImage != null) {
+                    await loadImageIntoUpdateModal(data.DT.packageImage);
+                }
+                else if (data.DT.packageImage == null || data.DT.packageImage == "") {
+                    let imgElement = document.getElementById('selectedImageUpdate');
+                    imgElement.setAttribute("src", "/img/imgPlaceHolder.jpg");
+                    $('#updatePackage').modal('show');
+                }
+
+                // document.getElementById("packageTypeUpdate").value = data.DT.packageType;
+                // document.getElementById("packageCityUpdate").value = data.DT.packageCity;
+                // document.getElementById("packageDescriptionUpdate").value = data.DT.packageDescription;
+                // Tương tự, hiển thị các thông tin khác của package
+                // ...
+
+                // Mở modal
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    }
 </script>

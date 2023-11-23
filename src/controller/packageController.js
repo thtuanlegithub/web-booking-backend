@@ -7,6 +7,7 @@ const handleCreatePackage = async (req, res) => {
         console.log(error);
     }
 }
+
 module.exports = {
     handleCreatePackage
 }

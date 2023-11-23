@@ -378,8 +378,6 @@ td {
     font-size: 1rem;
 }
 
-
-
 .custom-width-select {
     flex: 1;
 }
@@ -429,7 +427,7 @@ td {
     height: 2.5rem;
     line-height: 2.5rem;
     border: 1px solid #DEE2E6;
-    border-radius: 5%;
+    border-radius: 50%;
     text-align: center;
     color: #0D6EFD;
     font-size: 1rem;
@@ -442,7 +440,7 @@ td {
     height: 2.5rem;
     line-height: 2.5rem;
     border: 1px solid #DEE2E6;
-    border-radius: 5%;
+    border-radius: 50%;
     text-align: center;
     color: #0D6EFD;
     font-size: 1.5rem;
@@ -451,4 +449,56 @@ td {
 #paging .active {
     background-color: #0D6EFD;
     color: white;
+}
+
+.paging-parent {
+    display: flex;
+    justify-content: center;
+    background-color: white;
+    width: inherit;
+}
+
+table {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+.foot-align {
+    box-shadow: 0px 1px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 10px !important;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 0px;
+    background-color: white;
+    position: fixed;
+    bottom: 0;
+    right: auto;
+    left: auto;
+    box-sizing: border-box;
+    place-content: center;
+}
+
+.table-footer-height {
+    height: 5rem;
+}
+
+ul {
+    place-content: center;
+    padding: 0px;
+}
+
+#paging ul {
+    padding: 0;
+    margin: 0;
+}
+
+#paging ul :hover {
+    border: 0.15rem solid #0164F8;
+}
+
+#paging li :hover {
+    border: 0px;
+}
+
+.shadow-textbox {
+    box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.2);
 }
