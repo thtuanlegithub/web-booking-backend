@@ -70,112 +70,6 @@
             <!-- Các trang của phân trang sẽ được tạo ở đây -->
         </ul>
     </nav>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
-
-    <script defer>
-        $('#paging').pagination({
-            dataSource: '/api/package-data',
-            locator: 'DT',
-            totalNumberLocator: function (response) {
-                return response.TotalPage;
-            },
-            pageSize: 10,
-            afterPageOnClick: function (event, pageNumber) {
-                loadPage(pageNumber);
-            },
-            afterPreviousOnClick: function (event, pageNumber) {
-                loadPage(pageNumber);
-            },
-            afterNextOnClick: function (event, pageNumber) {
-                loadPage(pageNumber);
-            }
-        })
-
-        function loadPage(page) {
-            $.ajax({
-                url: 'api/package-data?page=' + page
-            })
-                .then(data => {
-                    const tableBody = document.getElementById("table-content");
-                    tableBody.innerHTML = ''; // Xóa dữ liệu cũ trong tbody
-
-                    data.DT.forEach((item, index) => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `<th scope="row">${index + 1}</th>
-                                    <td>${item.packageName}</td>
-                                    <td>${item.packageType}</td>
-                                    <td>${item.packageCity}</td>
-                                    <td>
-                                        <button class="btn btn-primary rounded-circle">
-                                            <i class="fa-solid fa-info btn-icon"></i>
-                                        </button>
-                                        <button class="btn btn-success rounded-circle">
-                                            <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
-                                        </button>
-                                        <button class="btn btn-danger rounded-circle">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </button>
-                                    </td>`;
-                        tableBody.appendChild(row);
-                    });
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-        }
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyDSEzBchqJEtmcacoVFsn8gh0eFhV_ozCE",
-            authDomain: "webbooking-2460b.firebaseapp.com",
-            projectId: "webbooking-2460b",
-            storageBucket: "webbooking-2460b.appspot.com",
-            messagingSenderId: "715287388351",
-            appId: "1:715287388351:web:be08ae4a0e986e5b8f260a",
-            measurementId: "G-J2FLN8G0FQ"
-        };
-        const app = firebase.initializeApp(firebaseConfig);
-        const storage = app.storage();
-
-        function openFileInput() {
-            document.getElementById('fileInput').click();
-        }
-
-
-        function displaySelectedImage(event, imgId) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-
-            reader.onload = function (e) {
-                const imgElement = document.getElementById(imgId);
-                imgElement.src = e.target.result;
-            };
-
-            uploadImageToFirebase();
-
-            reader.readAsDataURL(file);
-        }
-        function uploadImageToFirebase() {
-            const fileInput = document.getElementById('fileInput');
-            const file = fileInput.files[0];
-            if (file) {
-                const storageRef = storage.ref();
-                const imageRef = storageRef.child(file.name);
-
-                imageRef.put(file).then((snapshot) => {
-                    console.log('Uploaded a file!');
-
-                    // Get the URL of the uploaded image
-                    imageRef.getDownloadURL().then((downloadURL) => {
-                        // Use the downloadURL as needed (e.g., store in the database)
-                        console.log('Download URL:', downloadURL);
-                    });
-                });
-            }
-        }
-
-    </script>
 
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-success justify-content-end d-block float-right p-2" data-bs-toggle="modal"
@@ -191,7 +85,7 @@
                 <div class="modal-body">
                     <form method="POST" action="package/create-package">
                         <div class="mb-3">
-                            <label for="packageImage" class="col-form-label">Package Image:</label>
+                            <label class="col-form-label">Package Image:</label>
                             <!--Image-->
                             <div>
                                 <div class="mb-4 d-flex justify-content-center">
@@ -199,15 +93,17 @@
                                         style="width: 300px;" />
                                 </div>
                                 <div class="d-flex justify-content-center">
-                                    <div onclick="openFileInput()" class="btn btn-primary btn-rounded">
-                                        <label class="form-label text-white m-1" style="cursor: pointer;">Choose
+                                    <div class="btn btn-primary btn-rounded">
+                                        <label class="form-label text-white m-1" style="cursor: pointer;"
+                                            for="fileInput">Choose
                                             file</label>
                                         <input type="file" class="form-control d-none" id="fileInput"
-                                            content="Choose File" name="packageImage"
+                                            content="Choose File"
                                             onchange="displaySelectedImage(event, 'selectedImage')" />
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" name="packageImage" id="packageImage" />
 
                         </div>
                         <div class="mb-3">
@@ -245,7 +141,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Save</button>
+                            <button type="submit" id="submitBtn" class="btn btn-success">Save</button>
                         </div>
                     </form>
                 </div>
@@ -254,3 +150,137 @@
         </div>
     </div>
 </div>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+<meta name="referrer" content="origin-when-cross-origin">
+
+<script defer>
+    $('#paging').pagination({
+        dataSource: '/api/package-data',
+        locator: 'DT',
+        totalNumberLocator: function (response) {
+            return response.TotalPage;
+        },
+        pageSize: 10,
+        afterPageOnClick: function (event, pageNumber) {
+            loadPage(pageNumber);
+        },
+        afterPreviousOnClick: function (event, pageNumber) {
+            loadPage(pageNumber);
+        },
+        afterNextOnClick: function (event, pageNumber) {
+            loadPage(pageNumber);
+        }
+    })
+
+    function loadPage(page) {
+        $.ajax({
+            url: 'api/package-data?page=' + page
+        })
+            .then(data => {
+                const tableBody = document.getElementById("table-content");
+                tableBody.innerHTML = ''; // Xóa dữ liệu cũ trong tbody
+
+                data.DT.forEach((item, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `<th scope="row">${index + 1}</th>
+                                <td>${item.packageName}</td>
+                                <td>${item.packageType}</td>
+                                <td>${item.packageCity}</td>
+                                <td>
+                                    <button class="btn btn-primary rounded-circle">
+                                        <i class="fa-solid fa-info btn-icon"></i>
+                                    </button>
+                                    <button class="btn btn-success rounded-circle">
+                                        <i class="fa-solid fa-gear" style="color: #ffffff;"></i>
+                                    </button>
+                                    <button class="btn btn-danger rounded-circle">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </td>`;
+                    tableBody.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            })
+    }
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyDSEzBchqJEtmcacoVFsn8gh0eFhV_ozCE",
+        authDomain: "webbooking-2460b.firebaseapp.com",
+        projectId: "webbooking-2460b",
+        storageBucket: "webbooking-2460b.appspot.com",
+        messagingSenderId: "715287388351",
+        appId: "1:715287388351:web:be08ae4a0e986e5b8f260a",
+        measurementId: "G-J2FLN8G0FQ"
+    };
+    const app = firebase.initializeApp(firebaseConfig);
+    const storage = app.storage();
+
+    function generateUniqueId() {
+        const randomArray = new Uint32Array(2);
+        crypto.getRandomValues(randomArray);
+
+        const uniqueId = randomArray[0].toString(16) + randomArray[1].toString(16);
+        console.log('Generated ID:', uniqueId);
+        return uniqueId;
+    }
+
+    function openFileInput() {
+        document.getElementById('fileInput').click();
+    }
+
+
+    function displaySelectedImage(event, imgId) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+            const imgElement = document.getElementById(imgId);
+            imgElement.src = e.target.result;
+        };
+
+        reader.readAsDataURL(file);
+    }
+
+    const uploadImageAndSubmit = async () => {
+        console.log("Upload called");
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        if (file) {
+            console.log("has file");
+            const storageRef = firebase.storage().ref();
+            const imageId = generateUniqueId(); // Hàm để tạo id unique, bạn cần tự định nghĩa
+            const imageRef = storageRef.child(imageId);
+            await imageRef.put(file).then((snapshot) => {
+                console.log('Uploaded a file!');
+
+                // Lấy ID của ảnh
+                document.getElementById('packageImage').value = imageRef.getDownloadURL();
+
+                // (optional) Lấy URL của ảnh để hiển thị hoặc lưu vào cơ sở dữ liệu
+                // imageRef.getDownloadURL().then((downloadURL) => {
+                //     document.getElementById("packageImage").value = downloadURL;
+                //     console.log('Download URL:', downloadURL);
+                // })
+            })
+            return true;
+        } else {
+            console.log('No file selected');
+            return false;
+        }
+    }
+    document.querySelector('form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const uploadResult = await uploadImageAndSubmit();
+        console.log("Upload Result: ", uploadResult);
+        console.log(document.getElementById("packageImage").value);
+        // Lấy tham chiếu đến biểu mẫu và gọi phương thức submit()
+        document.querySelector('form').subưmit();
+    });
+
+
+</script>
