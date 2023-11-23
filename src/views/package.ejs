@@ -251,21 +251,15 @@
         const file = fileInput.files[0];
 
         if (file) {
-            console.log("has file");
+            console.log("Has file");
             const storageRef = firebase.storage().ref();
             const imageId = generateUniqueId(); // Hàm để tạo id unique, bạn cần tự định nghĩa
             const imageRef = storageRef.child(imageId);
             await imageRef.put(file).then((snapshot) => {
                 console.log('Uploaded a file!');
 
-                // Lấy ID của ảnh
-                document.getElementById('packageImage').value = imageRef.getDownloadURL();
-
-                // (optional) Lấy URL của ảnh để hiển thị hoặc lưu vào cơ sở dữ liệu
-                // imageRef.getDownloadURL().then((downloadURL) => {
-                //     document.getElementById("packageImage").value = downloadURL;
-                //     console.log('Download URL:', downloadURL);
-                // })
+                // Lấy ID của ảnh - lưu vào input packageImage của form
+                document.getElementById('packageImage').value = imageId;
             })
             return true;
         } else {
@@ -277,9 +271,9 @@
         event.preventDefault();
         const uploadResult = await uploadImageAndSubmit();
         console.log("Upload Result: ", uploadResult);
-        console.log(document.getElementById("packageImage").value);
+        // console.log(document.getElementById("packageImage").value);
         // Lấy tham chiếu đến biểu mẫu và gọi phương thức submit()
-        document.querySelector('form').subưmit();
+        document.querySelector('form').submit();
     });
 
 
