@@ -19,7 +19,7 @@ const initWebRoutes = (app) => {
     router.get("/invoice", homeController.handleInvoicePage);
     router.get("/customer", homeController.handleCustomerPage);
     router.get("/statistics", homeController.handleStatisticsPage);
-    router.post("/package/create-package", packageController.handleCreatePackage);
+    // router.post("/package/create-package", packageController.handleCreatePackage);
     return app.use("/", router);
 }
 

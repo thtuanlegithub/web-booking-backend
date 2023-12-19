@@ -1,1 +1,5 @@
-npx sequelize-cli model:generate --name Package --attributes packageName:string,packageType:string,packageCity:string,packageDescription:string,packageImage:string,packageDescription:string,packagePrice:decimal
+npx sequelize-cli model:generate --name Packages --attributes packageName:string,packageType:string,packageAddress:string,packageDescription:string
+npx sequelize-cli model:generate --name Tours --attributes tourName:string,totalDay:integer,totalNight:integer,addressList:text,tourPrice:decimal,tourStatus:string,mainImage:text
+npx sequelize-cli model:generate --name TourSchedules --attributes tourId:integer,dayIndex:integer,daySummary:text
+npx sequelize-cli model:generate --name TourPackages --attributes tourScheduleId:integer,packageId:integer
+npx sequelize-cli model:generate --name TourAdditionalImages --attributes tourId:integer,additionalImage:text

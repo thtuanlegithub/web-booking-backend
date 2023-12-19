@@ -3,28 +3,28 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class Packages extends Model {
+  class TourSchedules extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Packages.belongsToMany(models.TourSchedules, {
+      TourSchedules.belongsTo(models.Tours, { foreignKey: 'tourId' });
+      TourSchedules.belongsToMany(models.Packages, {
         through: models.TourPackages,
-        foreignKey: 'packageId',
-        otherKey: 'tourScheduleId'
+        foreignKey: 'tourScheduleId',
+        otherKey: 'packageId'
       });
     }
   }
-  Packages.init({
-    packageName: DataTypes.STRING,
-    packageType: DataTypes.STRING,
-    packageAddress: DataTypes.STRING,
-    packageDescription: DataTypes.STRING
+  TourSchedules.init({
+    tourId: DataTypes.INTEGER,
+    dayIndex: DataTypes.INTEGER,
+    daySummary: DataTypes.TEXT
   }, {
     sequelize,
-    modelName: 'Packages',
+    modelName: 'TourSchedules',
   });
-  return Packages;
+  return TourSchedules;
 };

@@ -4,12 +4,17 @@ import initWebRoutes from "./routes/web";
 import connection from "./config/connectDB";
 import initApiRoutes from "./routes/api";
 import bodyParser from 'body-parser';
+import configCors from './config/cors';
 if (typeof window !== 'undefined') {
     const { v4: uuidv4 } = require('uuid');
     window.uuid = { v4: uuidv4 };
 }
 
 const app = express();
+
+configCors(app);
+
+
 
 //config view engine
 configViewEngine(app);
