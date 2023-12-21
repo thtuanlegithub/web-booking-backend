@@ -3,3 +3,4 @@ npx sequelize-cli model:generate --name Tours --attributes tourName:string,total
 npx sequelize-cli model:generate --name TourSchedules --attributes tourId:integer,dayIndex:integer,daySummary:text
 npx sequelize-cli model:generate --name TourPackages --attributes tourScheduleId:integer,packageId:integer
 npx sequelize-cli model:generate --name TourAdditionalImages --attributes tourId:integer,additionalImage:text
+npx sequelize-cli model:generate --name Travels --attributes startLocation:string,startDateTime:date,maxTicket:integer,remainTicket:integer,tourId:integer,discountId:integer

@@ -1,7 +1,8 @@
-import tourApiService from '../services/tourApiService';
-const createTour = async (req, res) => {
+import travelApiService from '../services/travelApiService';
+const createTravel = async (req, res) => {
     try {
-        const data = await tourApiService.createTour(req.body);
+        console.log(">>> controller create travel called");
+        const data = await travelApiService.createTravel(req.body);
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,
@@ -15,13 +16,12 @@ const createTour = async (req, res) => {
         })
     }
 }
-const readTourPagination = async (req, res) => {
+const readTravelPagination = async (req, res) => {
     try {
         if (req.query.page && req.query.limit) {
             let page = req.query.page;
             let limit = req.query.limit;
-
-            let data = await tourApiService.getTourWithPagination(+page, +limit);
+            let data = await travelApiService.getTravelWithPagination(+page, +limit);
             return res.status(200).json({
                 EM: data.EM,
                 EC: data.EC,
@@ -36,10 +36,10 @@ const readTourPagination = async (req, res) => {
         })
     }
 }
-const readTourById = async (req, res) => {
+const readTravelById = async (req, res) => {
     try {
         if (req.query.id) {
-            let data = await tourApiService.getTourById(+req.query.id);
+            let data = await travelApiService.getTravelById(+req.query.id);
             return res.status(200).json({
                 EM: data.EM,
                 EC: data.EC,
@@ -54,10 +54,10 @@ const readTourById = async (req, res) => {
         })
     }
 }
-const updateTour = async (req, res) => {
+const updateTravel = async (req, res) => {
     try {
-        console.log("update in tour controller called")
-        let data = await tourApiService.updateTour(req.body);
+        console.log("update in travel controller called")
+        let data = await travelApiService.updateTravel(req.body);
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,
@@ -71,9 +71,9 @@ const updateTour = async (req, res) => {
         })
     }
 }
-const deleteTour = async (req, res) => {
+const deleteTravel = async (req, res) => {
     try {
-        let data = await tourApiService.deleteTour(req.body.id);
+        let data = await travelApiService.deleteTravel(req.body.id);
         return res.status(200).json({
             EM: data.EM,
             EC: data.EC,
@@ -88,5 +88,5 @@ const deleteTour = async (req, res) => {
     }
 }
 module.exports = {
-    createTour, readTourPagination, updateTour, deleteTour, readTourById
+    createTravel, readTravelPagination, updateTravel, deleteTravel, readTravelById
 }

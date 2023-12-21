@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Tours.hasMany(models.TourSchedules, { foreignKey: 'tourId' });
       Tours.hasMany(models.TourAdditionalImages, { foreignKey: 'tourId' });
+      Tours.hasMany(models.Travels, { foreignKey: 'tourId' });
     }
   }
   Tours.init({

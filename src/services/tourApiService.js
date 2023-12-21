@@ -81,20 +81,49 @@ const getTourById = async (tourId) => {
     }
 }
 const getTourWithPagination = async (page, limit) => {
-    let offset = (page - 1) * limit;
-    const { count, rows } = await db.Tours.findAndCountAll({
-        offset: offset,
-        limit: limit,
-        order: [["id", "DESC"]]
-    });
-    let totalPages = Math.ceil(count / limit);
-    let data = {
-        totalRows: count,
-        totalPages: totalPages,
-        tours: rows,
+    if (page === 0 && limit === 0) {
+        let tours = await db.Tours.findAll();
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: tours,
+        }
     }
+    else {
+        let offset = (page - 1) * limit;
+        const { count, rows } = await db.Tours.findAndCountAll({
+            offset: offset,
+            limit: limit,
+            order: [["id", "DESC"]]
+        });
+        let totalPages = Math.ceil(count / limit);
+        let data = {
+            totalRows: count,
+            totalPages: totalPages,
+            tours: rows,
+        }
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: data,
+        }
+    }
+
+}
+const updateTour = async (tourData) => {
+    console.log("update tour in api service called");
+    let data = await db.Tours.findOne({
+        where: { id: tourData.id }
+    })
+    console.log("completed");
+    // Update Tour General Information
+
+    // Delete Tour Schedules, Tour Packages, Tour Additional Images
+
+    // Create Tour Schedules, Tour Packages, Tour Additional Images again
+
     return {
-        EM: 'get data successfully',
+        EM: 'update package successfully',
         EC: '0',
         DT: data,
     }
@@ -153,4 +182,4 @@ const deleteTour = async (id) => {
 };
 
 
-module.exports = { createTour, getTourWithPagination, deleteTour, getTourById };
+module.exports = { createTour, getTourWithPagination, updateTour, deleteTour, getTourById };
