@@ -115,18 +115,96 @@ const updateTour = async (tourData) => {
     let data = await db.Tours.findOne({
         where: { id: tourData.id }
     })
-    console.log("completed");
-    // Update Tour General Information
+    console.log('updateinfo', tourData);
+    console.log('beforeupdate', data);
 
-    // Delete Tour Schedules, Tour Packages, Tour Additional Images
+    if (data) {
+        // Update Tour General Information
+        let updatedTour = await db.Tours.update({
+            tourName: tourData.tourGeneralInformation.tourName,
+            totalDay: tourData.tourGeneralInformation.totalDay,
+            totalNight: tourData.tourGeneralInformation.totalNight,
+            addressList: tourData.tourGeneralInformation.addressList,
+            tourPrice: tourData.tourGeneralInformation.tourPrice,
+            tourStatus: tourData.tourGeneralInformation.tourStatus,
+            mainImage: tourData.mainImage
+        }, {
+            where: {
+                id: tourData.id
+            }
+        })
 
-    // Create Tour Schedules, Tour Packages, Tour Additional Images again
+        console.log(">>> Update tour successfully", updatedTour);
 
-    return {
-        EM: 'update package successfully',
-        EC: '0',
-        DT: data,
+        // Delete Tour Schedules, Tour Packages, Tour Additional Images
+        // Delete TOURADDITIONALIMAGES
+        await db.TourAdditionalImages.destroy({
+            where: { tourId: tourData.id }
+        });
+
+        // Fetch TOURSCHEDULE IDs associated with the tour
+        const scheduleIds = await db.TourSchedules.findAll({
+            attributes: ['id'],
+            where: { tourId: tourData.id }
+        });
+
+        // Delete TOURPACKAGE
+        await db.TourPackages.destroy({
+            where: { tourScheduleId: scheduleIds.map(schedule => schedule.id) }
+        });
+
+        // Delete TOURSCHEDULE
+        await db.TourSchedules.destroy({
+            where: { tourId: tourData.id }
+        });
+
+        console.log("Delete old TourJoin table successfully");
+
+        // Create Tour Schedules, Tour Packages, Tour Additional Images again
+        // Tạo TOURADDITIONALIMAGES và liên kết nó với TOUR
+        const additionalImages = tourData.additionalImages; // Đây là một mảng các id của các ảnh bổ sung
+        for (let i = 0; i < additionalImages.length; i++) {
+            await db.TourAdditionalImages.create({
+                tourId: tourData.id, // id của TOUR đã tạo
+                additionalImage: additionalImages[i] // id của ảnh bổ sung
+            });
+        }
+
+        // Tạo TOURSCHEDULE và liên kết nó với TOUR
+        const tourSchedule = tourData.tourSchedule;
+        const daySummaries = tourData.daySummaries;
+        for (let i = 0; i < tourSchedule.length; i++) {
+            const createdSchedule = await db.TourSchedules.create({
+                tourId: tourData.id, // id của TOUR đã tạo
+                dayIndex: i + 1, // hoặc bạn có thể sử dụng i nếu DayIndex bắt đầu từ 0
+                daySummary: daySummaries[i]
+            });
+            // Tạo TOURPACKAGE và liên kết nó với TOURSCHEDULE và PACKAGE
+            for (let j = 0; j < tourSchedule[i].length; j++) {
+                console.log(tourSchedule[i][j]);
+                await db.TourPackages.create({
+                    tourScheduleId: createdSchedule.id, // id của TOURSCHEDULE đã tạo
+                    packageId: tourSchedule[i][j].value // id của PACKAGE đã tìm thấy
+                });
+            }
+        }
+
+        console.log("Create new TourJoin table successfully");
+
+        return {
+            EM: 'update package successfully',
+            EC: '0',
+            DT: '',
+        }
     }
+    else {
+        return {
+            EM: 'not found data',
+            EC: '0',
+            DT: ''
+        }
+    }
+
 }
 const deleteTour = async (id) => {
     try {

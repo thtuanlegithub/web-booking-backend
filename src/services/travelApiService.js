@@ -1,5 +1,4 @@
 import db from "../models/index";
-import { Sequelize } from "../models/index";
 const createTravel = async (travelData) => {
     try {
         let data = await db.Travels.create({
@@ -41,25 +40,41 @@ const getTravelById = async (travelId) => {
     }
 }
 const getTravelWithPagination = async (page, limit) => {
-    let offset = (page - 1) * limit;
-    const { count, rows } = await db.Travels.findAndCountAll({
-        offset: offset,
-        limit: limit,
-        order: [["id", "DESC"]],
-        include: [
-            { model: db.Tours }
-        ]
-    });
-    let totalPages = Math.ceil(count / limit);
-    let data = {
-        totalRows: count,
-        totalPages: totalPages,
-        travels: rows,
+    if (page === 0 && limit === 0) {
+        let travels = await db.Travels.findAll(
+            {
+                include: [{
+                    model: db.Tours
+                }]
+            }
+        );
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: travels,
+        }
     }
-    return {
-        EM: 'get data successfully',
-        EC: '0',
-        DT: data,
+    else {
+        let offset = (page - 1) * limit;
+        const { count, rows } = await db.Travels.findAndCountAll({
+            offset: offset,
+            limit: limit,
+            order: [["id", "DESC"]],
+            include: [
+                { model: db.Tours }
+            ]
+        });
+        let totalPages = Math.ceil(count / limit);
+        let data = {
+            totalRows: count,
+            totalPages: totalPages,
+            travels: rows,
+        }
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: data,
+        }
     }
 }
 const updateTravel = async (travelData) => {
@@ -88,7 +103,7 @@ const updateTravel = async (travelData) => {
     return {
         EM: 'update package successfully',
         EC: '0',
-        DT: data,
+        DT: '',
     }
 }
 const deleteTravel = async (id) => {

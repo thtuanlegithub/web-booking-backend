@@ -2,6 +2,9 @@ import express from "express";
 import packageController from '../controller/packageController';
 import tourController from '../controller/tourController';
 import travelController from '../controller/travelController';
+import customerController from '../controller/customerController';
+import bookingController from '../controller/bookingController';
+import discountController from '../controller/discountController';
 const router = express.Router();
 
 /**
@@ -27,7 +30,24 @@ const initApiRoutes = (app) => {
     router.post("/travel/create", travelController.createTravel);
     router.put("/travel/update", travelController.updateTravel);
     router.delete("/travel/delete", travelController.deleteTravel);
-    // routern.get("/package/read/:packageId", packageController.getPackageById);
+
+    router.get("/customer/read", customerController.readCustomerPagination);
+    router.get("/customer/read-by-id", customerController.readCustomerById);
+    router.post("/customer/create", customerController.createCustomer);
+    router.put("/customer/update", customerController.updateCustomer);
+    router.delete("/customer/delete", customerController.deleteCustomer);
+
+    router.get("/booking/read", bookingController.readBookingPagination);
+    router.get("/booking/read-by-id", bookingController.readBookingById);
+    router.post("/booking/create", bookingController.createBooking);
+    router.put("/booking/update", bookingController.updateBooking);
+    router.delete("/booking/delete", bookingController.deleteBooking);
+
+    router.get("/discount/read", discountController.readDiscountPagination);
+    router.get("/discount/read-by-id", discountController.readDiscountById);
+    router.post("/discount/create", discountController.createDiscount);
+    router.put("/discount/update", discountController.updateDiscount);
+    router.delete("/discount/delete", discountController.deleteDiscount);
     return app.use("/api", router);
 }
 
