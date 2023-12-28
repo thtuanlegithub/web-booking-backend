@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     startDateTime: DataTypes.DATE,
     maxTicket: DataTypes.INTEGER,
     remainTicket: DataTypes.INTEGER,
-    travelPrice: DataTypes.DECIMAL,
     tourId: DataTypes.INTEGER,
     discountId: DataTypes.INTEGER
   }, {

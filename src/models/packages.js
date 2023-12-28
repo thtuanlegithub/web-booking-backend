@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     packageName: DataTypes.STRING,
     packageType: DataTypes.STRING,
     packageAddress: DataTypes.STRING,
-    packageDescription: DataTypes.STRING
+    packageDescription: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Packages',

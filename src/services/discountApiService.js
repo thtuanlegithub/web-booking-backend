@@ -1,11 +1,16 @@
 import db from "../models/index";
 const createDiscount = async (discountData) => {
     try {
-        // CREATE
+        let data = await db.Discounts.create({
+            discountName: discountData.discountName,
+            discountType: discountData.discountType,
+            discountAmount: discountData.discountAmount,
+            discountDescription: discountData.discountDescription,
+        })
         return {
             EM: 'create discount successfully',
             EC: '0',
-            DT: ''
+            DT: data
         }
     } catch (error) {
         console.error("Error createDiscount", error);
@@ -32,7 +37,11 @@ const getDiscountById = async (discountId) => {
 }
 const getDiscountWithPagination = async (page, limit) => {
     if (page == 0 && limit == 0) {
-        let data = await db.Discounts.findAll();
+        let data = await db.Discounts.findAll({
+            include: [{
+                model: db.Travels
+            }]
+        });
         return {
             EM: 'get all discount successfully',
             EC: '0',
