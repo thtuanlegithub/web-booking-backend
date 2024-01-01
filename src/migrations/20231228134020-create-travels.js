@@ -2,24 +2,33 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Packages', {
+    await queryInterface.createTable('Travels', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      packageName: {
+      startLocation: {
         type: Sequelize.STRING
       },
-      packageType: {
-        type: Sequelize.STRING
+      startDateTime: {
+        type: Sequelize.DATE
       },
-      packageAddress: {
-        type: Sequelize.STRING
+      maxTicket: {
+        type: Sequelize.INTEGER
       },
-      packageDescription: {
-        type: Sequelize.TEXT
+      remainTicket: {
+        type: Sequelize.INTEGER
+      },
+      tourId: {
+        type: Sequelize.INTEGER
+      },
+      discountId: {
+        type: Sequelize.INTEGER
+      },
+      travelPrice: {
+        type: Sequelize.DECIMAL
       },
       createdAt: {
         allowNull: false,
@@ -32,6 +41,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Packages');
+    await queryInterface.dropTable('Travels');
   }
 };

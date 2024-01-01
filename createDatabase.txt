@@ -3,9 +3,10 @@ npx sequelize-cli model:generate --name Tours --attributes tourName:string,total
 npx sequelize-cli model:generate --name TourSchedules --attributes tourId:integer,dayIndex:integer,daySummary:text
 npx sequelize-cli model:generate --name TourPackages --attributes tourScheduleId:integer,packageId:integer
 npx sequelize-cli model:generate --name TourAdditionalImages --attributes tourId:integer,additionalImage:text
-npx sequelize-cli model:generate --name Travels --attributes startLocation:string,startDateTime:date,maxTicket:integer,remainTicket:integer,tourId:integer,discountId:integer
+npx sequelize-cli model:generate --name Travels --attributes startLocation:string,startDateTime:date,maxTicket:integer,remainTicket:integer,tourId:integer,discountId:integer,travelPrice:decimal
 npx sequelize-cli model:generate --name Bookings --attributes bookingStatus:string,bookingPrice:decimal,customerId:integer,paymentNote:string,paymentImage:text,travelId:integer,exportInvoice:boolean
 npx sequelize-cli model:generate --name Customers --attributes customerPhone:string,customerName:string,customerGmail:string,customerAccountId:integer
 npx sequelize-cli model:generate --name Tourists --attributes touristName:string,bookingId:integer
 npx sequelize-cli model:generate --name CustomerAccounts --attributes username:string,password:string
 npx sequelize-cli model:generate --name Discounts --attributes discountName:string,discountType:string,discountAmount:decimal,discountDescription:text
+npx sequelize-cli model:generate --name CompanyAccounts --attributes username:string,password:string,role:string

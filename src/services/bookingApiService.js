@@ -94,25 +94,39 @@ const getBookingById = async (bookingId) => {
     }
 }
 const getBookingWithPagination = async (page, limit) => {
-    let offset = (page - 1) * limit;
-    const { count, rows } = await db.Bookings.findAndCountAll({
-        offset: offset,
-        limit: limit,
-        order: [["id", "DESC"]],
-        include: [{
-            model: db.Customers
-        }]
-    });
-    let totalPages = Math.ceil(count / limit);
-    let data = {
-        totalRows: count,
-        totalPages: totalPages,
-        bookings: rows,
+    if (page == 0 && limit == 0) {
+        let data = await db.Bookings.findAll({
+            include: {
+                model: db.Customers
+            }
+        });
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: data,
+        }
     }
-    return {
-        EM: 'get data successfully',
-        EC: '0',
-        DT: data,
+    else {
+        let offset = (page - 1) * limit;
+        const { count, rows } = await db.Bookings.findAndCountAll({
+            offset: offset,
+            limit: limit,
+            order: [["id", "DESC"]],
+            include: [{
+                model: db.Customers
+            }]
+        });
+        let totalPages = Math.ceil(count / limit);
+        let data = {
+            totalRows: count,
+            totalPages: totalPages,
+            bookings: rows,
+        }
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: data,
+        }
     }
 }
 const updateBooking = async (bookingData) => {

@@ -25,10 +25,21 @@ const getTravelById = async (travelId) => {
             where: {
                 id: travelId
             },
-            include:
-            {
-                model: db.Tours
-            }
+            include: [
+                {
+                    model: db.Tours,
+                    include: [{
+                        model: db.TourAdditionalImages
+                    },
+                    {
+                        model: db.TourSchedules
+                    }]
+                },
+                {
+                    model: db.Discounts
+                }
+            ]
+
         });
         return {
             EM: 'get travel by id successfully',
@@ -45,6 +56,9 @@ const getTravelWithPagination = async (page, limit) => {
             {
                 include: [{
                     model: db.Tours
+                },
+                {
+                    model: db.Discounts
                 }]
             }
         );

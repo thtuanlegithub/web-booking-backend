@@ -27,6 +27,9 @@ module.exports = {
       discountId: {
         type: Sequelize.INTEGER
       },
+      travelPrice: {
+        type: Sequelize.DECIMAL
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
