@@ -61,7 +61,6 @@ const createBooking = async (bookingData) => {
             DT: createdBooking
         }
     } catch (error) {
-        console.error("Error createBooking", error);
     }
 }
 const getBookingById = async (bookingId) => {
@@ -96,7 +95,6 @@ const getBookingById = async (bookingId) => {
             DT: booking
         }
     } catch (error) {
-        console.error("Error - get booking by id", error);
     }
 }
 const getBookingWithPagination = async (page, limit) => {
@@ -117,7 +115,7 @@ const getBookingWithPagination = async (page, limit) => {
             DT: data,
         }
     }
-    else {
+    else if (page >= 1 && limit >= 1) {
         let offset = (page - 1) * limit;
         const { count, rows } = await db.Bookings.findAndCountAll({
             offset: offset,
@@ -139,14 +137,19 @@ const getBookingWithPagination = async (page, limit) => {
             DT: data,
         }
     }
+    else {
+        return {
+            EM: 'error getting data',
+            EC: '1',
+            DT: null,
+        }
+    }
 }
 const updateBooking = async (bookingData) => {
-    console.log("update booking in api service called");
-    console.log(bookingData);
-    let data = await db.Bookings.findOne({
-        where: { id: bookingData.id }
-    })
     try {
+        let data = await db.Bookings.findOne({
+            where: { id: bookingData.id }
+        })
         if (bookingData.exportInvoice === true) {
             let touristNum = bookingData.touristList.length;
             let needUpdateTravel = await db.Travels.findOne({
@@ -155,8 +158,7 @@ const updateBooking = async (bookingData) => {
                 }
             })
             if (needUpdateTravel) {
-                let newRemain = needUpdateTravel.remainTicket;
-                newRemain = newRemain - touristNum;
+                let newRemain = needUpdateTravel.remainTicket - touristNum;
                 let res = await db.Travels.update({
                     remainTicket: newRemain
                 }, {
@@ -164,50 +166,51 @@ const updateBooking = async (bookingData) => {
                         id: bookingData.travelId
                     }
                 })
-                console.log("update remain ticket", res);
             }
 
         }
-    } catch (error) {
-        console.log(error);
-    }
 
-    if (data) {
-        await db.Tourists.destroy(
-            {
-                where: {
-                    bookingId: bookingData.id
+
+        if (data) {
+            await db.Tourists.destroy(
+                {
+                    where: {
+                        bookingId: bookingData.id
+                    }
                 }
+            );
+            for (let i = 0; i < bookingData.touristList.length; i++) {
+                await db.Tourists.create({
+                    touristName: bookingData.touristList[i],
+                    bookingId: bookingData.id
+                })
             }
-        );
-        for (let i = 0; i < bookingData.touristList.length; i++) {
-            await db.Tourists.create({
-                touristName: bookingData.touristList[i],
-                bookingId: bookingData.id
+
+            let res = await db.Bookings.update({
+                exportInvoice: bookingData.exportInvoice,
+                bookingStatus: bookingData.bookingStatus,
+                bookingPrice: bookingData.bookingPrice,
+                paymentNote: bookingData.paymentNote,
+                paymentImage: bookingData.paymentImage,
+                travelId: bookingData.travelId
+            }, {
+                where: {
+                    id: bookingData.id
+                }
             })
         }
-        console.log(">>> update Tourists successfully");
 
-        let res = await db.Bookings.update({
-            exportInvoice: bookingData.exportInvoice,
-            bookingStatus: bookingData.bookingStatus,
-            bookingPrice: bookingData.bookingPrice,
-            paymentNote: bookingData.paymentNote,
-            paymentImage: bookingData.paymentImage,
-            travelId: bookingData.travelId
-        }, {
-            where: {
-                id: bookingData.id
-            }
-        })
-        console.log(">>> update Booking successfully: ", res);
-    }
-    console.log(">>> completed");
-
-    return {
-        EM: 'update booking successfully',
-        EC: '0',
-        DT: '',
+        return {
+            EM: 'update booking successfully',
+            EC: '0',
+            DT: '',
+        }
+    } catch (error) {
+        return {
+            EM: 'Error updating booking',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 const deleteBooking = async (id) => {
@@ -237,7 +240,6 @@ const deleteBooking = async (id) => {
             };
         }
     } catch (error) {
-        console.error("Error deleteBooking", error);
         return {
             EM: 'error deleting booking',
             EC: '1',

@@ -59,7 +59,6 @@ const createPackage = async (req, res) => {
 }
 const updatePackage = async (req, res) => {
     try {
-        console.log(">>> update req body", req.body);
         let data = await packageApiService.updatePackage(req.body);
         return res.status(200).json({
             EM: data.EM,

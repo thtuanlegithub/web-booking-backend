@@ -13,30 +13,8 @@ const getPackageById = async (packageId) => {
             DT: packageData,
         }
     } catch (error) {
-        console.log(error);
         return {
-            EM: error,
-            EC: 1,
-            DT: '',
-        }
-    }
-}
-const getPackageList = async () => {
-    try {
-        let packageData = await db.Packages.findAll(
-            {
-                attributes: ['id', 'packageName', 'packageType', 'packageAddress']
-            }
-        );
-        return {
-            EM: 'Get Package sucessfully',
-            EC: 0,
-            DT: packageData,
-        }
-    } catch (error) {
-        console.log(error);
-        return {
-            EM: error,
+            EM: 'Database error',
             EC: 1,
             DT: '',
         }
@@ -62,7 +40,11 @@ const getPackageWithPagination = async (page, limit) => {
             DT: data,
         }
     } catch (error) {
-        console.log(error);
+        return {
+            EM: 'Pagination error',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 const getPackageByAddressList = async (addressList) => {
@@ -87,7 +69,11 @@ const getPackageByAddressList = async (addressList) => {
             }
         }
     } catch (error) {
-        console.log(error);
+        return {
+            EM: 'Query error',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 const createPackage = async (packageData) => {
@@ -104,7 +90,11 @@ const createPackage = async (packageData) => {
             DT: data
         }
     } catch (error) {
-        console.error("Error createPackage", error);
+        return {
+            EM: 'database error',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 const updatePackage = async (packageData) => {
@@ -123,14 +113,26 @@ const updatePackage = async (packageData) => {
                     id: packageData.id
                 }
             })
+            return {
+                EM: 'update package successfully',
+                EC: '0',
+                DT: '',
+            }
         }
+        else {
+            return {
+                EM: 'not found package',
+                EC: '0',
+                DT: '',
+            }
+        }
+
+    } catch (error) {
         return {
-            EM: 'update package successfully',
-            EC: '0',
+            EM: 'Database error',
+            EC: '1',
             DT: '',
         }
-    } catch (error) {
-        console.error("Error updatePackage", error);
     }
 }
 const deletePackage = async (id) => {
@@ -158,9 +160,13 @@ const deletePackage = async (id) => {
         }
 
     } catch (error) {
-        console.error("Error createPackage", error);
+        return {
+            EM: 'Database error',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 module.exports = {
-    getPackageById, getPackageList, getPackageWithPagination, createPackage, deletePackage, updatePackage, getPackageByAddressList
+    getPackageById, getPackageWithPagination, createPackage, deletePackage, updatePackage, getPackageByAddressList
 }

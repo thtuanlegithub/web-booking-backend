@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.20.2",
+    "chai-as-promised": "^7.1.1",
     "chai-http": "^4.4.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -26,6 +27,7 @@
     "paginationjs": "^2.6.0",
     "sequelize": "^6.33.0",
     "sequelize-cli": "^6.6.1",
+    "sinon-chai": "^3.7.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
@@ -47,6 +49,7 @@
     "sinon": "^17.0.1",
     "stryker": "^0.35.1",
     "stryker-api": "^0.24.1",
-    "stryker-cli": "^1.0.2"
+    "stryker-cli": "^1.0.2",
+    "supertest": "^6.3.3"
   }
 }

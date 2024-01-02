@@ -12,20 +12,12 @@ const getTourPlanning = async () => {
             DT: incompletedTour
         }
     } catch (error) {
-        console.log(error);
+        return {
+            EM: 'error getting tour planning count',
+            EC: '1',
+            DT: undefined
+        }
     }
 }
 
-const getBookingNeedResolving = async () => {
-
-}
-
-const getTotalRevenue = async () => {
-
-}
-
-const getCustomer = async () => {
-
-}
-
-module.exports = { getTourPlanning, getTotalRevenue, getCustomer, getBookingNeedResolving }
+module.exports = { getTourPlanning }

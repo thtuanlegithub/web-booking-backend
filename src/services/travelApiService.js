@@ -16,7 +16,11 @@ const createTravel = async (travelData) => {
             DT: data
         }
     } catch (error) {
-        console.error("Error createTravel", error);
+        return {
+            EM: 'Database error',
+            EC: '1',
+            DT: ''
+        }
     }
 }
 const getTravelById = async (travelId) => {
@@ -50,77 +54,100 @@ const getTravelById = async (travelId) => {
             DT: travel
         }
     } catch (error) {
-        console.error("Error - get travel by id", error);
+        return {
+            EM: 'Error - get travel by id',
+            EC: '1',
+            DT: undefined,
+        }
     }
 }
 const getTravelWithPagination = async (page, limit) => {
-    if (page === 0 && limit === 0) {
-        let travels = await db.Travels.findAll(
-            {
-                include: [{
-                    model: db.Tours
-                },
+    try {
+        if (page === 0 && limit === 0) {
+            let travels = await db.Travels.findAll(
                 {
-                    model: db.Discounts
-                }]
+                    include: [{
+                        model: db.Tours
+                    },
+                    {
+                        model: db.Discounts
+                    }]
+                }
+            );
+            return {
+                EM: 'get data successfully',
+                EC: '0',
+                DT: travels,
             }
-        );
-        return {
-            EM: 'get data successfully',
-            EC: '0',
-            DT: travels,
         }
-    }
-    else {
-        let offset = (page - 1) * limit;
-        const { count, rows } = await db.Travels.findAndCountAll({
-            offset: offset,
-            limit: limit,
-            order: [["id", "DESC"]],
-            include: [
-                { model: db.Tours }
-            ]
-        });
-        let totalPages = Math.ceil(count / limit);
-        let data = {
-            totalRows: count,
-            totalPages: totalPages,
-            travels: rows,
+        else {
+            let offset = (page - 1) * limit;
+            const { count, rows } = await db.Travels.findAndCountAll({
+                offset: offset,
+                limit: limit,
+                order: [["id", "DESC"]],
+                include: [
+                    { model: db.Tours }
+                ]
+            });
+            let totalPages = Math.ceil(count / limit);
+            let data = {
+                totalRows: count,
+                totalPages: totalPages,
+                travels: rows,
+            }
+            return {
+                EM: 'get data successfully',
+                EC: '0',
+                DT: data,
+            }
         }
+    } catch (error) {
         return {
-            EM: 'get data successfully',
-            EC: '0',
-            DT: data,
+            EM: 'Database error',
+            EC: '1',
+            DT: ''
         }
     }
 }
 const updateTravel = async (travelData) => {
-    console.log("update travel in api service called");
-    console.log(travelData);
-    let data = await db.Travels.findOne({
-        where: { id: travelData.id }
-    })
-    if (data) {
-        let res = await db.Travels.update({
-            startLocation: travelData.startLocation,
-            startDateTime: travelData.startDateTime,
-            maxTicket: travelData.maxTicket,
-            remainTicket: travelData.remainTicket,
-            travelPrice: travelData.travelPrice,
-            tourId: travelData.tourId,
-            discountId: travelData.discountId
-        }, {
-            where: {
-                id: travelData.id
-            }
+    try {
+        let data = await db.Travels.findOne({
+            where: { id: travelData.id }
         })
-    }
-    console.log(">>> completed");
-
-    return {
-        EM: 'update package successfully',
-        EC: '0',
-        DT: '',
+        if (data) {
+            let res = await db.Travels.update({
+                startLocation: travelData.startLocation,
+                startDateTime: travelData.startDateTime,
+                maxTicket: travelData.maxTicket,
+                remainTicket: travelData.remainTicket,
+                travelPrice: travelData.travelPrice,
+                tourId: travelData.tourId,
+                discountId: travelData.discountId
+            }, {
+                where: {
+                    id: travelData.id
+                }
+            })
+            return {
+                EM: 'update package successfully',
+                EC: '0',
+                DT: '',
+            }
+        }
+        else {
+            return {
+                EM: 'not found data',
+                EC: '0',
+                DT: '',
+            }
+        }
+    } catch (error) {
+        return {
+            EM: 'Database error',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 const deleteTravel = async (id) => {
@@ -145,7 +172,6 @@ const deleteTravel = async (id) => {
             };
         }
     } catch (error) {
-        console.error("Error deleteTravel", error);
         return {
             EM: 'error deleting travel',
             EC: '1',
@@ -153,6 +179,5 @@ const deleteTravel = async (id) => {
         };
     }
 };
-
 
 module.exports = { createTravel, getTravelWithPagination, updateTravel, deleteTravel, getTravelById };

@@ -13,7 +13,11 @@ const createDiscount = async (discountData) => {
             DT: data
         }
     } catch (error) {
-        console.error("Error createDiscount", error);
+        return {
+            EM: 'error creating discount',
+            EC: '1',
+            DT: undefined,
+        }
     }
 }
 const getDiscountById = async (discountId) => {
@@ -32,56 +36,97 @@ const getDiscountById = async (discountId) => {
             DT: discount
         }
     } catch (error) {
-        console.error("Error - get discount by id", error);
+        return {
+            EM: 'error getting discount by id',
+            EC: '1',
+            DT: undefined,
+        }
     }
 }
 const getDiscountWithPagination = async (page, limit) => {
-    if (page == 0 && limit == 0) {
-        let data = await db.Discounts.findAll({
-            include: [{
-                model: db.Travels
-            }]
-        });
-        return {
-            EM: 'get all discount successfully',
-            EC: '0',
-            DT: data,
+    try {
+        if (page == 0 && limit == 0) {
+            try {
+                let data = await db.Discounts.findAll({
+                    include: [{
+                        model: db.Travels
+                    }]
+                });
+                return {
+                    EM: 'get all discount successfully',
+                    EC: '0',
+                    DT: data,
+                }
+            } catch (error) {
+                return {
+                    EM: 'error getting all discounts',
+                    EC: '1',
+                    DT: undefined,
+                }
+            }
         }
-    }
-    else {
-        let offset = (page - 1) * limit;
-        const { count, rows } = await db.Discounts.findAndCountAll({
-            offset: offset,
-            limit: limit,
-            order: [["id", "DESC"]],
-            include: [{
-                model: db.Travels
-            }]
-        });
-        let totalPages = Math.ceil(count / limit);
-        let data = {
-            totalRows: count,
-            totalPages: totalPages,
-            discounts: rows,
+        else {
+            try {
+                let offset = (page - 1) * limit;
+                const { count, rows } = await db.Discounts.findAndCountAll({
+                    offset: offset,
+                    limit: limit,
+                    order: [["id", "DESC"]],
+                    include: [{
+                        model: db.Travels
+                    }]
+                });
+                let totalPages = Math.ceil(count / limit);
+                let data = {
+                    totalRows: count,
+                    totalPages: totalPages,
+                    discounts: rows,
+                }
+                return {
+                    EM: 'get pagination discount successfully',
+                    EC: '0',
+                    DT: data,
+                }
+            } catch (error) {
+                return {
+                    EM: 'error getting pagination discounts',
+                    EC: '1',
+                    DT: undefined,
+                }
+            }
+
         }
+    } catch (error) {
         return {
-            EM: 'get pagination discount successfully',
-            EC: '0',
-            DT: data,
+            EM: 'error getting all discounts',
+            EC: '1',
+            DT: undefined,
         }
     }
 }
 const updateDiscount = async (discountData) => {
-    console.log("update discount in api service called");
-    console.log(discountData);
     let data = await db.Discounts.findOne({
         where: { id: discountData.id }
     })
     if (data) {
-
+        await db.Discounts.update({
+            discountName: discountData.discountName,
+            discountType: discountData.discountType,
+            discountAmount: discountData.discountAmount,
+            discountDescription: discountData.discountDescription,
+        }, {
+            where: {
+                id: discountData.id
+            }
+        })
     }
-    console.log(">>> completed");
-
+    else {
+        return {
+            EM: 'not found discount',
+            EC: '0',
+            DT: '',
+        }
+    }
     return {
         EM: 'update discount successfully',
         EC: '0',
@@ -108,7 +153,6 @@ const deleteDiscount = async (id) => {
             };
         }
     } catch (error) {
-        console.error("Error deleteDiscount", error);
         return {
             EM: 'error deleting discount',
             EC: '1',

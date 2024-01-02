@@ -1,18 +1,4 @@
 import db from "../models/index";
-const createCustomer = async (customerData) => {
-    try {
-        let data = await db.Customers.create({
-
-        })
-        return {
-            EM: 'create customer successfully',
-            EC: '0',
-            DT: data
-        }
-    } catch (error) {
-        console.error("Error createCustomer", error);
-    }
-}
 const getCustomerById = async (customerId) => {
     try {
         let customer = await db.Customers.findOne({
@@ -24,69 +10,66 @@ const getCustomerById = async (customerId) => {
                 model: db.CustomerAccounts
             }
         });
-        return {
-            EM: 'get customer by id successfully',
-            EC: '0',
-            DT: customer
+        if (customer) {
+            return {
+                EM: 'get customer by id successfully',
+                EC: '0',
+                DT: customer
+            }
+        }
+        else {
+            return {
+                EM: 'not found customer',
+                EC: '0',
+                DT: null
+            }
         }
     } catch (error) {
-        console.error("Error - get customer by id", error);
+        return {
+            EM: 'error - get customer by id',
+            EC: '1',
+            DT: null
+        }
     }
 }
 const getCustomerWithPagination = async (page, limit) => {
-    if (page == 0 && limit === 0) {
-        let data = await db.Customers.findAll();
-        return {
-            EM: 'get data successfully',
-            EC: '0',
-            DT: data,
-        }
-    }
-    else {
-        let offset = (page - 1) * limit;
-        const { count, rows } = await db.Customers.findAndCountAll({
-            offset: offset,
-            limit: limit,
-            order: [["id", "DESC"]],
-            include: [
-                { model: db.CustomerAccounts }
-            ]
-        });
-        let totalPages = Math.ceil(count / limit);
-        let data = {
-            totalRows: count,
-            totalPages: totalPages,
-            customers: rows,
-        }
-        return {
-            EM: 'get data successfully',
-            EC: '0',
-            DT: data,
-        }
-    }
-
-}
-const updateCustomer = async (customerData) => {
-    console.log("update customer in api service called");
-    console.log(customerData);
-    let data = await db.Customers.findOne({
-        where: { id: customerData.id }
-    })
-    if (data) {
-        let res = await db.Customers.update({
-
-        }, {
-            where: {
-                id: customerData.id
+    try {
+        if (page == 0 && limit === 0) {
+            let data = await db.Customers.findAll();
+            return {
+                EM: 'get data successfully',
+                EC: '0',
+                DT: data,
             }
-        })
-    }
-    console.log(">>> completed");
-
-    return {
-        EM: 'update package successfully',
-        EC: '0',
-        DT: data,
+        }
+        else {
+            let offset = (page - 1) * limit;
+            const { count, rows } = await db.Customers.findAndCountAll({
+                offset: offset,
+                limit: limit,
+                order: [["id", "DESC"]],
+                include: [
+                    { model: db.CustomerAccounts }
+                ]
+            });
+            let totalPages = Math.ceil(count / limit);
+            let data = {
+                totalRows: count,
+                totalPages: totalPages,
+                customers: rows,
+            }
+            return {
+                EM: 'get data successfully',
+                EC: '0',
+                DT: data,
+            }
+        }
+    } catch (error) {
+        return {
+            EM: 'error - get customer with pagination',
+            EC: '1',
+            DT: null
+        }
     }
 }
 const deleteCustomer = async (id) => {
@@ -111,7 +94,6 @@ const deleteCustomer = async (id) => {
             };
         }
     } catch (error) {
-        console.error("Error deleteCustomer", error);
         return {
             EM: 'error deleting customer',
             EC: '1',
@@ -121,4 +103,4 @@ const deleteCustomer = async (id) => {
 };
 
 
-module.exports = { createCustomer, getCustomerWithPagination, updateCustomer, deleteCustomer, getCustomerById };
+module.exports = { getCustomerWithPagination, deleteCustomer, getCustomerById };

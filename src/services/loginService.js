@@ -37,7 +37,11 @@ const handleCompanyLogin = async (companyUserData) => {
             }
         }
     } catch (error) {
-        console.log(error);
+        return {
+            EM: 'Error when login',
+            EC: '1',
+            DT: '',
+        }
     }
 }
 

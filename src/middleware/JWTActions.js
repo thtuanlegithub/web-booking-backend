@@ -7,20 +7,24 @@ const createJWT = (payload) => {
         console.log(token);
         return token;
     } catch (error) {
-        console.log(error);
+        return null;
     }
 }
 const verifyToken = (token) => {
-    let key = process.env.JWT_SECRET;
-    let data = null;
-    jwt.verify(token, key, function (error, decoded) {
-        if (error) {
-            console.log(error);
-            return data;
-        }
-        console.log(decoded);
-        return decoded;
-    })
+    try {
+        let key = process.env.JWT_SECRET;
+        let data = null;
+        jwt.verify(token, key, function (error, decoded) {
+            if (error) {
+                console.log(error);
+                return data;
+            }
+            console.log(decoded);
+            return decoded;
+        })
+    } catch (error) {
+        return null;
+    }
 }
 module.exports = {
     createJWT, verifyToken
