@@ -49,7 +49,6 @@
     "sinon": "^17.0.1",
     "stryker": "^0.35.1",
     "stryker-api": "^0.24.1",
-    "stryker-cli": "^1.0.2",
-    "supertest": "^6.3.3"
+    "stryker-cli": "^1.0.2"
   }
 }

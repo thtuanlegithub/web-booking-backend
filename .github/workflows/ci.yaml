@@ -46,10 +46,6 @@ jobs:
       run: |
         npm install --save-dev mocha
 
-    - name: Set up Supertest
-      run: |
-        npm install --save-dev supertest
-
     - name: Set up Chai
       run: |
         npm install --save-dev chai chai-as-promised chai-http sinon-chai

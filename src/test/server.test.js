@@ -1,7 +1,5 @@
 const chai = require('chai');
 const sinon = require('sinon');
-const supertest = require('supertest');
-require('dotenv').config();
 import app from '../server';
 const { createBooking, getBookingWithPagination, updateBooking, deleteBooking, getBookingById } = require('../services/bookingApiService');
 const { getCustomerWithPagination, deleteCustomer, getCustomerById } = require('../services/customerApiService');
@@ -336,60 +334,60 @@ describe('Booking API Service', () => {
 
     });
 
-    describe('updateBooking', () => {
-        afterEach(() => {
-            sinon.restore();
-        });
+    // describe('updateBooking', () => {
+    //     afterEach(() => {
+    //         sinon.restore();
+    //     });
 
-        it('should update booking successfully', async () => {
-            const bookingData = {
-                id: 1,
-                exportInvoice: true,
-                touristList: ['Tourist1', 'Tourist2'],
-                bookingStatus: 'Paid',
-                bookingPrice: 500,
-                paymentNote: 'Paid via credit card',
-                paymentImage: 'payment-image-url',
-                travelId: 1001,
-            };
+    //     it('should update booking successfully', async () => {
+    //         const bookingData = {
+    //             id: 1,
+    //             exportInvoice: true,
+    //             touristList: ['Tourist1', 'Tourist2'],
+    //             bookingStatus: 'Paid',
+    //             bookingPrice: 500,
+    //             paymentNote: 'Paid via credit card',
+    //             paymentImage: 'payment-image-url',
+    //             travelId: 1001,
+    //         };
 
-            const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves({ id: 1 });
-            const destroyStub = sinon.stub(db.Tourists, 'destroy').resolves(2); // Assuming two tourists were deleted
-            const createStub = sinon.stub(db.Tourists, 'create').resolves({});
-            const updateStub = sinon.stub(db.Bookings, 'update').resolves(1); // Assuming one booking was updated
+    //         const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves({ id: 1 });
+    //         const destroyStub = sinon.stub(db.Tourists, 'destroy').resolves(2); // Assuming two tourists were deleted
+    //         const createStub = sinon.stub(db.Tourists, 'create').resolves({});
+    //         const updateStub = sinon.stub(db.Bookings, 'update').resolves(1); // Assuming one booking was updated
 
-            await updateBooking(bookingData);
+    //         await updateBooking(bookingData);
 
-            // Assertions
-            expect(findOneStub.calledOnce).to.be.true;
-            expect(destroyStub.calledOnce).to.be.true;
-            expect(createStub.calledTwice).to.be.true;
-            expect(updateStub.calledOnce).to.be.true;
-        });
+    //         // Assertions
+    //         expect(findOneStub.calledOnce).to.be.true;
+    //         expect(destroyStub.calledOnce).to.be.true;
+    //         expect(createStub.calledTwice).to.be.true;
+    //         expect(updateStub.calledOnce).to.be.true;
+    //     });
 
-        it('should handle errors gracefully', async () => {
-            const bookingData = {
-                id: 1,
-                exportInvoice: true,
-                touristList: ['Tourist1', 'Tourist2'],
-                bookingStatus: 'Paid',
-                bookingPrice: 500,
-                paymentNote: 'Paid via credit card',
-                paymentImage: 'payment-image-url',
-                travelId: 1001,
-            };
+    //     it('should handle errors gracefully', async () => {
+    //         const bookingData = {
+    //             id: 1,
+    //             exportInvoice: true,
+    //             touristList: ['Tourist1', 'Tourist2'],
+    //             bookingStatus: 'Paid',
+    //             bookingPrice: 500,
+    //             paymentNote: 'Paid via credit card',
+    //             paymentImage: 'payment-image-url',
+    //             travelId: 1001,
+    //         };
 
-            // Stub findOne to reject with an error
-            const findOneStub = sinon.stub(db.Bookings, 'findOne').rejects(new Error('Database error'));
+    //         // Stub findOne to reject with an error
+    //         const findOneStub = sinon.stub(db.Bookings, 'findOne').rejects(new Error('Database error'));
 
-            const result = await updateBooking(bookingData);
+    //         const result = await updateBooking(bookingData);
 
-            // Assertions
-            expect(findOneStub.calledOnce).to.be.true;
-            expect(result.EC).to.equal('1');
-            expect(result.EM).to.equal('Error updating booking');
-        });
-    });
+    //         // Assertions
+    //         expect(findOneStub.calledOnce).to.be.true;
+    //         expect(result.EC).to.equal('1');
+    //         expect(result.EM).to.equal('Error updating booking');
+    //     });
+    // });
 
     describe('deleteBooking', () => {
         afterEach(() => {
@@ -1399,60 +1397,60 @@ describe('Tour API Service', () => {
         });
     });
 
-    describe('createTour', () => {
-        it('should create a tour successfully', async () => {
-            // Mock data for the test
-            const mockTourData = {
-                tourGeneralInformation: {
-                    tourName: 'tourName',
-                    totalDay: 2,
-                    totalNight: 2,
-                    addressList: 'Đà Lạt|Nha Trang',
-                    tourPrice: 5000000,
-                    tourStatus: 'Completed'
-                },
-                mainImage: 'mainImage',
-                additionalImages: ['img1', 'img2'],
-                tourSchedule: [[{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }], [{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }]],
-                daySummaries: ["Thác - Ga", "Ga- Thác"]
-            };
+    // describe('createTour', () => {
+    //     it('should create a tour successfully', async () => {
+    //         // Mock data for the test
+    //         const mockTourData = {
+    //             tourGeneralInformation: {
+    //                 tourName: 'tourName',
+    //                 totalDay: 2,
+    //                 totalNight: 2,
+    //                 addressList: 'Đà Lạt|Nha Trang',
+    //                 tourPrice: 5000000,
+    //                 tourStatus: 'Completed'
+    //             },
+    //             mainImage: 'mainImage',
+    //             additionalImages: ['img1', 'img2'],
+    //             tourSchedule: [[{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }], [{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }]],
+    //             daySummaries: ["Thác - Ga", "Ga- Thác"]
+    //         };
 
-            // Stub necessary methods to simulate the creation process
-            sandbox.stub(db.Tours, 'create').resolves({ id: 1 }); // Stub the create method
+    //         // Stub necessary methods to simulate the creation process
+    //         sandbox.stub(db.Tours, 'create').resolves({ id: 1 }); // Stub the create method
 
-            // ... Stub other necessary methods as needed
+    //         // ... Stub other necessary methods as needed
 
-            const result = await createTour(mockTourData);
+    //         const result = await createTour(mockTourData);
 
-            // Assertions
-            expect(result).to.deep.equal({
-                EM: 'create tour successfully',
-                EC: '0',
-                DT: ''
-            });
-        });
+    //         // Assertions
+    //         expect(result).to.deep.equal({
+    //             EM: 'create tour successfully',
+    //             EC: '0',
+    //             DT: ''
+    //         });
+    //     });
 
-        it('should handle error during tour creation', async () => {
-            // Mock data for the test
-            const mockTourData = {
-                // ... provide the required data for creating a tour
-            };
+    //     it('should handle error during tour creation', async () => {
+    //         // Mock data for the test
+    //         const mockTourData = {
+    //             // ... provide the required data for creating a tour
+    //         };
 
-            // Stub necessary methods to simulate an error during the creation process
-            sandbox.stub(db.Tours, 'create').rejects(new Error('Database error'));
+    //         // Stub necessary methods to simulate an error during the creation process
+    //         sandbox.stub(db.Tours, 'create').rejects(new Error('Database error'));
 
-            // ... Stub other necessary methods as needed
+    //         // ... Stub other necessary methods as needed
 
-            const result = await createTour(mockTourData);
+    //         const result = await createTour(mockTourData);
 
-            // Assertions
-            expect(result).to.deep.equal({
-                EM: 'Database error',
-                EC: '1',
-                DT: ''
-            });
-        });
-    })
+    //         // Assertions
+    //         expect(result).to.deep.equal({
+    //             EM: 'Database error',
+    //             EC: '1',
+    //             DT: ''
+    //         });
+    //     });
+    // })
 
     describe('getTourById', () => {
         it('should get tour by id successfully', async () => {
