@@ -3,6 +3,7 @@ import db from "../models/index";
 import { Sequelize } from "../models/index";
 const createBooking = async (bookingData) => {
     try {
+        let createdBooking = {};
         const existCustomer = await db.Customers.findOne({
             where: {
                 customerGmail: bookingData.customer.customerGmail,
@@ -17,7 +18,7 @@ const createBooking = async (bookingData) => {
                     id: existCustomer.id
                 }
             })
-            const createdBooking = await db.Bookings.create({
+            createdBooking = await db.Bookings.create({
                 exportInvoice: bookingData.exportInvoice,
                 bookingStatus: bookingData.bookingStatus,
                 bookingPrice: bookingData.bookingPrice,
@@ -57,7 +58,7 @@ const createBooking = async (bookingData) => {
         return {
             EM: 'create booking successfully',
             EC: '0',
-            DT: ''
+            DT: createdBooking
         }
     } catch (error) {
         console.error("Error createBooking", error);
@@ -78,9 +79,14 @@ const getBookingById = async (bookingId) => {
                 },
                 {
                     model: db.Travels,
-                    include: {
-                        model: db.Tours
-                    }
+                    include: [
+                        {
+                            model: db.Tours
+                        },
+                        {
+                            model: db.Discounts
+                        }
+                    ]
                 }
             ]
         });
@@ -96,9 +102,14 @@ const getBookingById = async (bookingId) => {
 const getBookingWithPagination = async (page, limit) => {
     if (page == 0 && limit == 0) {
         let data = await db.Bookings.findAll({
-            include: {
-                model: db.Customers
-            }
+            include: [
+                {
+                    model: db.Customers
+                },
+                {
+                    model: db.Travels,
+                }
+            ]
         });
         return {
             EM: 'get data successfully',
@@ -135,6 +146,32 @@ const updateBooking = async (bookingData) => {
     let data = await db.Bookings.findOne({
         where: { id: bookingData.id }
     })
+    try {
+        if (bookingData.exportInvoice === true) {
+            let touristNum = bookingData.touristList.length;
+            let needUpdateTravel = await db.Travels.findOne({
+                where: {
+                    id: bookingData.travelId
+                }
+            })
+            if (needUpdateTravel) {
+                let newRemain = needUpdateTravel.remainTicket;
+                newRemain = newRemain - touristNum;
+                let res = await db.Travels.update({
+                    remainTicket: newRemain
+                }, {
+                    where: {
+                        id: bookingData.travelId
+                    }
+                })
+                console.log("update remain ticket", res);
+            }
+
+        }
+    } catch (error) {
+        console.log(error);
+    }
+
     if (data) {
         await db.Tourists.destroy(
             {

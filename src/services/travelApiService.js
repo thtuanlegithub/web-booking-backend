@@ -32,7 +32,10 @@ const getTravelById = async (travelId) => {
                         model: db.TourAdditionalImages
                     },
                     {
-                        model: db.TourSchedules
+                        model: db.TourSchedules,
+                        include: {
+                            model: db.Packages
+                        }
                     }]
                 },
                 {

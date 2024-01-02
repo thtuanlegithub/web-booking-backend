@@ -7,6 +7,7 @@ import bookingController from '../controller/bookingController';
 import discountController from '../controller/discountController';
 import tourPackageController from '../controller/tourPackageController';
 import loginController from '../controller/loginController';
+import dashboardController from '../controller/dashboardController';
 const router = express.Router();
 
 /**
@@ -52,7 +53,9 @@ const initApiRoutes = (app) => {
     router.delete("/discount/delete", discountController.deleteDiscount);
 
     router.get("/tourpackage/read", tourPackageController.readAllTourPackage);
-    router.post("/company-login/", loginController.handleCompanyLogin)
+    router.post("/company-login/", loginController.handleCompanyLogin);
+
+    router.get("/tourplanning", dashboardController.fetchTourPlanning);
     return app.use("/api", router);
 }
 

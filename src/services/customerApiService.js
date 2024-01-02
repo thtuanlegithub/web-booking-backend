@@ -34,26 +34,37 @@ const getCustomerById = async (customerId) => {
     }
 }
 const getCustomerWithPagination = async (page, limit) => {
-    let offset = (page - 1) * limit;
-    const { count, rows } = await db.Customers.findAndCountAll({
-        offset: offset,
-        limit: limit,
-        order: [["id", "DESC"]],
-        include: [
-            { model: db.CustomerAccounts }
-        ]
-    });
-    let totalPages = Math.ceil(count / limit);
-    let data = {
-        totalRows: count,
-        totalPages: totalPages,
-        customers: rows,
+    if (page == 0 && limit === 0) {
+        let data = await db.Customers.findAll();
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: data,
+        }
     }
-    return {
-        EM: 'get data successfully',
-        EC: '0',
-        DT: data,
+    else {
+        let offset = (page - 1) * limit;
+        const { count, rows } = await db.Customers.findAndCountAll({
+            offset: offset,
+            limit: limit,
+            order: [["id", "DESC"]],
+            include: [
+                { model: db.CustomerAccounts }
+            ]
+        });
+        let totalPages = Math.ceil(count / limit);
+        let data = {
+            totalRows: count,
+            totalPages: totalPages,
+            customers: rows,
+        }
+        return {
+            EM: 'get data successfully',
+            EC: '0',
+            DT: data,
+        }
     }
+
 }
 const updateCustomer = async (customerData) => {
     console.log("update customer in api service called");
