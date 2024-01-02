@@ -2142,598 +2142,592 @@ describe('Travel API Service', () => {
 });
 
 
-describe('Server', () => {
-    it('should start the server without errors', async () => {
-        const res = await chai.request(app).get('/');
-        expect(res).to.have.status(200);
-    }, 10000);
-});
-
-
-describe('Package Routes', () => {
-
-    describe('create', () => {
-        let createPackageStub;
-
-        before(() => {
-            // Tạo một stub cho hàm createPackage của packageApiService
-            createPackageStub = sinon.stub(packageApiService, 'createPackage');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            createPackageStub.restore();
-        });
-
-        it('should create a package successfully', async () => {
-            // Mock data để trả về khi gọi hàm createPackage
-            const mockPackageData = {
-                packageName: 'Test Package',
-                packageType: 'Type A',
-                packageAddress: '123 Test Street',
-                packageDescription: 'A test package',
-            };
-
-            const mockApiResponse = {
-                EM: 'create package successfully',
-                EC: '0',
-                DT: mockPackageData,
-            };
-
-            // Thiết lập giá trị trả về cho stub
-            createPackageStub.returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app).post('/api/package/create').send(mockPackageData);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-        it('should handle error during package creation', async () => {
-            // Mock data để trả về khi có lỗi
-            const mockErrorApiResponse = {
-                EM: 'error from server',
-                EC: '1',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            createPackageStub.throws('Database error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app).post('/api/package/create').send({ /* package data */ });
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
-    })
-    describe('read', () => {
-        let getPackageWithPaginationStub;
-
-        before(() => {
-            getPackageWithPaginationStub = sinon.stub(packageApiService, 'getPackageWithPagination');
-        });
-
-        after(() => {
-            getPackageWithPaginationStub.restore();
-        });
-        it('should get package with pagination', async () => {
-            // Thiết lập giá trị trả về cho stub
-            getPackageWithPaginationStub.returns({
-                EM: 'get data successfully',
-                EC: '0',
-                DT: { totalRows: 2, totalPages: 1, packages: [{}, {}] },
-            });
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app).get('/api/package/read').query({ page: 1, limit: 10 });
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.have.property('EM', 'get data successfully');
-            expect(res.body).to.have.property('EC', '0');
-            expect(res.body.DT).to.have.property('totalRows', 2);
-            expect(res.body.DT).to.have.property('totalPages', 1);
-            expect(res.body.DT).to.have.property('packages').to.be.an('array');
-        });
-
-        it('should handle error during get package with pagination', async () => {
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            getPackageWithPaginationStub.throws('Pagination error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app).get('/api/package/read').query({ page: 1, limit: 10 });
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.have.property('EM', 'error from server');
-            expect(res.body).to.have.property('EC', '1');
-        });
-    })
-    describe('read-by-address', () => {
-        let getPackageByAddressListStub;
-
-        before(() => {
-            // Tạo một stub cho hàm getPackageByAddressList của packageApiService
-            getPackageByAddressListStub = sinon.stub(packageApiService, 'getPackageByAddressList');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            getPackageByAddressListStub.restore();
-        });
-
-        it('should read packages by address list successfully', async () => {
-            // Tạo mock data để trả về khi gọi hàm getPackageByAddressList
-            const mockAddressList = '123 Main Street|456 Second Street';
-            const mockPackageData = [
-                {
-                    id: 1,
-                    packageName: 'Package 1',
-                    packageType: 'Type A',
-                    packageAddress: '123 Main Street',
-                    packageDescription: 'Description 1',
-                },
-                {
-                    id: 2,
-                    packageName: 'Package 2',
-                    packageType: 'Type B',
-                    packageAddress: '456 Second Street',
-                    packageDescription: 'Description 2',
-                },
-            ];
-            const mockApiResponse = {
-                EM: 'get data successfully',
-                EC: '0',
-                DT: mockPackageData,
-            };
-
-            // Thiết lập giá trị trả về cho stub
-            getPackageByAddressListStub.returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app).get(`/api/package/read-by-address?addressList=${encodeURIComponent(mockAddressList)}`);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-        it('should handle error during reading packages by address list', async () => {
-            // Tạo mock data để trả về khi có lỗi
-            const mockErrorApiResponse = {
-                EM: 'error from server',
-                EC: '1',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            getPackageByAddressListStub.throws('Query error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app).get('/api/package/read-by-address?addressList=invalidAddressList');
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
-    })
-    describe('update', () => {
-        let updatePackageStub;
-
-        before(() => {
-            // Tạo một stub cho hàm updatePackage của packageApiService
-            updatePackageStub = sinon.stub(packageApiService, 'updatePackage');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            updatePackageStub.restore();
-        });
-
-        it('should update a package successfully', async () => {
-            // Tạo mock data để trả về khi gọi hàm updatePackage
-            const mockPackageData = {
-                id: 1,
-                packageName: 'Updated Package',
-                packageType: 'Updated Type',
-                packageAddress: 'Updated Address',
-                packageDescription: 'Updated Description',
-            };
-            const mockApiResponse = {
-                EM: 'update package successfully',
-                EC: '0',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub
-            updatePackageStub.returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .put('/api/package/update')
-                .send(mockPackageData);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-        it('should handle error during package update', async () => {
-            // Tạo mock data để trả về khi có lỗi
-            const mockErrorApiResponse = {
-                EM: 'error from server',
-                EC: '1',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            updatePackageStub.throws('Database error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .put('/api/package/update')
-                .send({ id: 1 }); // Truyền một dữ liệu không hợp lệ để gây ra lỗi
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
-    })
-    describe('delete', () => {
-        let deletePackageStub;
-
-        before(() => {
-            // Tạo một stub cho hàm deletePackage của packageApiService
-            deletePackageStub = sinon.stub(packageApiService, 'deletePackage');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            deletePackageStub.restore();
-        });
-
-        it('should delete a package successfully', async () => {
-            // Tạo mock data để trả về khi gọi hàm deletePackage
-            const mockApiResponse = {
-                EM: 'delete package successfully',
-                EC: '0',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub
-            deletePackageStub.returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .delete('/api/package/delete')
-                .send({ id: 1 }); // Truyền một id hợp lệ để xóa gói tour
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-        it('should handle error during package deletion', async () => {
-            // Tạo mock data để trả về khi có lỗi
-            const mockErrorApiResponse = {
-                EM: 'error from server',
-                EC: '1',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            deletePackageStub.throws('Database error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .delete('/api/package/delete')
-                .send({ id: 1 }); // Truyền một id hợp lệ để gây ra lỗi
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
-    })
-});
-const generateMockTourByIdData = (tourId) => {
-    return {
-        EM: 'get tour by id successfully',
-        EC: '0',
-        DT: {
-            id: tourId,
-            tourName: `Tour ${tourId}`,
-            totalDay: 5,
-            totalNight: 4,
-            addressList: [`Location ${tourId}`],
-            tourPrice: 1000,
-            tourStatus: 'Active',
-            mainImage: `main_image_url_${tourId}.jpg`,
-            additionalImages: [
-                `additional_image_url_${tourId}_1.jpg`,
-                `additional_image_url_${tourId}_2.jpg`,
-            ],
-            tourSchedule: [
-                [
-                    { packageId: tourId, packageName: `Package ${tourId}` },
-                    { packageId: tourId + 1, packageName: `Package ${tourId + 1}` },
-                ],
-                [
-                    { packageId: tourId + 2, packageName: `Package ${tourId + 2}` },
-                    { packageId: tourId + 3, packageName: `Package ${tourId + 3}` },
-                ],
-            ],
-            daySummaries: [`Day ${tourId} Summary`],
-        },
-    };
-};
-const generateMockTourData = (page, limit) => {
-    const totalRows = 20;
-    const totalPages = Math.ceil(totalRows / limit);
-
-    return {
-        EM: 'get data successfully',
-        EC: '0',
-        DT: {
-            totalRows,
-            totalPages,
-            tours: Array.from({ length: limit }, (_, index) => ({
-                id: page * limit + index + 1,
-                tourName: `Tour ${page * limit + index + 1}`,
-                totalDay: 5,
-                totalNight: 4,
-                addressList: [`Location ${index + 1}`],
-                tourPrice: 1000,
-                tourStatus: 'Active',
-                mainImage: `main_image_url_${index + 1}.jpg`,
-                additionalImages: [
-                    `additional_image_url_${index + 1}_1.jpg`,
-                    `additional_image_url_${index + 1}_2.jpg`,
-                ],
-                tourSchedule: [
-                    [
-                        { packageId: index + 1, packageName: `Package ${index + 1}` },
-                        { packageId: index + 2, packageName: `Package ${index + 2}` },
-                    ],
-                    [
-                        { packageId: index + 3, packageName: `Package ${index + 3}` },
-                        { packageId: index + 4, packageName: `Package ${index + 4}` },
-                    ],
-                ],
-                daySummaries: [`Day ${index + 1} Summary`],
-            })),
-        },
-    };
-};
-const generateMockDeleteTourData = (tourId) => {
-    return {
-        EM: 'delete tour successfully',
-        EC: '0',
-        DT: '',
-    };
-};
-describe('Tour Controller', () => {
-    let createTourStub;
-    let updateTourStub;
-    let getTourWithPaginationStub;
-    let getTourByIdStub;
-    let deleteTourStub;
-
-    before(() => {
-        // Tạo một stub cho hàm createTour và updateTour của tourApiService
-        createTourStub = sinon.stub(tourApiService, 'createTour');
-        updateTourStub = sinon.stub(tourApiService, 'updateTour');
-        getTourWithPaginationStub = sinon.stub(tourApiService, 'getTourWithPagination');
-        getTourByIdStub = sinon.stub(tourApiService, 'getTourById');
-        deleteTourStub = sinon.stub(tourApiService, 'deleteTour');
-
-    });
-
-    after(() => {
-        // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-        createTourStub.restore();
-        updateTourStub.restore();
-        getTourWithPaginationStub.restore();
-        getTourByIdStub.restore();
-        deleteTourStub.restore();
-
-    });
-
-    describe('create', () => {
-        it('should create a tour successfully', async () => {
-            // Tạo mock data để trả về khi gọi hàm createTour
-            const mockTourData = {
-                tourGeneralInformation: {
-                    tourName: 'Test Tour',
-                    totalDay: 5,
-                    totalNight: 4,
-                    addressList: 'Test Address',
-                    tourPrice: 1000,
-                    tourStatus: 'active',
-                },
-                mainImage: 'image_id_1',
-                additionalImages: ['image_id_2', 'image_id_3'],
-                tourSchedule: [[{ value: 'package_id_1' }]],
-                daySummaries: ['Day 1 Summary'],
-            };
-
-            const mockApiResponse = {
-                EM: 'create tour successfully',
-                EC: '0',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub
-            createTourStub.returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .post('/api/tour/create')
-                .send(mockTourData);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-        it('should handle error during tour creation', async () => {
-            // Tạo mock data để trả về khi có lỗi
-            const mockTourData = {
-                tourGeneralInformation: {
-                    tourName: 'Test Tour',
-                    totalDay: 5,
-                    totalNight: 4,
-                    addressList: 'Test Address',
-                    tourPrice: 1000,
-                    tourStatus: 'active',
-                },
-                mainImage: 'image_id_1',
-                additionalImages: ['image_id_2', 'image_id_3'],
-                tourSchedule: [[{ value: 'package_id_1' }]],
-                daySummaries: ['Day 1 Summary'],
-            };
-
-            const mockErrorApiResponse = {
-                EM: 'error from server',
-                EC: '1',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            createTourStub.throws('Database error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .post('/api/tour/create')
-                .send(mockTourData);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
-
-    })
-
-    describe('update', () => {
-        it('should update a tour successfully', async () => {
-            // Tạo mock data để trả về khi gọi hàm updateTour
-            const mockTourData = {
-                id: 'tour_id_1',
-                tourGeneralInformation: {
-                    tourName: 'Updated Test Tour',
-                    totalDay: 7,
-                    totalNight: 6,
-                    addressList: 'Updated Test Address',
-                    tourPrice: 1500,
-                    tourStatus: 'inactive',
-                },
-                mainImage: 'updated_image_id_1',
-                additionalImages: ['updated_image_id_2', 'updated_image_id_3'],
-                tourSchedule: [[{ value: 'updated_package_id_1' }]],
-                daySummaries: ['Updated Day 1 Summary'],
-            };
-
-            const mockApiResponse = {
-                EM: 'update package successfully',
-                EC: '0',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub
-            updateTourStub.returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .put('/api/tour/update')
-                .send(mockTourData);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-        it('should handle error during tour update', async () => {
-            // Tạo mock data để trả về khi có lỗi
-            const mockTourData = {
-                id: 'tour_id_1',
-                tourGeneralInformation: {
-                    tourName: 'Updated Test Tour',
-                    totalDay: 7,
-                    totalNight: 6,
-                    addressList: 'Updated Test Address',
-                    tourPrice: 1500,
-                    tourStatus: 'inactive',
-                },
-                mainImage: 'updated_image_id_1',
-                additionalImages: ['updated_image_id_2', 'updated_image_id_3'],
-                tourSchedule: [[{ value: 'updated_package_id_1' }]],
-                daySummaries: ['Updated Day 1 Summary'],
-            };
-
-            const mockErrorApiResponse = {
-                EM: 'error from server',
-                EC: '1',
-                DT: '',
-            };
-
-            // Thiết lập giá trị trả về cho stub khi có lỗi
-            updateTourStub.throws('Database error');
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .put('/api/tour/update')
-                .send(mockTourData);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
-    })
-
-    describe('read', () => {
-        it('should get paginated tour data successfully', async () => {
-            const mockPage = 1;
-            const mockLimit = 10;
-
-            // Sử dụng hàm generateMockTourData để tạo dữ liệu giả mạo
-            const mockApiResponse = generateMockTourData(mockPage, mockLimit);
-
-            // Thiết lập giá trị trả về cho stub
-            getTourWithPaginationStub.withArgs(mockPage, mockLimit).returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .get('/api/tour/read')
-                .query({ page: mockPage, limit: mockLimit });
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-
-    })
-
-    describe('read-by-id', () => {
-        it('should get tour by id successfully', async () => {
-            const mockTourId = 1;
-
-            // Sử dụng hàm generateMockTourByIdData để tạo dữ liệu giả mạo
-            const mockApiResponse = generateMockTourByIdData(mockTourId);
-
-            // Thiết lập giá trị trả về cho stub
-            getTourByIdStub.withArgs(mockTourId).returns(mockApiResponse);
-
-            // Gọi route API sử dụng chai-http
-            const res = await chai.request(app)
-                .get(`/api/tour/read-by-id?id=${mockTourId}`);
-
-            // Kiểm tra kết quả
-            expect(res).to.have.status(200);
-            expect(res.body).to.deep.equal(mockApiResponse);
-        });
-    })
-
-});
+// describe('Server', () => {
+//     it('should start the server without errors', async () => {
+//         const res = await chai.request(app).get('/');
+//         expect(res).to.have.status(200);
+//     }, 10000);
+// });
+
+
+// describe('Package Routes', () => {
+
+//     describe('create', () => {
+//         let createPackageStub;
+
+//         before(() => {
+//             // Tạo một stub cho hàm createPackage của packageApiService
+//             createPackageStub = sinon.stub(packageApiService, 'createPackage');
+//         });
+
+//         after(() => {
+//             // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+//             createPackageStub.restore();
+//         });
+
+//         it('should create a package successfully', async () => {
+//             // Mock data để trả về khi gọi hàm createPackage
+//             const mockPackageData = {
+//                 packageName: 'Test Package',
+//                 packageType: 'Type A',
+//                 packageAddress: '123 Test Street',
+//                 packageDescription: 'A test package',
+//             };
+
+//             const mockApiResponse = {
+//                 EM: 'create package successfully',
+//                 EC: '0',
+//                 DT: mockPackageData,
+//             };
+
+//             // Thiết lập giá trị trả về cho stub
+//             createPackageStub.returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app).post('/api/package/create').send(mockPackageData);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//         it('should handle error during package creation', async () => {
+//             // Mock data để trả về khi có lỗi
+//             const mockErrorApiResponse = {
+//                 EM: 'error from server',
+//                 EC: '1',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             createPackageStub.throws('Database error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app).post('/api/package/create').send({ /* package data */ });
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.deep.equal(mockErrorApiResponse);
+//         });
+//     })
+//     describe('read', () => {
+//         let getPackageWithPaginationStub;
+
+//         before(() => {
+//             getPackageWithPaginationStub = sinon.stub(packageApiService, 'getPackageWithPagination');
+//         });
+
+//         after(() => {
+//             getPackageWithPaginationStub.restore();
+//         });
+//         it('should get package with pagination', async () => {
+//             // Thiết lập giá trị trả về cho stub
+//             getPackageWithPaginationStub.returns({
+//                 EM: 'get data successfully',
+//                 EC: '0',
+//                 DT: { totalRows: 2, totalPages: 1, packages: [{}, {}] },
+//             });
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app).get('/api/package/read').query({ page: 1, limit: 10 });
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.have.property('EM', 'get data successfully');
+//             expect(res.body).to.have.property('EC', '0');
+//             expect(res.body.DT).to.have.property('totalRows', 2);
+//             expect(res.body.DT).to.have.property('totalPages', 1);
+//             expect(res.body.DT).to.have.property('packages').to.be.an('array');
+//         });
+
+//         it('should handle error during get package with pagination', async () => {
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             getPackageWithPaginationStub.throws('Pagination error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app).get('/api/package/read').query({ page: 1, limit: 10 });
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.have.property('EM', 'error from server');
+//             expect(res.body).to.have.property('EC', '1');
+//         });
+//     })
+//     describe('read-by-address', () => {
+//         let getPackageByAddressListStub;
+
+//         before(() => {
+//             // Tạo một stub cho hàm getPackageByAddressList của packageApiService
+//             getPackageByAddressListStub = sinon.stub(packageApiService, 'getPackageByAddressList');
+//         });
+
+//         after(() => {
+//             // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+//             getPackageByAddressListStub.restore();
+//         });
+
+//         it('should read packages by address list successfully', async () => {
+//             // Tạo mock data để trả về khi gọi hàm getPackageByAddressList
+//             const mockAddressList = '123 Main Street|456 Second Street';
+//             const mockPackageData = [
+//                 {
+//                     id: 1,
+//                     packageName: 'Package 1',
+//                     packageType: 'Type A',
+//                     packageAddress: '123 Main Street',
+//                     packageDescription: 'Description 1',
+//                 },
+//                 {
+//                     id: 2,
+//                     packageName: 'Package 2',
+//                     packageType: 'Type B',
+//                     packageAddress: '456 Second Street',
+//                     packageDescription: 'Description 2',
+//                 },
+//             ];
+//             const mockApiResponse = {
+//                 EM: 'get data successfully',
+//                 EC: '0',
+//                 DT: mockPackageData,
+//             };
+
+//             // Thiết lập giá trị trả về cho stub
+//             getPackageByAddressListStub.returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app).get(`/api/package/read-by-address?addressList=${encodeURIComponent(mockAddressList)}`);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//         it('should handle error during reading packages by address list', async () => {
+//             // Tạo mock data để trả về khi có lỗi
+//             const mockErrorApiResponse = {
+//                 EM: 'error from server',
+//                 EC: '1',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             getPackageByAddressListStub.throws('Query error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app).get('/api/package/read-by-address?addressList=invalidAddressList');
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.deep.equal(mockErrorApiResponse);
+//         });
+//     })
+//     describe('update', () => {
+//         let updatePackageStub;
+
+//         before(() => {
+//             // Tạo một stub cho hàm updatePackage của packageApiService
+//             updatePackageStub = sinon.stub(packageApiService, 'updatePackage');
+//         });
+
+//         after(() => {
+//             // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+//             updatePackageStub.restore();
+//         });
+
+//         it('should update a package successfully', async () => {
+//             // Tạo mock data để trả về khi gọi hàm updatePackage
+//             const mockPackageData = {
+//                 id: 1,
+//                 packageName: 'Updated Package',
+//                 packageType: 'Updated Type',
+//                 packageAddress: 'Updated Address',
+//                 packageDescription: 'Updated Description',
+//             };
+//             const mockApiResponse = {
+//                 EM: 'update package successfully',
+//                 EC: '0',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub
+//             updatePackageStub.returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .put('/api/package/update')
+//                 .send(mockPackageData);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//         it('should handle error during package update', async () => {
+//             // Tạo mock data để trả về khi có lỗi
+//             const mockErrorApiResponse = {
+//                 EM: 'error from server',
+//                 EC: '1',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             updatePackageStub.throws('Database error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .put('/api/package/update')
+//                 .send({ id: 1 }); // Truyền một dữ liệu không hợp lệ để gây ra lỗi
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.deep.equal(mockErrorApiResponse);
+//         });
+//     })
+//     describe('delete', () => {
+//         let deletePackageStub;
+
+//         before(() => {
+//             // Tạo một stub cho hàm deletePackage của packageApiService
+//             deletePackageStub = sinon.stub(packageApiService, 'deletePackage');
+//         });
+
+//         after(() => {
+//             // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+//             deletePackageStub.restore();
+//         });
+
+//         it('should delete a package successfully', async () => {
+//             // Tạo mock data để trả về khi gọi hàm deletePackage
+//             const mockApiResponse = {
+//                 EM: 'delete package successfully',
+//                 EC: '0',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub
+//             deletePackageStub.returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .delete('/api/package/delete')
+//                 .send({ id: 1 }); // Truyền một id hợp lệ để xóa gói tour
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//         it('should handle error during package deletion', async () => {
+//             // Tạo mock data để trả về khi có lỗi
+//             const mockErrorApiResponse = {
+//                 EM: 'error from server',
+//                 EC: '1',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             deletePackageStub.throws('Database error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .delete('/api/package/delete')
+//                 .send({ id: 1 }); // Truyền một id hợp lệ để gây ra lỗi
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.deep.equal(mockErrorApiResponse);
+//         });
+//     })
+// });
+// const generateMockTourByIdData = (tourId) => {
+//     return {
+//         EM: 'get tour by id successfully',
+//         EC: '0',
+//         DT: {
+//             id: tourId,
+//             tourName: `Tour ${tourId}`,
+//             totalDay: 5,
+//             totalNight: 4,
+//             addressList: [`Location ${tourId}`],
+//             tourPrice: 1000,
+//             tourStatus: 'Active',
+//             mainImage: `main_image_url_${tourId}.jpg`,
+//             additionalImages: [
+//                 `additional_image_url_${tourId}_1.jpg`,
+//                 `additional_image_url_${tourId}_2.jpg`,
+//             ],
+//             tourSchedule: [
+//                 [
+//                     { packageId: tourId, packageName: `Package ${tourId}` },
+//                     { packageId: tourId + 1, packageName: `Package ${tourId + 1}` },
+//                 ],
+//                 [
+//                     { packageId: tourId + 2, packageName: `Package ${tourId + 2}` },
+//                     { packageId: tourId + 3, packageName: `Package ${tourId + 3}` },
+//                 ],
+//             ],
+//             daySummaries: [`Day ${tourId} Summary`],
+//         },
+//     };
+// };
+// const generateMockTourData = (page, limit) => {
+//     const totalRows = 20;
+//     const totalPages = Math.ceil(totalRows / limit);
+
+//     return {
+//         EM: 'get data successfully',
+//         EC: '0',
+//         DT: {
+//             totalRows,
+//             totalPages,
+//             tours: Array.from({ length: limit }, (_, index) => ({
+//                 id: page * limit + index + 1,
+//                 tourName: `Tour ${page * limit + index + 1}`,
+//                 totalDay: 5,
+//                 totalNight: 4,
+//                 addressList: [`Location ${index + 1}`],
+//                 tourPrice: 1000,
+//                 tourStatus: 'Active',
+//                 mainImage: `main_image_url_${index + 1}.jpg`,
+//                 additionalImages: [
+//                     `additional_image_url_${index + 1}_1.jpg`,
+//                     `additional_image_url_${index + 1}_2.jpg`,
+//                 ],
+//                 tourSchedule: [
+//                     [
+//                         { packageId: index + 1, packageName: `Package ${index + 1}` },
+//                         { packageId: index + 2, packageName: `Package ${index + 2}` },
+//                     ],
+//                     [
+//                         { packageId: index + 3, packageName: `Package ${index + 3}` },
+//                         { packageId: index + 4, packageName: `Package ${index + 4}` },
+//                     ],
+//                 ],
+//                 daySummaries: [`Day ${index + 1} Summary`],
+//             })),
+//         },
+//     };
+// };
+
+// describe('Tour Controller', () => {
+//     let createTourStub;
+//     let updateTourStub;
+//     let getTourWithPaginationStub;
+//     let getTourByIdStub;
+//     let deleteTourStub;
+
+//     before(() => {
+//         // Tạo một stub cho hàm createTour và updateTour của tourApiService
+//         createTourStub = sinon.stub(tourApiService, 'createTour');
+//         updateTourStub = sinon.stub(tourApiService, 'updateTour');
+//         getTourWithPaginationStub = sinon.stub(tourApiService, 'getTourWithPagination');
+//         getTourByIdStub = sinon.stub(tourApiService, 'getTourById');
+//         deleteTourStub = sinon.stub(tourApiService, 'deleteTour');
+
+//     });
+
+//     after(() => {
+//         // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+//         createTourStub.restore();
+//         updateTourStub.restore();
+//         getTourWithPaginationStub.restore();
+//         getTourByIdStub.restore();
+//         deleteTourStub.restore();
+
+//     });
+
+//     describe('create', () => {
+//         it('should create a tour successfully', async () => {
+//             // Tạo mock data để trả về khi gọi hàm createTour
+//             const mockTourData = {
+//                 tourGeneralInformation: {
+//                     tourName: 'Test Tour',
+//                     totalDay: 5,
+//                     totalNight: 4,
+//                     addressList: 'Test Address',
+//                     tourPrice: 1000,
+//                     tourStatus: 'active',
+//                 },
+//                 mainImage: 'image_id_1',
+//                 additionalImages: ['image_id_2', 'image_id_3'],
+//                 tourSchedule: [[{ value: 'package_id_1' }]],
+//                 daySummaries: ['Day 1 Summary'],
+//             };
+
+//             const mockApiResponse = {
+//                 EM: 'create tour successfully',
+//                 EC: '0',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub
+//             createTourStub.returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .post('/api/tour/create')
+//                 .send(mockTourData);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//         it('should handle error during tour creation', async () => {
+//             // Tạo mock data để trả về khi có lỗi
+//             const mockTourData = {
+//                 tourGeneralInformation: {
+//                     tourName: 'Test Tour',
+//                     totalDay: 5,
+//                     totalNight: 4,
+//                     addressList: 'Test Address',
+//                     tourPrice: 1000,
+//                     tourStatus: 'active',
+//                 },
+//                 mainImage: 'image_id_1',
+//                 additionalImages: ['image_id_2', 'image_id_3'],
+//                 tourSchedule: [[{ value: 'package_id_1' }]],
+//                 daySummaries: ['Day 1 Summary'],
+//             };
+
+//             const mockErrorApiResponse = {
+//                 EM: 'error from server',
+//                 EC: '1',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             createTourStub.throws('Database error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .post('/api/tour/create')
+//                 .send(mockTourData);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.deep.equal(mockErrorApiResponse);
+//         });
+
+//     })
+
+//     describe('update', () => {
+//         it('should update a tour successfully', async () => {
+//             // Tạo mock data để trả về khi gọi hàm updateTour
+//             const mockTourData = {
+//                 id: 'tour_id_1',
+//                 tourGeneralInformation: {
+//                     tourName: 'Updated Test Tour',
+//                     totalDay: 7,
+//                     totalNight: 6,
+//                     addressList: 'Updated Test Address',
+//                     tourPrice: 1500,
+//                     tourStatus: 'inactive',
+//                 },
+//                 mainImage: 'updated_image_id_1',
+//                 additionalImages: ['updated_image_id_2', 'updated_image_id_3'],
+//                 tourSchedule: [[{ value: 'updated_package_id_1' }]],
+//                 daySummaries: ['Updated Day 1 Summary'],
+//             };
+
+//             const mockApiResponse = {
+//                 EM: 'update package successfully',
+//                 EC: '0',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub
+//             updateTourStub.returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .put('/api/tour/update')
+//                 .send(mockTourData);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//         it('should handle error during tour update', async () => {
+//             // Tạo mock data để trả về khi có lỗi
+//             const mockTourData = {
+//                 id: 'tour_id_1',
+//                 tourGeneralInformation: {
+//                     tourName: 'Updated Test Tour',
+//                     totalDay: 7,
+//                     totalNight: 6,
+//                     addressList: 'Updated Test Address',
+//                     tourPrice: 1500,
+//                     tourStatus: 'inactive',
+//                 },
+//                 mainImage: 'updated_image_id_1',
+//                 additionalImages: ['updated_image_id_2', 'updated_image_id_3'],
+//                 tourSchedule: [[{ value: 'updated_package_id_1' }]],
+//                 daySummaries: ['Updated Day 1 Summary'],
+//             };
+
+//             const mockErrorApiResponse = {
+//                 EM: 'error from server',
+//                 EC: '1',
+//                 DT: '',
+//             };
+
+//             // Thiết lập giá trị trả về cho stub khi có lỗi
+//             updateTourStub.throws('Database error');
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .put('/api/tour/update')
+//                 .send(mockTourData);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(500);
+//             expect(res.body).to.deep.equal(mockErrorApiResponse);
+//         });
+//     })
+
+//     describe('read', () => {
+//         it('should get paginated tour data successfully', async () => {
+//             const mockPage = 1;
+//             const mockLimit = 10;
+
+//             // Sử dụng hàm generateMockTourData để tạo dữ liệu giả mạo
+//             const mockApiResponse = generateMockTourData(mockPage, mockLimit);
+
+//             // Thiết lập giá trị trả về cho stub
+//             getTourWithPaginationStub.withArgs(mockPage, mockLimit).returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .get('/api/tour/read')
+//                 .query({ page: mockPage, limit: mockLimit });
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+
+//     })
+
+//     describe('read-by-id', () => {
+//         it('should get tour by id successfully', async () => {
+//             const mockTourId = 1;
+
+//             // Sử dụng hàm generateMockTourByIdData để tạo dữ liệu giả mạo
+//             const mockApiResponse = generateMockTourByIdData(mockTourId);
+
+//             // Thiết lập giá trị trả về cho stub
+//             getTourByIdStub.withArgs(mockTourId).returns(mockApiResponse);
+
+//             // Gọi route API sử dụng chai-http
+//             const res = await chai.request(app)
+//                 .get(`/api/tour/read-by-id?id=${mockTourId}`);
+
+//             // Kiểm tra kết quả
+//             expect(res).to.have.status(200);
+//             expect(res.body).to.deep.equal(mockApiResponse);
+//         });
+//     })
+
+// });
