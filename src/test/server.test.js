@@ -21,7 +21,7 @@ chai.use(chaiHttp);
 
 const expect = chai.expect;
 
-chai.use(require('chai-as-promised'));
+// chai.use(require('chai-as-promised'));
 chai.use(require('sinon-chai'));
 
 describe('Booking API Service', () => {
