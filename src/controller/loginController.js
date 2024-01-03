@@ -8,7 +8,11 @@ const handleCompanyLogin = async (req, res) => {
             DT: data.DT
         });
     } catch (error) {
-        console.log("Error handleCompanyLogin Controller", error);
+        return res.status(500).json({
+            EM: 'Error from server',
+            EC: '1',
+            DT: ''
+        });
     }
 }
 

@@ -36,8 +36,6 @@ const initApiRoutes = (app) => {
 
     router.get("/customer/read", customerController.readCustomerPagination);
     router.get("/customer/read-by-id", customerController.readCustomerById);
-    router.post("/customer/create", customerController.createCustomer);
-    router.put("/customer/update", customerController.updateCustomer);
     router.delete("/customer/delete", customerController.deleteCustomer);
 
     router.get("/booking/read", bookingController.readBookingPagination);

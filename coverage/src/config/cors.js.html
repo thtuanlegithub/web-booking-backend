@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>3/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/2</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">33.33% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>3/9</span>
+                <span class='fraction'>9/9</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -91,47 +91,47 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">require("dotenv").config();
 &nbsp;
-const <span class="fstat-no" title="function not covered" >configCors </span>= (app) =&gt; {
+const configCors = (app) =&gt; {
     // Add headers before the routes are defined
-<span class="cstat-no" title="statement not covered" >    app.use(<span class="fstat-no" title="function not covered" >function (r</span>eq, res, next) {</span>
+    app.use(function (req, res, next) {
 &nbsp;
         // Website you wish to allow to connect
-<span class="cstat-no" title="statement not covered" >        res.setHeader('Access-Control-Allow-Origin', process.env.REACT_URL);</span>
+        res.setHeader('Access-Control-Allow-Origin', process.env.REACT_URL);
 &nbsp;
         // Request methods you wish to allow
-<span class="cstat-no" title="statement not covered" >        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');</span>
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 &nbsp;
         // Request headers you wish to allow
-<span class="cstat-no" title="statement not covered" >        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');</span>
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 &nbsp;
         // Set to true if you need the website to include cookies in the requests sent
         // to the API (e.g. in case you use sessions)
-<span class="cstat-no" title="statement not covered" >        res.setHeader('Access-Control-Allow-Credentials', true);</span>
+        res.setHeader('Access-Control-Allow-Credentials', true);
 &nbsp;
         // Pass to next layer of middleware
-<span class="cstat-no" title="statement not covered" >        next();</span>
+        next();
     });
 }
 &nbsp;
@@ -142,7 +142,7 @@ export default configCors;</pre></td></tr></table></pre>
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-01-03T08:09:27.236Z
+                at 2024-01-03T10:08:24.832Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

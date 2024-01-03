@@ -4,7 +4,6 @@ import initWebRoutes from "./routes/web";
 import connection from "./config/connectDB";
 import initApiRoutes from "./routes/api";
 import bodyParser from 'body-parser';
-import configCors from './config/cors';
 require("dotenv").config();
 const cors = require('cors');
 

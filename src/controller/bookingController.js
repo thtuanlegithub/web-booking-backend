@@ -1,7 +1,6 @@
 import bookingApiService from '../services/bookingApiService';
 const createBooking = async (req, res) => {
     try {
-        console.log(">>> controller create booking called");
         const data = await bookingApiService.createBooking(req.body);
         return res.status(200).json({
             EM: data.EM,

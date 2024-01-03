@@ -1,6 +1,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
-import app from '../server';
+require("dotenv").config();
+const app = require('../server');
 const { createBooking, getBookingWithPagination, updateBooking, deleteBooking, getBookingById } = require('../services/bookingApiService');
 const { getCustomerWithPagination, deleteCustomer, getCustomerById } = require('../services/customerApiService');
 const { getTourPlanning } = require('../services/dashboardService');
@@ -10,10 +11,17 @@ const { getPackageById, getPackageWithPagination, getPackageByAddressList, creat
 const { getAllTourPackage } = require('../services/tourPackageApiService');
 const { createTour, getTourById, getTourWithPagination, updateTour, deleteTour } = require('../services/tourApiService');
 const { createTravel, getTravelWithPagination, updateTravel, deleteTravel, getTravelById } = require('../services/travelApiService');
-import bookingApiService from '../services/bookingApiService';
-import packageApiService from '../services/packageApiService';
-import tourApiService from '../services/tourApiService';
-import JWTActions from '../middleware/JWTActions';
+const dashboardService = require('../services/dashboardService');
+const loginService = require('../services/loginService');
+const travelApiService = require('../services/travelApiService');
+const packageApiService = require('../services/packageApiService');
+const tourApiService = require('../services/tourApiService');
+const tourPackageApiService = require('../services/tourPackageApiService');
+const bookingApiService = require('../services/bookingApiService');
+const customerApiService = require('../services/customerApiService');
+const discountApiService = require('../services/discountApiService');
+const JWTActions = require('../middleware/JWTActions');
+const jwt = require('jsonwebtoken');
 const chaiHttp = require('chai-http');
 
 const db = require('../models/index');
@@ -2728,4 +2736,1499 @@ describe('Tour Controller', () => {
         });
     })
 
+    describe('delete', () => {
+        beforeEach(() => {
+            // Thiết lập lại trạng thái của stub trước mỗi test case
+            deleteTourStub.reset();
+        });
+        it('should delete tour successfully', async () => {
+            const mockTourId = 1;
+
+            // Tạo giả mạo cho hàm deleteTour trong tourApiService
+            deleteTourStub.withArgs(mockTourId).returns({
+                EM: 'delete tour successfully',
+                EC: '0',
+                DT: ''
+            });
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .delete('/api/tour/delete')
+                .send({ id: mockTourId });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal({
+                EM: 'delete tour successfully',
+                EC: '0',
+                DT: ''
+            });
+
+            // Kiểm tra xem hàm deleteTour trong tourApiService đã được gọi đúng cách hay không
+            sinon.assert.calledOnce(deleteTourStub);
+            sinon.assert.calledWithExactly(deleteTourStub, mockTourId);
+        });
+
+        it('should handle error from server during tour deletion', async () => {
+            const mockTourId = 1;
+
+            // Tạo giả mạo cho hàm deleteTour trong tourApiService để mô phỏng lỗi
+            deleteTourStub.withArgs(mockTourId).throws(new Error('Simulated error from server'));
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .delete('/api/tour/delete')
+                .send({ id: mockTourId });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal({
+                EM: 'error from server',
+                EC: '1',
+                DT: ''
+            });
+
+            // Kiểm tra xem hàm deleteTour trong tourApiService đã được gọi đúng cách hay không
+            sinon.assert.calledOnce(deleteTourStub);
+            sinon.assert.calledWithExactly(deleteTourStub, mockTourId);
+        });
+
+        it('should handle not found tour during deletion', async () => {
+            const mockTourId = 1;
+
+            // Tạo giả mạo cho hàm deleteTour trong tourApiService trả về không tìm thấy tour
+            deleteTourStub.withArgs(mockTourId).returns({
+                EM: 'not found tour',
+                EC: '0',
+                DT: ''
+            });
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .delete('/api/tour/delete')
+                .send({ id: mockTourId });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal({
+                EM: 'not found tour',
+                EC: '0',
+                DT: ''
+            });
+
+            // Kiểm tra xem hàm deleteTour trong tourApiService đã được gọi đúng cách hay không
+            sinon.assert.calledOnce(deleteTourStub);
+            sinon.assert.calledWithExactly(deleteTourStub, mockTourId);
+        });
+    });
+
+
 });
+
+describe('Dashboard Controller', () => {
+    describe('fetchTourPlanning', () => {
+        let getTourPlanningStub;
+
+        before(() => {
+            getTourPlanningStub = sinon.stub(dashboardService, 'getTourPlanning');
+        });
+
+        after(() => {
+            getTourPlanningStub.restore();
+        });
+
+        it('should fetch tour planning count successfully', async () => {
+            const mockApiResponse = {
+                EM: 'get tour is planning successfully',
+                EC: '0',
+                DT: 5 // Replace with your expected count
+            };
+
+            getTourPlanningStub.returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get('/api/tourplanning');
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error from server during fetchTourPlanning', async () => {
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: ''
+            };
+
+            getTourPlanningStub.throws('Simulated error from server');
+
+            const res = await chai.request(app)
+                .get('/api/tourplanning');
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+});
+describe('Login Controller', () => {
+    let handleCompanyLoginStub;
+
+    before(() => {
+        handleCompanyLoginStub = sinon.stub(loginService, 'handleCompanyLogin');
+    });
+
+    after(() => {
+        handleCompanyLoginStub.restore();
+    });
+
+    describe('handleCompanyLogin', () => {
+        it('should handle company login successfully', async () => {
+            const mockUserData = {
+                username: 'testuser',
+                password: 'testpassword'
+            };
+
+            const mockApiResponse = {
+                EM: 'Login successfully',
+                EC: '0',
+                DT: 'mockToken'
+            };
+
+            handleCompanyLoginStub.withArgs(mockUserData).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .post('/api/company-login')
+                .send(mockUserData);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during company login', async () => {
+            const mockUserData = {
+                username: 'testuser',
+                password: 'testpassword'
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'Error from server',
+                EC: '1',
+                DT: ''
+            };
+
+            handleCompanyLoginStub.withArgs(mockUserData).throws('Simulated error from server');
+
+            const res = await chai.request(app)
+                .post('/api/company-login')
+                .send(mockUserData);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+});
+const generateMockTravelData = (page, limit) => {
+    const totalRows = 30; // Số lượng dòng dữ liệu trong trang
+    const totalPages = Math.ceil(totalRows / limit);
+
+    const travels = [];
+    for (let i = 1; i <= limit; i++) {
+        const travel = {
+            id: i + (page - 1) * limit, // Tạo id duy nhất cho từng dòng dữ liệu
+            startLocation: `Start Location ${i}`,
+            startDateTime: new Date().toISOString(),
+            maxTicket: 100,
+            remainTicket: 50,
+            travelPrice: 500,
+            discountId: i % 2 === 0 ? 1 : 2, // Chia lẻ để tạo sự đa dạng
+            tourId: i,
+        };
+        travels.push(travel);
+    }
+
+    return {
+        EM: 'get data successfully',
+        EC: '0',
+        DT: {
+            totalRows: totalRows,
+            totalPages: totalPages,
+            travels: travels,
+        },
+    };
+};
+
+describe('Travel Controller', () => {
+    let createTravelStub;
+    let updateTravelStub;
+    let getTravelWithPaginationStub;
+    let getTravelByIdStub;
+    let deleteTravelStub;
+
+    before(() => {
+        // Tạo một stub cho các hàm trong travelApiService
+        createTravelStub = sinon.stub(travelApiService, 'createTravel');
+        updateTravelStub = sinon.stub(travelApiService, 'updateTravel');
+        getTravelWithPaginationStub = sinon.stub(travelApiService, 'getTravelWithPagination');
+        getTravelByIdStub = sinon.stub(travelApiService, 'getTravelById');
+        deleteTravelStub = sinon.stub(travelApiService, 'deleteTravel');
+    });
+
+    after(() => {
+        // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+        createTravelStub.restore();
+        updateTravelStub.restore();
+        getTravelWithPaginationStub.restore();
+        getTravelByIdStub.restore();
+        deleteTravelStub.restore();
+    });
+
+    describe('create', () => {
+        it('should create a travel successfully', async () => {
+            // Tạo mock data để trả về khi gọi hàm createTravel
+            const mockTravelData = {
+                startLocation: 'Test Location',
+                startDateTime: '2024-01-01T00:00:00.000Z',
+                maxTicket: 100,
+                remainTicket: 100,
+                travelPrice: 500,
+                discountId: 1,
+                tourId: 1
+            };
+
+            const mockApiResponse = {
+                EM: 'create travel successfully',
+                EC: '0',
+                DT: '',
+            };
+
+            // Thiết lập giá trị trả về cho stub
+            createTravelStub.returns(mockApiResponse);
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .post('/api/travel/create')
+                .send(mockTravelData);
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during travel creation', async () => {
+            // Tạo mock data để trả về khi có lỗi
+            const mockTravelData = {
+                startLocation: 'Test Location',
+                startDateTime: '2024-01-01T00:00:00.000Z',
+                maxTicket: 100,
+                remainTicket: 100,
+                travelPrice: 500,
+                discountId: 'discount_id_1',
+                tourId: 'tour_id_1'
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            // Thiết lập giá trị trả về cho stub khi có lỗi
+            createTravelStub.throws('Database error');
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .post('/api/travel/create')
+                .send(mockTravelData);
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('read', () => {
+        it('should get paginated travel data successfully', async () => {
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            // Sử dụng hàm generateMockTravelData để tạo dữ liệu giả mạo
+            const mockApiResponse = generateMockTravelData(mockPage, mockLimit);
+
+            // Thiết lập giá trị trả về cho stub
+            getTravelWithPaginationStub.withArgs(mockPage, mockLimit).returns(mockApiResponse);
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .get('/api/travel/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during travel data retrieval', async () => {
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            // Sử dụng hàm generateMockTravelData để tạo dữ liệu giả mạo
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            // Thiết lập giá trị trả về cho stub khi có lỗi
+            getTravelWithPaginationStub.withArgs(mockPage, mockLimit).throws('Database error');
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .get('/api/travel/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('read-by-id', () => {
+        it('should get travel by id successfully', async () => {
+            const mockTravelId = 1;
+            const mockApiResponse = {
+                EM: 'get travel by id successfully',
+                EC: '0',
+                DT: {
+                    id: mockTravelId,
+                    startLocation: 'Test Location',
+                    startDateTime: new Date().toISOString(),
+                    maxTicket: 100,
+                    remainTicket: 50,
+                    travelPrice: 500,
+                    discountId: 1,
+                    tourId: 1,
+                },
+            };
+
+            getTravelByIdStub.withArgs(mockTravelId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get(`/api/travel/read-by-id?id=${mockTravelId}`);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during travel retrieval by id', async () => {
+            const mockTravelId = 1;
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            getTravelByIdStub.withArgs(mockTravelId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .get(`/api/travel/read-by-id?id=${mockTravelId}`);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+    describe('update', () => {
+        it('should update a travel successfully', async () => {
+            const mockTravelData = {
+                id: 1,
+                startLocation: 'Updated Location',
+                startDateTime: new Date().toISOString(),
+                maxTicket: 120,
+                remainTicket: 80,
+                travelPrice: 600,
+                discountId: 2,
+                tourId: 2,
+            };
+
+            const mockApiResponse = {
+                EM: 'update travel successfully',
+                EC: '0',
+                DT: '',
+            };
+
+            updateTravelStub.withArgs(mockTravelData).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .put('/api/travel/update')
+                .send(mockTravelData);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during travel update', async () => {
+            const mockTravelData = {
+                id: 1,
+                startLocation: 'Updated Location',
+                startDateTime: new Date().toISOString(),
+                maxTicket: 120,
+                remainTicket: 80,
+                travelPrice: 600,
+                discountId: 2,
+                tourId: 2,
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            updateTravelStub.withArgs(mockTravelData).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .put('/api/travel/update')
+                .send(mockTravelData);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+    describe('delete', () => {
+        beforeEach(() => {
+            deleteTravelStub.reset();
+        });
+
+        it('should delete travel successfully', async () => {
+            const mockTravelId = 1;
+
+            const mockApiResponse = {
+                EM: 'delete travel successfully',
+                EC: '0',
+                DT: ''
+            };
+
+            deleteTravelStub.withArgs(mockTravelId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .delete('/api/travel/delete')
+                .send({ id: mockTravelId });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+
+            sinon.assert.calledOnce(deleteTravelStub);
+            sinon.assert.calledWithExactly(deleteTravelStub, mockTravelId);
+        });
+
+        it('should handle error from server during travel deletion', async () => {
+            const mockTravelId = 1;
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: ''
+            };
+
+            deleteTravelStub.withArgs(mockTravelId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .delete('/api/travel/delete')
+                .send({ id: mockTravelId });
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+
+            sinon.assert.calledOnce(deleteTravelStub);
+            sinon.assert.calledWithExactly(deleteTravelStub, mockTravelId);
+        });
+
+        it('should handle not found travel during deletion', async () => {
+            const mockTravelId = 1;
+
+            const mockNotFoundApiResponse = {
+                EM: 'not found travel',
+                EC: '0',
+                DT: ''
+            };
+
+            deleteTravelStub.withArgs(mockTravelId).returns(mockNotFoundApiResponse);
+
+            const res = await chai.request(app)
+                .delete('/api/travel/delete')
+                .send({ id: mockTravelId });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockNotFoundApiResponse);
+
+            sinon.assert.calledOnce(deleteTravelStub);
+            sinon.assert.calledWithExactly(deleteTravelStub, mockTravelId);
+        });
+    });
+});
+
+describe('Tour Package Controller', () => {
+    let getAllTourPackageStub;
+
+    before(() => {
+        getAllTourPackageStub = sinon.stub(tourPackageApiService, 'getAllTourPackage');
+    });
+
+    after(() => {
+        getAllTourPackageStub.restore();
+    });
+
+    describe('readAllTourPackage', () => {
+        beforeEach(() => {
+            getAllTourPackageStub.reset();
+        });
+
+        it('should get all tour packages successfully', async () => {
+            const mockApiResponse = {
+                EM: 'get data successfully',
+                EC: '0',
+                DT: [{ id: 1, name: 'Tour Package 1' }, { id: 2, name: 'Tour Package 2' }]
+            };
+
+            getAllTourPackageStub.returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get('/api/tourpackage/read')
+                .send();
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+
+            sinon.assert.calledOnce(getAllTourPackageStub);
+        });
+
+        it('should handle error during tour package retrieval', async () => {
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: ''
+            };
+
+            getAllTourPackageStub.throws('Simulated database error');
+
+            const res = await chai.request(app)
+                .get('/api/tourpackage/read')
+                .send();
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+
+            sinon.assert.calledOnce(getAllTourPackageStub);
+        });
+    });
+});
+const generateMockBookingData = (page, limit) => {
+    const totalRows = 30; // Số lượng dòng dữ liệu trong trang
+    const totalPages = Math.ceil(totalRows / limit);
+
+    const bookings = [];
+    for (let i = 1; i <= limit; i++) {
+        const booking = {
+            id: i + (page - 1) * limit, // Tạo id duy nhất cho từng dòng dữ liệu
+            customer: {
+                id: i,
+                name: `Customer ${i}`,
+                email: `customer${i}@example.com`,
+            },
+            travel: {
+                id: i,
+                startLocation: `Start Location ${i}`,
+                startDateTime: new Date().toISOString(),
+                maxTicket: 100,
+                remainTicket: 50,
+                travelPrice: 500,
+                discountId: i % 2 === 0 ? 1 : 2, // Chia lẻ để tạo sự đa dạng
+                tourId: i,
+            },
+            bookingDateTime: new Date().toISOString(),
+        };
+        bookings.push(booking);
+    }
+
+    return {
+        EM: 'get data successfully',
+        EC: '0',
+        DT: {
+            totalRows: totalRows,
+            totalPages: totalPages,
+            bookings: bookings,
+        },
+    };
+};
+
+describe('Booking Controller', () => {
+    let createBookingStub;
+    let getBookingWithPaginationStub;
+    let getBookingByIdStub;
+    let updateBookingStub;
+    let deleteBookingStub;
+
+    before(() => {
+        createBookingStub = sinon.stub(bookingApiService, 'createBooking');
+        getBookingWithPaginationStub = sinon.stub(bookingApiService, 'getBookingWithPagination');
+        getBookingByIdStub = sinon.stub(bookingApiService, 'getBookingById');
+        updateBookingStub = sinon.stub(bookingApiService, 'updateBooking');
+        deleteBookingStub = sinon.stub(bookingApiService, 'deleteBooking');
+    });
+
+    after(() => {
+        createBookingStub.restore();
+        getBookingWithPaginationStub.restore();
+        getBookingByIdStub.restore();
+        updateBookingStub.restore();
+        deleteBookingStub.restore();
+    });
+
+    describe('createBooking', () => {
+        it('should create a booking successfully', async () => {
+            const mockBookingData = {
+                customer: {
+                    customerName: 'John Doe',
+                    customerPhone: '123456789',
+                    customerGmail: 'john.doe@example.com',
+                },
+                exportInvoice: true,
+                bookingStatus: 'Paid',
+                bookingPrice: 500, // Specify the booking price as needed
+                paymentNote: 'Payment received',
+                paymentImage: 'payment_image_id', // Provide the ID of the payment image
+                travelId: 1, // Specify the ID of the associated travel
+                touristList: ['Tourist 1', 'Tourist 2'],
+            };
+
+            const mockApiResponse = {
+                EM: 'create booking successfully',
+                EC: '0',
+                DT: mockBookingData,  // Provide the expected data for a successful response
+            };
+
+            // Stub the createBooking function to return the mockApiResponse
+            createBookingStub.returns(mockApiResponse);
+
+            // Make a request to the createBooking endpoint
+            const res = await chai.request(app)
+                .post('/api/booking/create')
+                .send(mockBookingData);
+
+            // Check the result
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during booking creation', async () => {
+            const mockBookingData = {
+                customer: {
+                    customerName: 'John Doe',
+                    customerPhone: '123456789',
+                    customerGmail: 'john.doe@example.com',
+                },
+                exportInvoice: true,
+                bookingStatus: 'Paid',
+                bookingPrice: 500, // Specify the booking price as needed
+                paymentNote: 'Payment received',
+                paymentImage: 'payment_image_id', // Provide the ID of the payment image
+                travelId: 1, // Specify the ID of the associated travel
+                touristList: ['Tourist 1', 'Tourist 2'],
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            // Stub the createBooking function to throw an error
+            createBookingStub.throws('Simulated error from server');
+
+            // Make a request to the createBooking endpoint
+            const res = await chai.request(app)
+                .post('/api/booking/create')
+                .send(mockBookingData);
+
+            // Check the result
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('readBookingPagination', () => {
+        it('should get paginated booking data successfully', async () => {
+            // Tạo mock data để trả về khi gọi hàm getBookingWithPagination
+            const mockPage = 1;
+            const mockLimit = 10;
+            const mockApiResponse = {
+                EM: 'get data successfully',
+                EC: '0',
+                DT: {
+                    totalRows: 30,
+                    totalPages: 3,
+                    bookings: generateMockBookingData(mockPage, mockLimit)
+                },
+            };
+
+            // Thiết lập giá trị trả về cho stub
+            getBookingWithPaginationStub.withArgs(mockPage, mockLimit).returns(mockApiResponse);
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .get('/api/booking/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal({
+                EM: mockApiResponse.EM,
+                EC: mockApiResponse.EC,
+                DT: mockApiResponse.DT,
+            });
+        });
+
+        it('should handle error during booking data retrieval', async () => {
+            // Tạo mock data để trả về khi có lỗi
+            const mockPage = 1;
+            const mockLimit = 10;
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            // Thiết lập giá trị trả về cho stub khi có lỗi
+            getBookingWithPaginationStub.withArgs(mockPage, mockLimit).throws('Database error');
+
+            // Gọi route API sử dụng chai-http
+            const res = await chai.request(app)
+                .get('/api/booking/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            // Kiểm tra kết quả
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal({
+                EM: mockErrorApiResponse.EM,
+                EC: mockErrorApiResponse.EC,
+                DT: mockErrorApiResponse.DT,
+            });
+        });
+    });
+
+
+    describe('read-by-id', () => {
+        it('should get booking by id successfully', async () => {
+            const mockBookingId = 1;
+            const mockApiResponse = {
+                EM: 'get booking by id successfully',
+                EC: '0',
+                DT: {
+                    id: mockBookingId,
+                    customer: {
+                        id: 1,
+                        name: 'Test Customer',
+                        email: 'test.customer@example.com',
+                    },
+                    travel: {
+                        id: 1,
+                        startLocation: 'Test Location',
+                        startDateTime: new Date().toISOString(),
+                        maxTicket: 100,
+                        remainTicket: 50,
+                        travelPrice: 500,
+                        discountId: 1,
+                        tourId: 1,
+                    },
+                    bookingDateTime: new Date().toISOString(),
+                },
+            };
+
+            getBookingByIdStub.withArgs(mockBookingId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get(`/api/booking/read-by-id?id=${mockBookingId}`);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during booking retrieval by id', async () => {
+            const mockBookingId = 1;
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            getBookingByIdStub.withArgs(mockBookingId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .get(`/api/booking/read-by-id?id=${mockBookingId}`);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('update', () => {
+        it('should update a booking successfully', async () => {
+            const mockBookingData = {
+                id: 1,
+                exportInvoice: true,
+                touristList: ['Tourist 1', 'Tourist 2'],
+                bookingStatus: 'Confirmed',
+                bookingPrice: 1000,
+                paymentNote: 'Payment received',
+                paymentImage: 'payment_image.jpg',
+                travelId: 1,
+            };
+
+            const mockApiResponse = {
+                EM: 'update booking successfully',
+                EC: '0',
+                DT: '',
+            };
+
+            updateBookingStub.withArgs(mockBookingData).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .put('/api/booking/update')
+                .send(mockBookingData);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during booking update', async () => {
+            const mockBookingData = {
+                id: 1,
+                exportInvoice: true,
+                touristList: ['Tourist 1', 'Tourist 2'],
+                bookingStatus: 'Confirmed',
+                bookingPrice: 1000,
+                paymentNote: 'Payment received',
+                paymentImage: 'payment_image.jpg',
+                travelId: 1,
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            updateBookingStub.withArgs(mockBookingData).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .put('/api/booking/update')
+                .send(mockBookingData);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('delete', () => {
+        beforeEach(() => {
+            deleteBookingStub.reset();
+        });
+
+        it('should delete booking successfully', async () => {
+            const mockBookingId = 1;
+
+            const mockApiResponse = {
+                EM: 'delete booking successfully',
+                EC: '0',
+                DT: ''
+            };
+
+            deleteBookingStub.withArgs(mockBookingId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .delete('/api/booking/delete')
+                .send({ id: mockBookingId });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+
+            sinon.assert.calledOnce(deleteBookingStub);
+            sinon.assert.calledWithExactly(deleteBookingStub, mockBookingId);
+        });
+
+        it('should handle error from server during booking deletion', async () => {
+            const mockBookingId = 1;
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: ''
+            };
+
+            deleteBookingStub.withArgs(mockBookingId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .delete('/api/booking/delete')
+                .send({ id: mockBookingId });
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+
+            sinon.assert.calledOnce(deleteBookingStub);
+            sinon.assert.calledWithExactly(deleteBookingStub, mockBookingId);
+        });
+
+        it('should handle not found booking during deletion', async () => {
+            const mockBookingId = 1;
+
+            const mockNotFoundApiResponse = {
+                EM: 'not found booking',
+                EC: '0',
+                DT: ''
+            };
+
+            deleteBookingStub.withArgs(mockBookingId).returns(mockNotFoundApiResponse);
+
+            const res = await chai.request(app)
+                .delete('/api/booking/delete')
+                .send({ id: mockBookingId });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockNotFoundApiResponse);
+
+            sinon.assert.calledOnce(deleteBookingStub);
+            sinon.assert.calledWithExactly(deleteBookingStub, mockBookingId);
+        });
+    });
+});
+
+
+const generateMockCustomerData = (page, limit) => {
+    const totalRows = 30; // Số lượng dòng dữ liệu trong trang
+    const totalPages = Math.ceil(totalRows / limit);
+
+    const customers = [];
+    for (let i = 1; i <= limit; i++) {
+        const customer = {
+            id: i + (page - 1) * limit, // Tạo id duy nhất cho từng dòng dữ liệu
+            customerName: `Customer ${i}`,
+            customerGmail: `customer${i}@example.com`,
+            customerPhone: `0${i}2345678`
+            // Add other customer properties based on your schema
+        };
+        customers.push(customer);
+    }
+
+    return {
+        EM: 'get data successfully',
+        EC: '0',
+        DT: {
+            totalRows: totalRows,
+            totalPages: totalPages,
+            customers: customers,
+        },
+    };
+};
+
+describe('Customer Controller', () => {
+    // Declare the stubs
+    let getCustomerWithPaginationStub;
+    let getCustomerByIdStub;
+    let deleteCustomerStub;
+
+    // Set up the stubs in the 'before' hook
+    before(() => {
+        getCustomerWithPaginationStub = sinon.stub(customerApiService, 'getCustomerWithPagination');
+        getCustomerByIdStub = sinon.stub(customerApiService, 'getCustomerById');
+        deleteCustomerStub = sinon.stub(customerApiService, 'deleteCustomer');
+    });
+
+    // Restore the stubs in the 'after' hook
+    after(() => {
+        getCustomerWithPaginationStub.restore();
+        getCustomerByIdStub.restore();
+        deleteCustomerStub.restore();
+    });
+
+    // Your test cases go here
+
+    // Example 'create' test case
+
+    describe('read', () => {
+        it('should get paginated customer data successfully', async () => {
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            const mockApiResponse = generateMockCustomerData(mockPage, mockLimit);
+
+            getCustomerWithPaginationStub.withArgs(mockPage, mockLimit).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get('/api/customer/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during customer data retrieval', async () => {
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            getCustomerWithPaginationStub.withArgs(mockPage, mockLimit).throws('Database error');
+
+            const res = await chai.request(app)
+                .get('/api/customer/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('read-by-id', () => {
+        it('should get customer by id successfully', async () => {
+            const mockCustomerId = 1;
+            const mockApiResponse = {
+                EM: 'get customer by id successfully',
+                EC: '0',
+                DT: {
+                    id: mockCustomerId,
+                    customerName: 'Test Customer',
+                    email: 'testcustomer@example.com',
+                    // Add other customer properties based on your schema
+                },
+            };
+
+            getCustomerByIdStub.withArgs(mockCustomerId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get(`/api/customer/read-by-id?id=${mockCustomerId}`);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during customer retrieval by id', async () => {
+            const mockCustomerId = 1;
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            getCustomerByIdStub.withArgs(mockCustomerId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .get(`/api/customer/read-by-id?id=${mockCustomerId}`);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('delete', () => {
+        beforeEach(() => {
+            deleteCustomerStub.reset();
+        });
+
+        it('should delete customer successfully', async () => {
+            const mockCustomerId = 1;
+
+            const mockApiResponse = {
+                EM: 'delete customer successfully',
+                EC: '0',
+                DT: ''
+            };
+
+            deleteCustomerStub.withArgs(mockCustomerId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .delete('/api/customer/delete')
+                .send({ id: mockCustomerId });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+
+            sinon.assert.calledOnce(deleteCustomerStub);
+            sinon.assert.calledWithExactly(deleteCustomerStub, mockCustomerId);
+        });
+
+        it('should handle error from server during customer deletion', async () => {
+            const mockCustomerId = 1;
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: ''
+            };
+
+            deleteCustomerStub.withArgs(mockCustomerId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .delete('/api/customer/delete')
+                .send({ id: mockCustomerId });
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+
+            sinon.assert.calledOnce(deleteCustomerStub);
+            sinon.assert.calledWithExactly(deleteCustomerStub, mockCustomerId);
+        });
+    });
+    // Add more test cases for other CRUD operations
+});
+
+const generateMockDiscountData = (page, limit) => {
+    const totalRows = 30; // Số lượng dòng dữ liệu trong trang
+    const totalPages = Math.ceil(totalRows / limit);
+
+    const discounts = [];
+    for (let i = 1; i <= limit; i++) {
+        const discount = {
+            id: i + (page - 1) * limit, // Tạo id duy nhất cho từng dòng dữ liệu
+            discountName: `Discount ${i}`,
+            discountType: 'Percentage', // Replace with your actual discount types
+            discountAmount: 10, // Replace with your actual discount amounts
+            discountDescription: `Description ${i}`,
+            // Add other discount properties based on your schema
+        };
+        discounts.push(discount);
+    }
+
+    return {
+        EM: 'get data successfully',
+        EC: '0',
+        DT: {
+            totalRows: totalRows,
+            totalPages: totalPages,
+            discounts: discounts,
+        },
+    };
+};
+
+describe('Discount Controller', () => {
+    let createDiscountStub;
+    let updateDiscountStub;
+    let getDiscountWithPaginationStub;
+    let getDiscountByIdStub;
+    let deleteDiscountStub;
+
+    before(() => {
+        createDiscountStub = sinon.stub(discountApiService, 'createDiscount');
+        updateDiscountStub = sinon.stub(discountApiService, 'updateDiscount');
+        getDiscountWithPaginationStub = sinon.stub(discountApiService, 'getDiscountWithPagination');
+        getDiscountByIdStub = sinon.stub(discountApiService, 'getDiscountById');
+        deleteDiscountStub = sinon.stub(discountApiService, 'deleteDiscount');
+    });
+
+    after(() => {
+        createDiscountStub.restore();
+        updateDiscountStub.restore();
+        getDiscountWithPaginationStub.restore();
+        getDiscountByIdStub.restore();
+        deleteDiscountStub.restore();
+    });
+
+    describe('create', () => {
+        it('should create discount successfully', async () => {
+            const mockRequestBody = {
+                discountName: 'New Discount',
+                discountType: 'Percentage',
+                discountAmount: 15,
+                discountDescription: 'Description for the new discount',
+            };
+
+            const mockApiResponse = {
+                EM: 'create discount successfully',
+                EC: '0',
+                DT: {
+                    id: 31, // Replace with the actual ID generated during creation
+                    ...mockRequestBody,
+                },
+            };
+
+            createDiscountStub.withArgs(mockRequestBody).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .post('/api/discount/create')
+                .send(mockRequestBody);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during discount creation', async () => {
+            const mockRequestBody = {
+                // Provide invalid or incomplete data to simulate an error
+                discountType: 'Percentage',
+                discountAmount: 15,
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            createDiscountStub.withArgs(mockRequestBody).throws('Database error');
+
+            const res = await chai.request(app)
+                .post('/api/discount/create')
+                .send(mockRequestBody);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('read', () => {
+        it('should get paginated discount data successfully', async () => {
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            const mockApiResponse = generateMockDiscountData(mockPage, mockLimit);
+
+            getDiscountWithPaginationStub.withArgs(mockPage, mockLimit).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get('/api/discount/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during discount data retrieval', async () => {
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            getDiscountWithPaginationStub.withArgs(mockPage, mockLimit).throws('Database error');
+
+            const res = await chai.request(app)
+                .get('/api/discount/read')
+                .query({ page: mockPage, limit: mockLimit });
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('read-by-id', () => {
+        it('should get discount by id successfully', async () => {
+            const mockDiscountId = 1;
+            const mockApiResponse = {
+                EM: 'get discount by id successfully',
+                EC: '0',
+                DT: {
+                    id: mockDiscountId,
+                    discountName: 'Test Discount',
+                    discountType: 'Percentage',
+                    discountAmount: 10,
+                    discountDescription: 'Test Description',
+                    // Add other discount properties based on your schema
+                },
+            };
+
+            getDiscountByIdStub.withArgs(mockDiscountId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .get(`/api/discount/read-by-id?id=${mockDiscountId}`);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during discount retrieval by id', async () => {
+            const mockDiscountId = 1;
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            getDiscountByIdStub.withArgs(mockDiscountId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .get(`/api/discount/read-by-id?id=${mockDiscountId}`);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('update', () => {
+        it('should update discount successfully', async () => {
+            const mockRequestBody = {
+                id: 1,
+                discountName: 'Updated Discount',
+                discountType: 'Fixed Amount',
+                discountAmount: 25,
+                discountDescription: 'Updated Description',
+            };
+
+            const mockApiResponse = {
+                EM: 'update discount successfully',
+                EC: '0',
+                DT: '',
+            };
+
+            updateDiscountStub.withArgs(mockRequestBody).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .put('/api/discount/update')
+                .send(mockRequestBody);
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during discount update', async () => {
+            const mockRequestBody = {
+                // Provide invalid or incomplete data to simulate an error
+                discountName: 'Updated Discount',
+                discountAmount: 25,
+            };
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            updateDiscountStub.withArgs(mockRequestBody).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .put('/api/discount/update')
+                .send(mockRequestBody);
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+
+    describe('delete', () => {
+        it('should delete discount successfully', async () => {
+            const mockDiscountId = 1;
+
+            const mockApiResponse = {
+                EM: 'delete discount successfully',
+                EC: '0',
+                DT: '',
+            };
+
+            deleteDiscountStub.withArgs(mockDiscountId).returns(mockApiResponse);
+
+            const res = await chai.request(app)
+                .delete('/api/discount/delete')
+                .send({ id: mockDiscountId });
+
+            expect(res).to.have.status(200);
+            expect(res.body).to.deep.equal(mockApiResponse);
+        });
+
+        it('should handle error during discount deletion', async () => {
+            const mockDiscountId = 1;
+
+            const mockErrorApiResponse = {
+                EM: 'error from server',
+                EC: '1',
+                DT: '',
+            };
+
+            deleteDiscountStub.withArgs(mockDiscountId).throws(new Error('Simulated error from server'));
+
+            const res = await chai.request(app)
+                .delete('/api/discount/delete')
+                .send({ id: mockDiscountId });
+
+            expect(res).to.have.status(500);
+            expect(res.body).to.deep.equal(mockErrorApiResponse);
+        });
+    });
+});
+
+
+// describe('JWTActions', () => {
+//     describe('createJWT', () => {
+//         it('should create a JWT token', () => {
+//             const payload = { userId: '12345' };
+//             const signStub = sinon.stub(jwt, 'sign').returns('fakeToken');
+
+//             const result = JWTActions.createJWT(payload);
+
+//             expect(result).to.equal('fakeToken');
+//             sinon.assert.calledOnceWithExactly(signStub, payload, process.env.JWT_SECRET);
+//             signStub.restore();
+//         });
+
+//         it('should return null if token creation fails', () => {
+//             const payload = { userId: '12345' };
+//             const signStub = sinon.stub(jwt, 'sign').throws(new Error('Token creation failed'));
+
+//             const result = JWTActions.createJWT(payload);
+
+//             expect(result).to.be.null;
+//             sinon.assert.calledOnceWithExactly(signStub, payload, process.env.JWT_SECRET);
+//             signStub.restore();
+//         });
+//     });
+
+//     describe('verifyToken', () => {
+//         it('should verify a JWT token', async () => {
+//             const token = 'fakeToken';
+//             const decodedToken = { userId: '12345' };
+
+//             // Stub the jwt.verify to resolve with decodedToken
+//             const verifyStub = sinon.stub(jwt, 'verify').callsFake((_, __, callback) => {
+//                 process.nextTick(() => {
+//                     callback(null, decodedToken);
+//                 });
+//             });
+
+//             try {
+//                 const result = await JWTActions.verifyToken(token);
+//                 expect(result).to.deep.equal(decodedToken);
+//                 sinon.assert.calledOnceWithExactly(verifyStub, token, process.env.JWT_SECRET, sinon.match.func);
+//             } catch (error) {
+//                 // Handle the error here
+//                 console.error(error);
+//             } finally {
+//                 verifyStub.restore(); // Restore the stub
+//             }
+//         });
+
+//         it('should return null if token verification fails', async () => {
+//             const token = 'fakeToken';
+
+//             // Stub the jwt.verify to reject with an error
+//             const verifyStub = sinon.stub(jwt, 'verify').callsFake((_, __, callback) => {
+//                 process.nextTick(() => {
+//                     callback(new Error('Token verification failed'), null);
+//                 });
+//             });
+
+//             try {
+//                 const result = await JWTActions.verifyToken(token);
+//                 expect(result).to.be.null;
+//                 sinon.assert.calledOnceWithExactly(verifyStub, token, process.env.JWT_SECRET, sinon.match.func);
+//             } catch (error) {
+//                 // Handle the error here
+//                 console.error(error);
+//             } finally {
+//                 verifyStub.restore(); // Restore the stub
+//             }
+//         });
+//     });
+// });
