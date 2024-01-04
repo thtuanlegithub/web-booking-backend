@@ -40,7 +40,8 @@ const createBooking = async (bookingData) => {
                 customerPhone: bookingData.customer.customerPhone,
                 customerGmail: bookingData.customer.customerGmail
             });
-            const createdBooking = await db.Bookings.create({
+            createdBooking = await db.Bookings.create({
+                exportInvoice: bookingData.exportInvoice,
                 bookingStatus: bookingData.bookingStatus,
                 bookingPrice: bookingData.bookingPrice,
                 paymentNote: bookingData.paymentNote,

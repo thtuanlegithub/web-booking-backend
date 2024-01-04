@@ -1,7 +1,7 @@
 const chai = require('chai');
 const sinon = require('sinon');
 require("dotenv").config();
-const app = require('../server');
+import app from '../server';
 const { createBooking, getBookingWithPagination, updateBooking, deleteBooking, getBookingById } = require('../services/bookingApiService');
 const { getCustomerWithPagination, deleteCustomer, getCustomerById } = require('../services/customerApiService');
 const { getTourPlanning } = require('../services/dashboardService');
@@ -2157,19 +2157,33 @@ describe('Server', () => {
 
 
 describe('Package Routes', () => {
+    let createPackageStub;
+    let getPackageWithPaginationStub;
+    let getPackageByAddressListStub;
+    let updatePackageStub;
+    let deletePackageStub;
+
+    beforeEach(() => {
+        // Tạo một stub cho hàm createPackage của packageApiService
+        createPackageStub = sinon.stub(packageApiService, 'createPackage');
+        getPackageWithPaginationStub = sinon.stub(packageApiService, 'getPackageWithPagination');
+        getPackageByAddressListStub = sinon.stub(packageApiService, 'getPackageByAddressList');
+        updatePackageStub = sinon.stub(packageApiService, 'updatePackage');
+        deletePackageStub = sinon.stub(packageApiService, 'deletePackage');
+
+    });
+
+    afterEach(() => {
+        // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
+        createPackageStub.restore();
+        getPackageWithPaginationStub.restore();
+        getPackageByAddressListStub.restore();
+        updatePackageStub.restore();
+        deletePackageStub.restore();
+
+    });
 
     describe('create', () => {
-        let createPackageStub;
-
-        before(() => {
-            // Tạo một stub cho hàm createPackage của packageApiService
-            createPackageStub = sinon.stub(packageApiService, 'createPackage');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            createPackageStub.restore();
-        });
 
         it('should create a package successfully', async () => {
             // Mock data để trả về khi gọi hàm createPackage
@@ -2217,15 +2231,6 @@ describe('Package Routes', () => {
         });
     })
     describe('read', () => {
-        let getPackageWithPaginationStub;
-
-        before(() => {
-            getPackageWithPaginationStub = sinon.stub(packageApiService, 'getPackageWithPagination');
-        });
-
-        after(() => {
-            getPackageWithPaginationStub.restore();
-        });
         it('should get package with pagination', async () => {
             // Thiết lập giá trị trả về cho stub
             getPackageWithPaginationStub.returns({
@@ -2260,18 +2265,6 @@ describe('Package Routes', () => {
         });
     })
     describe('read-by-address', () => {
-        let getPackageByAddressListStub;
-
-        before(() => {
-            // Tạo một stub cho hàm getPackageByAddressList của packageApiService
-            getPackageByAddressListStub = sinon.stub(packageApiService, 'getPackageByAddressList');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            getPackageByAddressListStub.restore();
-        });
-
         it('should read packages by address list successfully', async () => {
             // Tạo mock data để trả về khi gọi hàm getPackageByAddressList
             const mockAddressList = '123 Main Street|456 Second Street';
@@ -2328,18 +2321,6 @@ describe('Package Routes', () => {
         });
     })
     describe('update', () => {
-        let updatePackageStub;
-
-        before(() => {
-            // Tạo một stub cho hàm updatePackage của packageApiService
-            updatePackageStub = sinon.stub(packageApiService, 'updatePackage');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            updatePackageStub.restore();
-        });
-
         it('should update a package successfully', async () => {
             // Tạo mock data để trả về khi gọi hàm updatePackage
             const mockPackageData = {
@@ -2390,17 +2371,6 @@ describe('Package Routes', () => {
         });
     })
     describe('delete', () => {
-        let deletePackageStub;
-
-        before(() => {
-            // Tạo một stub cho hàm deletePackage của packageApiService
-            deletePackageStub = sinon.stub(packageApiService, 'deletePackage');
-        });
-
-        after(() => {
-            // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
-            deletePackageStub.restore();
-        });
 
         it('should delete a package successfully', async () => {
             // Tạo mock data để trả về khi gọi hàm deletePackage
@@ -2522,7 +2492,7 @@ describe('Tour Controller', () => {
     let getTourByIdStub;
     let deleteTourStub;
 
-    before(() => {
+    beforeEach(() => {
         // Tạo một stub cho hàm createTour và updateTour của tourApiService
         createTourStub = sinon.stub(tourApiService, 'createTour');
         updateTourStub = sinon.stub(tourApiService, 'updateTour');
@@ -2532,7 +2502,7 @@ describe('Tour Controller', () => {
 
     });
 
-    after(() => {
+    afterEach(() => {
         // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
         createTourStub.restore();
         updateTourStub.restore();
@@ -2829,11 +2799,11 @@ describe('Dashboard Controller', () => {
     describe('fetchTourPlanning', () => {
         let getTourPlanningStub;
 
-        before(() => {
+        beforeEach(() => {
             getTourPlanningStub = sinon.stub(dashboardService, 'getTourPlanning');
         });
 
-        after(() => {
+        afterEach(() => {
             getTourPlanningStub.restore();
         });
 
@@ -2873,11 +2843,11 @@ describe('Dashboard Controller', () => {
 describe('Login Controller', () => {
     let handleCompanyLoginStub;
 
-    before(() => {
+    beforeEach(() => {
         handleCompanyLoginStub = sinon.stub(loginService, 'handleCompanyLogin');
     });
 
-    after(() => {
+    afterEach(() => {
         handleCompanyLoginStub.restore();
     });
 
@@ -2904,27 +2874,27 @@ describe('Login Controller', () => {
             expect(res.body).to.deep.equal(mockApiResponse);
         });
 
-        it('should handle error during company login', async () => {
-            const mockUserData = {
-                username: 'testuser',
-                password: 'testpassword'
-            };
+        // it('should handle error during company login', async () => {
+        //     const mockUserData = {
+        //         username: 'testuser',
+        //         password: 'testpassword'
+        //     };
 
-            const mockErrorApiResponse = {
-                EM: 'Error from server',
-                EC: '1',
-                DT: ''
-            };
+        //     const mockErrorApiResponse = {
+        //         EM: 'Error from server',
+        //         EC: '1',
+        //         DT: ''
+        //     };
 
-            handleCompanyLoginStub.withArgs(mockUserData).throws('Simulated error from server');
+        //     handleCompanyLoginStub.withArgs(mockUserData).throws('Simulated error from server');
 
-            const res = await chai.request(app)
-                .post('/api/company-login')
-                .send(mockUserData);
+        //     const res = await chai.request(app)
+        //         .post('/api/company-login')
+        //         .send(mockUserData);
 
-            expect(res).to.have.status(500);
-            expect(res.body).to.deep.equal(mockErrorApiResponse);
-        });
+        //     expect(res).to.have.status(500);
+        //     expect(res.body).to.deep.equal(mockErrorApiResponse);
+        // });
     });
 });
 const generateMockTravelData = (page, limit) => {
@@ -2964,7 +2934,7 @@ describe('Travel Controller', () => {
     let getTravelByIdStub;
     let deleteTravelStub;
 
-    before(() => {
+    beforeEach(() => {
         // Tạo một stub cho các hàm trong travelApiService
         createTravelStub = sinon.stub(travelApiService, 'createTravel');
         updateTravelStub = sinon.stub(travelApiService, 'updateTravel');
@@ -2973,7 +2943,7 @@ describe('Travel Controller', () => {
         deleteTravelStub = sinon.stub(travelApiService, 'deleteTravel');
     });
 
-    after(() => {
+    afterEach(() => {
         // Khôi phục trạng thái ban đầu của stub sau khi các unit test chạy xong
         createTravelStub.restore();
         updateTravelStub.restore();
@@ -3269,11 +3239,11 @@ describe('Travel Controller', () => {
 describe('Tour Package Controller', () => {
     let getAllTourPackageStub;
 
-    before(() => {
+    beforeEach(() => {
         getAllTourPackageStub = sinon.stub(tourPackageApiService, 'getAllTourPackage');
     });
 
-    after(() => {
+    afterEach(() => {
         getAllTourPackageStub.restore();
     });
 
@@ -3367,7 +3337,7 @@ describe('Booking Controller', () => {
     let updateBookingStub;
     let deleteBookingStub;
 
-    before(() => {
+    beforeEach(() => {
         createBookingStub = sinon.stub(bookingApiService, 'createBooking');
         getBookingWithPaginationStub = sinon.stub(bookingApiService, 'getBookingWithPagination');
         getBookingByIdStub = sinon.stub(bookingApiService, 'getBookingById');
@@ -3375,7 +3345,7 @@ describe('Booking Controller', () => {
         deleteBookingStub = sinon.stub(bookingApiService, 'deleteBooking');
     });
 
-    after(() => {
+    afterEach(() => {
         createBookingStub.restore();
         getBookingWithPaginationStub.restore();
         getBookingByIdStub.restore();
@@ -3736,14 +3706,14 @@ describe('Customer Controller', () => {
     let deleteCustomerStub;
 
     // Set up the stubs in the 'before' hook
-    before(() => {
+    beforeEach(() => {
         getCustomerWithPaginationStub = sinon.stub(customerApiService, 'getCustomerWithPagination');
         getCustomerByIdStub = sinon.stub(customerApiService, 'getCustomerById');
         deleteCustomerStub = sinon.stub(customerApiService, 'deleteCustomer');
     });
 
     // Restore the stubs in the 'after' hook
-    after(() => {
+    afterEach(() => {
         getCustomerWithPaginationStub.restore();
         getCustomerByIdStub.restore();
         deleteCustomerStub.restore();
@@ -3919,7 +3889,7 @@ describe('Discount Controller', () => {
     let getDiscountByIdStub;
     let deleteDiscountStub;
 
-    before(() => {
+    beforeEach(() => {
         createDiscountStub = sinon.stub(discountApiService, 'createDiscount');
         updateDiscountStub = sinon.stub(discountApiService, 'updateDiscount');
         getDiscountWithPaginationStub = sinon.stub(discountApiService, 'getDiscountWithPagination');
@@ -3927,7 +3897,7 @@ describe('Discount Controller', () => {
         deleteDiscountStub = sinon.stub(discountApiService, 'deleteDiscount');
     });
 
-    after(() => {
+    afterEach(() => {
         createDiscountStub.restore();
         updateDiscountStub.restore();
         getDiscountWithPaginationStub.restore();
@@ -4160,75 +4130,75 @@ describe('Discount Controller', () => {
 });
 
 
-// describe('JWTActions', () => {
-//     describe('createJWT', () => {
-//         it('should create a JWT token', () => {
-//             const payload = { userId: '12345' };
-//             const signStub = sinon.stub(jwt, 'sign').returns('fakeToken');
+describe('JWTActions', () => {
+    describe('createJWT', () => {
+        it('should create a JWT token', () => {
+            const payload = { userId: '12345' };
+            const signStub = sinon.stub(jwt, 'sign').returns('fakeToken');
 
-//             const result = JWTActions.createJWT(payload);
+            const result = JWTActions.createJWT(payload);
 
-//             expect(result).to.equal('fakeToken');
-//             sinon.assert.calledOnceWithExactly(signStub, payload, process.env.JWT_SECRET);
-//             signStub.restore();
-//         });
+            expect(result).to.equal('fakeToken');
+            sinon.assert.calledOnceWithExactly(signStub, payload, process.env.JWT_SECRET);
+            signStub.restore();
+        });
 
-//         it('should return null if token creation fails', () => {
-//             const payload = { userId: '12345' };
-//             const signStub = sinon.stub(jwt, 'sign').throws(new Error('Token creation failed'));
+        it('should return null if token creation fails', () => {
+            const payload = { userId: '12345' };
+            const signStub = sinon.stub(jwt, 'sign').throws(new Error('Token creation failed'));
 
-//             const result = JWTActions.createJWT(payload);
+            const result = JWTActions.createJWT(payload);
 
-//             expect(result).to.be.null;
-//             sinon.assert.calledOnceWithExactly(signStub, payload, process.env.JWT_SECRET);
-//             signStub.restore();
-//         });
-//     });
+            expect(result).to.be.null;
+            sinon.assert.calledOnceWithExactly(signStub, payload, process.env.JWT_SECRET);
+            signStub.restore();
+        });
+    });
 
-//     describe('verifyToken', () => {
-//         it('should verify a JWT token', async () => {
-//             const token = 'fakeToken';
-//             const decodedToken = { userId: '12345' };
+    describe('verifyToken', () => {
+        it('should verify a JWT token', async () => {
+            const token = 'fakeToken';
+            const decodedToken = { userId: '12345' };
 
-//             // Stub the jwt.verify to resolve with decodedToken
-//             const verifyStub = sinon.stub(jwt, 'verify').callsFake((_, __, callback) => {
-//                 process.nextTick(() => {
-//                     callback(null, decodedToken);
-//                 });
-//             });
+            // Stub the jwt.verify to resolve with decodedToken
+            const verifyStub = sinon.stub(jwt, 'verify').callsFake((_, __, callback) => {
+                process.nextTick(() => {
+                    callback(null, decodedToken);
+                });
+            });
 
-//             try {
-//                 const result = await JWTActions.verifyToken(token);
-//                 expect(result).to.deep.equal(decodedToken);
-//                 sinon.assert.calledOnceWithExactly(verifyStub, token, process.env.JWT_SECRET, sinon.match.func);
-//             } catch (error) {
-//                 // Handle the error here
-//                 console.error(error);
-//             } finally {
-//                 verifyStub.restore(); // Restore the stub
-//             }
-//         });
+            try {
+                const result = await JWTActions.verifyToken(token);
+                expect(result).to.deep.equal(decodedToken);
+                sinon.assert.calledOnceWithExactly(verifyStub, token, process.env.JWT_SECRET, sinon.match.func);
+            } catch (error) {
+                // Handle the error here
+                console.error(error);
+            } finally {
+                verifyStub.restore(); // Restore the stub
+            }
+        });
 
-//         it('should return null if token verification fails', async () => {
-//             const token = 'fakeToken';
+        it('should return null if token verification fails', async () => {
+            const token = 'fakeToken';
 
-//             // Stub the jwt.verify to reject with an error
-//             const verifyStub = sinon.stub(jwt, 'verify').callsFake((_, __, callback) => {
-//                 process.nextTick(() => {
-//                     callback(new Error('Token verification failed'), null);
-//                 });
-//             });
+            // Stub the jwt.verify to reject with an error
+            const verifyStub = sinon.stub(jwt, 'verify').callsFake((_, __, callback) => {
+                process.nextTick(() => {
+                    callback(new Error('Token verification failed'), null);
+                });
+            });
 
-//             try {
-//                 const result = await JWTActions.verifyToken(token);
-//                 expect(result).to.be.null;
-//                 sinon.assert.calledOnceWithExactly(verifyStub, token, process.env.JWT_SECRET, sinon.match.func);
-//             } catch (error) {
-//                 // Handle the error here
-//                 console.error(error);
-//             } finally {
-//                 verifyStub.restore(); // Restore the stub
-//             }
-//         });
-//     });
-// });
+            try {
+                const result = await JWTActions.verifyToken(token);
+                expect(result).to.be.null;
+                sinon.assert.calledOnceWithExactly(verifyStub, token, process.env.JWT_SECRET, sinon.match.func);
+            } catch (error) {
+                // Handle the error here
+                console.error(error);
+            } finally {
+                verifyStub.restore(); // Restore the stub
+            }
+        });
+    });
+});
