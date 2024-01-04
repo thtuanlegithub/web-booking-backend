@@ -142,4 +142,4 @@ jobs:
     - name: Mutation testing
       run: |
         # Ensure Stryker is configured properly before running this command
-      npx stryker run --config-file stryker.conf.js
+      npx stryker run
