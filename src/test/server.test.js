@@ -32,422 +32,422 @@ const expect = chai.expect;
 // chai.use(require('chai-as-promised'));
 chai.use(require('sinon-chai'));
 
-// describe('Booking API Service', () => {
-//     let sandbox;
+describe('Booking API Service', () => {
+    let sandbox;
 
-//     beforeEach(() => {
-//         sandbox = sinon.createSandbox();
-//     });
+    beforeEach(() => {
+        sandbox = sinon.createSandbox();
+    });
 
-//     afterEach(() => {
-//         sandbox.restore();
-//     });
+    afterEach(() => {
+        sandbox.restore();
+    });
 
-//     // describe('createBooking', () => {
-//     //     it('should create a booking successfully', async () => {
-//     //         const req = {
-//     //             body: {
-//     //                 exportInvoice: true,
-//     //                 bookingStatus: 'Completed',
-//     //                 bookingPrice: 1500000,
-//     //                 bookingDate: '01/01/2024',
-//     //                 customer: {
-//     //                     customerPhone: 12345,
-//     //                     customerName: 'name',
-//     //                     customerGmail: 'name@gmail.com',
-//     //                 },
-//     //                 touristList: ['t1', 't2'],
-//     //                 paymentNote: '',
-//     //                 paymentImage: '/',
-//     //                 travelId: '1'
-//     //             }
-//     //         };
-//     //         const res = {
-//     //             status: (statusCode) => ({
-//     //                 json: (response) => {
-//     //                     expect(statusCode).to.equal(200);
-//     //                     expect(response).to.deep.equal({ EM: 'create booking successfully', EC: '0', DT: { id: 1 } });
-//     //                 }
-//     //             })
-//     //         };
+    // describe('createBooking', () => {
+    //     it('should create a booking successfully', async () => {
+    //         const req = {
+    //             body: {
+    //                 exportInvoice: true,
+    //                 bookingStatus: 'Completed',
+    //                 bookingPrice: 1500000,
+    //                 bookingDate: '01/01/2024',
+    //                 customer: {
+    //                     customerPhone: 12345,
+    //                     customerName: 'name',
+    //                     customerGmail: 'name@gmail.com',
+    //                 },
+    //                 touristList: ['t1', 't2'],
+    //                 paymentNote: '',
+    //                 paymentImage: '/',
+    //                 travelId: '1'
+    //             }
+    //         };
+    //         const res = {
+    //             status: (statusCode) => ({
+    //                 json: (response) => {
+    //                     expect(statusCode).to.equal(200);
+    //                     expect(response).to.deep.equal({ EM: 'create booking successfully', EC: '0', DT: { id: 1 } });
+    //                 }
+    //             })
+    //         };
 
-//     //         await createBooking(req, res);
-//     //     });
+    //         await createBooking(req, res);
+    //     });
 
-//     //     it('should update an existing customer and create a booking successfully', async () => {
-//     //         // Mocking data and database calls
-//     //         sandbox.stub(db.Customers, 'findOne').resolves({ id: 1 });
-//     //         sandbox.stub(db.Customers, 'update').resolves({});
-//     //         sandbox.stub(db.Bookings, 'create').resolves({ id: 1 });
-//     //         sandbox.stub(db.Tourists, 'create').resolves({});
+    //     it('should update an existing customer and create a booking successfully', async () => {
+    //         // Mocking data and database calls
+    //         sandbox.stub(db.Customers, 'findOne').resolves({ id: 1 });
+    //         sandbox.stub(db.Customers, 'update').resolves({});
+    //         sandbox.stub(db.Bookings, 'create').resolves({ id: 1 });
+    //         sandbox.stub(db.Tourists, 'create').resolves({});
 
-//     //         const bookingData = {
-//     //             exportInvoice: true,
-//     //             bookingStatus: 'Completed',
-//     //             bookingPrice: 1000000,
-//     //             bookingDate: '01/01/2023',
-//     //             customer: {
-//     //                 customerPhone: '123456789',
-//     //                 customerName: 'name',
-//     //                 customerGmail: 'name@gmail.com',
-//     //             },
-//     //             touristList: ['t1', 't2']
-//     //             ,
-//     //             paymentNote: '',
-//     //             paymentImage: '/',
-//     //             travelId: 1
-//     //         };
+    //         const bookingData = {
+    //             exportInvoice: true,
+    //             bookingStatus: 'Completed',
+    //             bookingPrice: 1000000,
+    //             bookingDate: '01/01/2023',
+    //             customer: {
+    //                 customerPhone: '123456789',
+    //                 customerName: 'name',
+    //                 customerGmail: 'name@gmail.com',
+    //             },
+    //             touristList: ['t1', 't2']
+    //             ,
+    //             paymentNote: '',
+    //             paymentImage: '/',
+    //             travelId: 1
+    //         };
 
-//     //         const result = await createBooking(bookingData);
+    //         const result = await createBooking(bookingData);
 
-//     //         expect(result).to.deep.equal({
-//     //             EM: 'create booking successfully',
-//     //             EC: '0',
-//     //             DT: { id: 1 }
-//     //         });
-//     //     });
+    //         expect(result).to.deep.equal({
+    //             EM: 'create booking successfully',
+    //             EC: '0',
+    //             DT: { id: 1 }
+    //         });
+    //     });
 
-//     //     it('should handle errors during booking creation', async () => {
-//     //         const req = { body: {} };
-//     //         const res = {
-//     //             status: (statusCode) => ({
-//     //                 json: (response) => {
-//     //                     expect(statusCode).to.equal(500);
-//     //                     expect(response).to.deep.equal({ EM: 'error creating booking', EC: '1', DT: undefined });
-//     //                 }
-//     //             })
-//     //         };
+    //     it('should handle errors during booking creation', async () => {
+    //         const req = { body: {} };
+    //         const res = {
+    //             status: (statusCode) => ({
+    //                 json: (response) => {
+    //                     expect(statusCode).to.equal(500);
+    //                     expect(response).to.deep.equal({ EM: 'error creating booking', EC: '1', DT: undefined });
+    //                 }
+    //             })
+    //         };
 
-//     //         // Mocking an error during booking creation
-//     //         sandbox.replace(bookingApiService, 'createBooking', async () => { throw new Error('Simulated error'); });
+    //         // Mocking an error during booking creation
+    //         sandbox.replace(bookingApiService, 'createBooking', async () => { throw new Error('Simulated error'); });
 
-//     //         await createBooking(req, res);
-//     //     });
+    //         await createBooking(req, res);
+    //     });
 
-//     // });
+    // });
 
-//     describe('getBookingById', () => {
-//         it('should get booking data by ID successfully', async () => {
-//             // Define your mocked booking data
-//             const mockedBookingData = {
-//                 id: 8,
-//                 bookingStatus: "Unpaid",
-//                 bookingPrice: "3800000",
-//                 customerId: 3,
-//                 paymentNote: "",
-//                 paymentImage: "/",
-//                 travelId: 8,
-//                 exportInvoice: true,
-//                 createdAt: "2023-12-28T19:44:29.000Z",
-//                 updatedAt: "2023-12-28T19:49:53.000Z",
-//                 Customer: {
-//                     id: 3,
-//                     customerPhone: "1",
-//                     customerName: "2",
-//                     customerGmail: "3",
-//                     customerAccountId: null,
-//                     createdAt: "2023-12-28T19:44:29.000Z",
-//                     updatedAt: "2024-01-01T22:26:56.000Z"
-//                 },
-//                 Tourists: [
-//                     {
-//                         id: 23,
-//                         touristName: "1",
-//                         bookingId: 8,
-//                         createdAt: "2023-12-28T19:49:53.000Z",
-//                         updatedAt: "2023-12-28T19:49:53.000Z"
-//                     },
-//                     {
-//                         id: 24,
-//                         touristName: "2",
-//                         bookingId: 8,
-//                         createdAt: "2023-12-28T19:49:53.000Z",
-//                         updatedAt: "2023-12-28T19:49:53.000Z"
-//                     }
-//                 ],
-//                 Travel: {
-//                     id: 8,
-//                     startLocation: "Thành phố Hồ Chí Minh",
-//                     startDateTime: "2024-02-01T03:30:00.000Z",
-//                     maxTicket: 50,
-//                     remainTicket: 48,
-//                     tourId: 7,
-//                     discountId: 4,
-//                     travelPrice: "1900000",
-//                     createdAt: "2023-12-28T18:32:08.000Z",
-//                     updatedAt: "2024-01-01T22:37:23.000Z",
-//                     Tour: {
-//                         id: 7,
-//                         tourName: "Thành phố Hồ Chí Minh - Chợ Bến Thành - Suối Tiên",
-//                         totalDay: 2,
-//                         totalNight: 2,
-//                         addressList: "Nha Trang",
-//                         tourPrice: "2000000",
-//                         tourStatus: "Completed",
-//                         mainImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F7493164544cca73?alt=media&token=9a6994d7-55c9-484c-ad2c-20760f3bfbe5",
-//                         createdAt: "2023-12-28T16:06:02.000Z",
-//                         updatedAt: "2024-01-01T19:15:45.000Z"
-//                     },
-//                     Discount: {
-//                         id: 4,
-//                         discountName: "Khai xuân 2024",
-//                         discountType: "Percentage",
-//                         discountAmount: "5",
-//                         discountDescription: "",
-//                         createdAt: "2023-12-31T14:50:50.000Z",
-//                         updatedAt: "2023-12-31T14:50:50.000Z"
-//                     }
-//                 }
-//             };
+    describe('getBookingById', () => {
+        it('should get booking data by ID successfully', async () => {
+            // Define your mocked booking data
+            const mockedBookingData = {
+                id: 8,
+                bookingStatus: "Unpaid",
+                bookingPrice: "3800000",
+                customerId: 3,
+                paymentNote: "",
+                paymentImage: "/",
+                travelId: 8,
+                exportInvoice: true,
+                createdAt: "2023-12-28T19:44:29.000Z",
+                updatedAt: "2023-12-28T19:49:53.000Z",
+                Customer: {
+                    id: 3,
+                    customerPhone: "1",
+                    customerName: "2",
+                    customerGmail: "3",
+                    customerAccountId: null,
+                    createdAt: "2023-12-28T19:44:29.000Z",
+                    updatedAt: "2024-01-01T22:26:56.000Z"
+                },
+                Tourists: [
+                    {
+                        id: 23,
+                        touristName: "1",
+                        bookingId: 8,
+                        createdAt: "2023-12-28T19:49:53.000Z",
+                        updatedAt: "2023-12-28T19:49:53.000Z"
+                    },
+                    {
+                        id: 24,
+                        touristName: "2",
+                        bookingId: 8,
+                        createdAt: "2023-12-28T19:49:53.000Z",
+                        updatedAt: "2023-12-28T19:49:53.000Z"
+                    }
+                ],
+                Travel: {
+                    id: 8,
+                    startLocation: "Thành phố Hồ Chí Minh",
+                    startDateTime: "2024-02-01T03:30:00.000Z",
+                    maxTicket: 50,
+                    remainTicket: 48,
+                    tourId: 7,
+                    discountId: 4,
+                    travelPrice: "1900000",
+                    createdAt: "2023-12-28T18:32:08.000Z",
+                    updatedAt: "2024-01-01T22:37:23.000Z",
+                    Tour: {
+                        id: 7,
+                        tourName: "Thành phố Hồ Chí Minh - Chợ Bến Thành - Suối Tiên",
+                        totalDay: 2,
+                        totalNight: 2,
+                        addressList: "Nha Trang",
+                        tourPrice: "2000000",
+                        tourStatus: "Completed",
+                        mainImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F7493164544cca73?alt=media&token=9a6994d7-55c9-484c-ad2c-20760f3bfbe5",
+                        createdAt: "2023-12-28T16:06:02.000Z",
+                        updatedAt: "2024-01-01T19:15:45.000Z"
+                    },
+                    Discount: {
+                        id: 4,
+                        discountName: "Khai xuân 2024",
+                        discountType: "Percentage",
+                        discountAmount: "5",
+                        discountDescription: "",
+                        createdAt: "2023-12-31T14:50:50.000Z",
+                        updatedAt: "2023-12-31T14:50:50.000Z"
+                    }
+                }
+            };
 
-//             // Stubbing the findOne method of db.Bookings
-//             const findOneStub = sandbox.stub(db.Bookings, 'findOne').resolves(mockedBookingData);
+            // Stubbing the findOne method of db.Bookings
+            const findOneStub = sandbox.stub(db.Bookings, 'findOne').resolves(mockedBookingData);
 
-//             // Define your test data, assuming a booking with ID 1 exists
-//             const bookingId = 8;
+            // Define your test data, assuming a booking with ID 1 exists
+            const bookingId = 8;
 
-//             // Call the function
-//             const result = await getBookingById(bookingId);
+            // Call the function
+            const result = await getBookingById(bookingId);
 
-//             // Assert the result
-//             expect(result).to.deep.equal({
-//                 EM: 'get booking by id successfully',
-//                 EC: '0',
-//                 DT: mockedBookingData, // Expect the actual mocked data
-//             });
+            // Assert the result
+            expect(result).to.deep.equal({
+                EM: 'get booking by id successfully',
+                EC: '0',
+                DT: mockedBookingData, // Expect the actual mocked data
+            });
 
-//             // Assert that the findOne method was called
-//             expect(findOneStub).to.have.been.calledOnceWithExactly({
-//                 where: {
-//                     id: bookingId,
-//                 },
-//                 include: [
-//                     {
-//                         model: db.Customers,
-//                     },
-//                     {
-//                         model: db.Tourists,
-//                     },
-//                     {
-//                         model: db.Travels,
-//                         include: [
-//                             {
-//                                 model: db.Tours,
-//                             },
-//                             {
-//                                 model: db.Discounts,
-//                             },
-//                         ],
-//                     },
-//                 ],
-//             });
-//         });
+            // Assert that the findOne method was called
+            expect(findOneStub).to.have.been.calledOnceWithExactly({
+                where: {
+                    id: bookingId,
+                },
+                include: [
+                    {
+                        model: db.Customers,
+                    },
+                    {
+                        model: db.Tourists,
+                    },
+                    {
+                        model: db.Travels,
+                        include: [
+                            {
+                                model: db.Tours,
+                            },
+                            {
+                                model: db.Discounts,
+                            },
+                        ],
+                    },
+                ],
+            });
+        });
 
-//         it('should handle errors during reading booking data by ID', async () => {
-//             // Stubbing the findOne method to simulate an error
-//             const findOneStub = sandbox.stub(db.Bookings, 'findOne').rejects(new Error('Simulated error'));
+        it('should handle errors during reading booking data by ID', async () => {
+            // Stubbing the findOne method to simulate an error
+            const findOneStub = sandbox.stub(db.Bookings, 'findOne').rejects(new Error('Simulated error'));
 
-//             // Define your test data
-//             const bookingId = 1;
+            // Define your test data
+            const bookingId = 1;
 
-//             try {
-//                 // Call the function
-//                 const result = await getBookingById(bookingId);
+            try {
+                // Call the function
+                const result = await getBookingById(bookingId);
 
-//                 // If no error occurred, fail the test
-//                 throw new Error('Expected an error but got a result');
-//             } catch (error) {
-//                 // Assert that the error message contains the expected message
-//                 expect(error.message).to.include('Expected an error but got a result');
+                // If no error occurred, fail the test
+                throw new Error('Expected an error but got a result');
+            } catch (error) {
+                // Assert that the error message contains the expected message
+                expect(error.message).to.include('Expected an error but got a result');
 
-//                 // Assert that the findOne method was called
-//                 expect(findOneStub).to.have.been.calledOnceWithExactly({
-//                     where: {
-//                         id: bookingId,
-//                     },
-//                     include: [
-//                         {
-//                             model: db.Customers,
-//                         },
-//                         {
-//                             model: db.Tourists,
-//                         },
-//                         {
-//                             model: db.Travels,
-//                             include: [
-//                                 {
-//                                     model: db.Tours,
-//                                 },
-//                                 {
-//                                     model: db.Discounts,
-//                                 },
-//                             ],
-//                         },
-//                     ],
-//                 });
-//             }
+                // Assert that the findOne method was called
+                expect(findOneStub).to.have.been.calledOnceWithExactly({
+                    where: {
+                        id: bookingId,
+                    },
+                    include: [
+                        {
+                            model: db.Customers,
+                        },
+                        {
+                            model: db.Tourists,
+                        },
+                        {
+                            model: db.Travels,
+                            include: [
+                                {
+                                    model: db.Tours,
+                                },
+                                {
+                                    model: db.Discounts,
+                                },
+                            ],
+                        },
+                    ],
+                });
+            }
 
-//         });
-//     });
+        });
+    });
 
-//     describe('getBookingWithPagination', () => {
-//         // Test case for successful retrieval of all data
-//         it('should get all data successfully when page and limit are 0', async () => {
-//             // Mock the database call
-//             sinon.stub(db.Bookings, 'findAll').resolves(['booking1', 'booking2']);
+    describe('getBookingWithPagination', () => {
+        // Test case for successful retrieval of all data
+        it('should get all data successfully when page and limit are 0', async () => {
+            // Mock the database call
+            sinon.stub(db.Bookings, 'findAll').resolves(['booking1', 'booking2']);
 
-//             const result = await getBookingWithPagination(0, 0);
+            const result = await getBookingWithPagination(0, 0);
 
-//             // Assertions
-//             expect(result.EM).to.equal('get data successfully');
-//             expect(result.EC).to.equal('0');
-//             expect(result.DT).to.deep.equal(['booking1', 'booking2']);
+            // Assertions
+            expect(result.EM).to.equal('get data successfully');
+            expect(result.EC).to.equal('0');
+            expect(result.DT).to.deep.equal(['booking1', 'booking2']);
 
-//             // Restore the stub after the test
-//             sinon.restore();
-//         });
+            // Restore the stub after the test
+            sinon.restore();
+        });
 
-//         // Test case for successful paginated retrieval
-//         it('should get paginated data successfully', async () => {
-//             // Mock the database call
-//             sinon.stub(db.Bookings, 'findAndCountAll').resolves({
-//                 count: 10,
-//                 rows: ['booking1', 'booking2'],
-//             });
+        // Test case for successful paginated retrieval
+        it('should get paginated data successfully', async () => {
+            // Mock the database call
+            sinon.stub(db.Bookings, 'findAndCountAll').resolves({
+                count: 10,
+                rows: ['booking1', 'booking2'],
+            });
 
-//             const result = await getBookingWithPagination(2, 5);
+            const result = await getBookingWithPagination(2, 5);
 
-//             // Assertions
-//             expect(result.EM).to.equal('get data successfully');
-//             expect(result.EC).to.equal('0');
-//             expect(result.DT.totalRows).to.equal(10);
-//             expect(result.DT.totalPages).to.equal(2);
-//             expect(result.DT.bookings).to.deep.equal(['booking1', 'booking2']);
+            // Assertions
+            expect(result.EM).to.equal('get data successfully');
+            expect(result.EC).to.equal('0');
+            expect(result.DT.totalRows).to.equal(10);
+            expect(result.DT.totalPages).to.equal(2);
+            expect(result.DT.bookings).to.deep.equal(['booking1', 'booking2']);
 
-//             // Restore the stub after the test
-//             sinon.restore();
-//         });
+            // Restore the stub after the test
+            sinon.restore();
+        });
 
-//         // Test case for invalid input parameters
-//         it('should handle invalid input parameters', async () => {
-//             const result = await getBookingWithPagination(-1, 'invalid');
+        // Test case for invalid input parameters
+        it('should handle invalid input parameters', async () => {
+            const result = await getBookingWithPagination(-1, 'invalid');
 
-//             // Assertions
-//             expect(result.EM).to.equal('error getting data');
-//             expect(result.EC).to.equal('1');
-//             expect(result.DT).to.equal(null);
-//         });
+            // Assertions
+            expect(result.EM).to.equal('error getting data');
+            expect(result.EC).to.equal('1');
+            expect(result.DT).to.equal(null);
+        });
 
-//         // Add more test cases as needed
+        // Add more test cases as needed
 
-//     });
+    });
 
-//     describe('updateBooking', () => {
-//         afterEach(() => {
-//             sinon.restore();
-//         });
+    // describe('updateBooking', () => {
+    //     afterEach(() => {
+    //         sinon.restore();
+    //     });
 
-//         it('should update booking successfully', async () => {
-//             const bookingData = {
-//                 id: 1,
-//                 exportInvoice: true,
-//                 touristList: ['Tourist1', 'Tourist2'],
-//                 bookingStatus: 'Paid',
-//                 bookingPrice: 500,
-//                 paymentNote: 'Paid via credit card',
-//                 paymentImage: 'payment-image-url',
-//                 travelId: 1001,
-//             };
+    //     it('should update booking successfully', async () => {
+    //         const bookingData = {
+    //             id: 1,
+    //             exportInvoice: true,
+    //             touristList: ['Tourist1', 'Tourist2'],
+    //             bookingStatus: 'Paid',
+    //             bookingPrice: 500,
+    //             paymentNote: 'Paid via credit card',
+    //             paymentImage: 'payment-image-url',
+    //             travelId: 1001,
+    //         };
 
-//             const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves({ id: 1 });
-//             const destroyStub = sinon.stub(db.Tourists, 'destroy').resolves(2); // Assuming two tourists were deleted
-//             const createStub = sinon.stub(db.Tourists, 'create').resolves({});
-//             const updateStub = sinon.stub(db.Bookings, 'update').resolves(1); // Assuming one booking was updated
+    //         const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves({ id: 1 });
+    //         const destroyStub = sinon.stub(db.Tourists, 'destroy').resolves(2); // Assuming two tourists were deleted
+    //         const createStub = sinon.stub(db.Tourists, 'create').resolves({});
+    //         const updateStub = sinon.stub(db.Bookings, 'update').resolves(1); // Assuming one booking was updated
 
-//             await updateBooking(bookingData);
+    //         await updateBooking(bookingData);
 
-//             // Assertions
-//             expect(findOneStub.calledOnce).to.be.true;
-//             expect(destroyStub.calledOnce).to.be.true;
-//             expect(createStub.calledTwice).to.be.true;
-//             expect(updateStub.calledOnce).to.be.true;
-//         });
+    //         // Assertions
+    //         expect(findOneStub.calledOnce).to.be.true;
+    //         expect(destroyStub.calledOnce).to.be.true;
+    //         expect(createStub.calledTwice).to.be.true;
+    //         expect(updateStub.calledOnce).to.be.true;
+    //     });
 
-//         it('should handle errors gracefully', async () => {
-//             const bookingData = {
-//                 id: 1,
-//                 exportInvoice: true,
-//                 touristList: ['Tourist1', 'Tourist2'],
-//                 bookingStatus: 'Paid',
-//                 bookingPrice: 500,
-//                 paymentNote: 'Paid via credit card',
-//                 paymentImage: 'payment-image-url',
-//                 travelId: 1001,
-//             };
+    //     it('should handle errors gracefully', async () => {
+    //         const bookingData = {
+    //             id: 1,
+    //             exportInvoice: true,
+    //             touristList: ['Tourist1', 'Tourist2'],
+    //             bookingStatus: 'Paid',
+    //             bookingPrice: 500,
+    //             paymentNote: 'Paid via credit card',
+    //             paymentImage: 'payment-image-url',
+    //             travelId: 1001,
+    //         };
 
-//             // Stub findOne to reject with an error
-//             const findOneStub = sinon.stub(db.Bookings, 'findOne').rejects(new Error('Database error'));
+    //         // Stub findOne to reject with an error
+    //         const findOneStub = sinon.stub(db.Bookings, 'findOne').rejects(new Error('Database error'));
 
-//             const result = await updateBooking(bookingData);
+    //         const result = await updateBooking(bookingData);
 
-//             // Assertions
-//             expect(findOneStub.calledOnce).to.be.true;
-//             expect(result.EC).to.equal('1');
-//             expect(result.EM).to.equal('Error updating booking');
-//         });
-//     });
+    //         // Assertions
+    //         expect(findOneStub.calledOnce).to.be.true;
+    //         expect(result.EC).to.equal('1');
+    //         expect(result.EM).to.equal('Error updating booking');
+    //     });
+    // });
 
-//     describe('deleteBooking', () => {
-//         afterEach(() => {
-//             sinon.restore();
-//         });
+    describe('deleteBooking', () => {
+        afterEach(() => {
+            sinon.restore();
+        });
 
-//         it('should delete booking successfully', async () => {
-//             // Stub findOne to return a booking
-//             const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves({
-//                 id: 1, // Replace with the actual booking data
-//             });
+        it('should delete booking successfully', async () => {
+            // Stub findOne to return a booking
+            const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves({
+                id: 1, // Replace with the actual booking data
+            });
 
-//             // Stub destroy methods
-//             const destroyTouristsStub = sinon.stub(db.Tourists, 'destroy').resolves();
-//             const destroyBookingsStub = sinon.stub(db.Bookings, 'destroy').resolves();
+            // Stub destroy methods
+            const destroyTouristsStub = sinon.stub(db.Tourists, 'destroy').resolves();
+            const destroyBookingsStub = sinon.stub(db.Bookings, 'destroy').resolves();
 
-//             const result = await deleteBooking(1); // Pass a valid booking id
+            const result = await deleteBooking(1); // Pass a valid booking id
 
-//             // Assertions
-//             expect(findOneStub.calledOnce).to.be.true;
-//             expect(destroyTouristsStub.calledOnce).to.be.true;
-//             expect(destroyBookingsStub.calledOnce).to.be.true;
-//             expect(result.EC).to.equal('0');
-//             expect(result.EM).to.equal('delete booking successfully');
-//         });
+            // Assertions
+            expect(findOneStub.calledOnce).to.be.true;
+            expect(destroyTouristsStub.calledOnce).to.be.true;
+            expect(destroyBookingsStub.calledOnce).to.be.true;
+            expect(result.EC).to.equal('0');
+            expect(result.EM).to.equal('delete booking successfully');
+        });
 
-//         it('should handle not found booking', async () => {
-//             // Stub findOne to return null (not found)
-//             const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves(null);
+        it('should handle not found booking', async () => {
+            // Stub findOne to return null (not found)
+            const findOneStub = sinon.stub(db.Bookings, 'findOne').resolves(null);
 
-//             const result = await deleteBooking(1); // Pass a valid booking id
+            const result = await deleteBooking(1); // Pass a valid booking id
 
-//             // Assertions
-//             expect(findOneStub.calledOnce).to.be.true;
-//             expect(result.EC).to.equal('0');
-//             expect(result.EM).to.equal('not found booking');
-//         });
+            // Assertions
+            expect(findOneStub.calledOnce).to.be.true;
+            expect(result.EC).to.equal('0');
+            expect(result.EM).to.equal('not found booking');
+        });
 
-//         it('should handle errors gracefully', async () => {
-//             // Stub findOne to throw an error
-//             const findOneStub = sinon.stub(db.Bookings, 'findOne').rejects(new Error('Database error'));
+        it('should handle errors gracefully', async () => {
+            // Stub findOne to throw an error
+            const findOneStub = sinon.stub(db.Bookings, 'findOne').rejects(new Error('Database error'));
 
-//             const result = await deleteBooking(1); // Pass a valid booking id
+            const result = await deleteBooking(1); // Pass a valid booking id
 
-//             // Assertions
-//             expect(findOneStub.calledOnce).to.be.true;
-//             expect(result.EC).to.equal('1');
-//             expect(result.EM).to.equal('error deleting booking');
-//         });
-//     });
+            // Assertions
+            expect(findOneStub.calledOnce).to.be.true;
+            expect(result.EC).to.equal('1');
+            expect(result.EM).to.equal('error deleting booking');
+        });
+    });
 
-// });
+});
 
 describe('Customer API Service', () => {
     let sandbox;
@@ -1362,476 +1362,476 @@ describe('Tour Package API Service - getAllTourPackage', () => {
     });
 });
 
-// describe('Tour API Service', () => {
-//     let sandbox;
-
-//     beforeEach(() => {
-//         sandbox = sinon.createSandbox();
-//     });
-
-//     afterEach(() => {
-//         sandbox.restore();
-//     });
-
-//     describe('getTourPlanning', () => {
-//         it('should get tour planning count successfully', async () => {
-//             const mockIncompletedTourCount = 5; // Replace with the actual count
-
-//             // Stub the count method to return a predefined count
-//             sandbox.stub(db.Tours, 'count').resolves(mockIncompletedTourCount);
-
-//             const result = await getTourPlanning();
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'get tour is planning successfully',
-//                 EC: '0',
-//                 DT: mockIncompletedTourCount
-//             });
-//         });
-
-//         it('should handle errors during tour planning count retrieval', async () => {
-//             // Stub the count method to throw an error
-//             sandbox.stub(db.Tours, 'count').rejects(new Error('Simulated error'));
-
-//             const result = await getTourPlanning();
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'error getting tour planning count',
-//                 EC: '1',
-//                 DT: undefined
-//             });
-//         });
-//     });
-
-//     describe('createTour', () => {
-//         it('should create a tour successfully', async () => {
-//             // Mock data for the test
-//             const mockTourData = {
-//                 tourGeneralInformation: {
-//                     tourName: 'tourName',
-//                     totalDay: 2,
-//                     totalNight: 2,
-//                     addressList: 'Đà Lạt|Nha Trang',
-//                     tourPrice: 5000000,
-//                     tourStatus: 'Completed'
-//                 },
-//                 mainImage: 'mainImage',
-//                 additionalImages: ['img1', 'img2'],
-//                 tourSchedule: [[{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }], [{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }]],
-//                 daySummaries: ["Thác - Ga", "Ga- Thác"]
-//             };
-
-//             // Stub necessary methods to simulate the creation process
-//             sandbox.stub(db.Tours, 'create').resolves({ id: 1 }); // Stub the create method
-
-//             // ... Stub other necessary methods as needed
-
-//             const result = await createTour(mockTourData);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'create tour successfully',
-//                 EC: '0',
-//                 DT: ''
-//             });
-//         });
-
-//         it('should handle error during tour creation', async () => {
-//             // Mock data for the test
-//             const mockTourData = {
-//                 // ... provide the required data for creating a tour
-//             };
-
-//             // Stub necessary methods to simulate an error during the creation process
-//             sandbox.stub(db.Tours, 'create').rejects(new Error('Database error'));
-
-//             // ... Stub other necessary methods as needed
-
-//             const result = await createTour(mockTourData);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'Database error',
-//                 EC: '1',
-//                 DT: ''
-//             });
-//         });
-//     })
-
-//     describe('getTourById', () => {
-//         it('should get tour by id successfully', async () => {
-//             // Mock data for the test
-//             const mockTourId = 1;
-//             const mockTourData = {
-//                 id: mockTourId,
-//                 "DT": {
-//                     id: 7,
-//                     tourName: "Thành phố Hồ Chí Minh - Chợ Bến Thành - Suối Tiên",
-//                     totalDay: 2,
-//                     totalNight: 2,
-//                     addressList: "Nha Trang",
-//                     tourPrice: "2000000",
-//                     tourStatus: "Completed",
-//                     mainImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F7493164544cca73?alt=media&token=9a6994d7-55c9-484c-ad2c-20760f3bfbe5",
-//                     createdAt: "2023-12-28T16:06:02.000Z",
-//                     updatedAt: "2024-01-01T19:15:45.000Z",
-//                     TourSchedules: [
-//                         {
-//                             id: 49,
-//                             tourId: 7,
-//                             dayIndex: 1,
-//                             daySummary: "THÁP BÀ - NGỌC TRAI LONG BEACH PEARL",
-//                             createdAt: "2024-01-01T19:15:45.000Z",
-//                             updatedAt: "2024-01-01T19:15:45.000Z",
-//                             Packages: [
-//                                 {
-//                                     id: 1,
-//                                     packageName: "Tháp bà Ponagar",
-//                                     packageType: "Tham quan",
-//                                     packageAddress: "Nha Trang",
-//                                     packageDescription: "Được coi là Tháp Bà Ponagar Nha Trang còn có tên gọi khác là Yang Po Inư Nagar hay Yang Pô Ana Gar - Là ngôi đền Chăm Pa nằm trên đỉnh một ngọn đồi nhỏ cao khoảng 10-12 mét so với mực nước biển, ở cửa sông Cái (sông Nha Trang) tại Nha Trang - Khánh Hòa.",
-//                                     createdAt: "2023-12-27T13:58:28.000Z",
-//                                     updatedAt: "2023-12-27T13:58:28.000Z",
-//                                     TourPackages: {
-//                                         tourScheduleId: 49,
-//                                         packageId: 1,
-//                                         createdAt: "2024-01-01T19:15:45.000Z",
-//                                         updatedAt: "2024-01-01T19:15:45.000Z"
-//                                     }
-//                                 },
-//                                 {
-//                                     id: 2,
-//                                     packageName: "Ngọc trai Long Beach Pearl (đường Trương Hán Siêu)",
-//                                     packageType: "Tham quan",
-//                                     packageAddress: "Nha Trang",
-//                                     packageDescription: "Tham quan, mua sắm các sản phẩm từ ngọc trai - báu vật khơi xa kết hợp cùng sự sáng tạo của người nghệ nhân tạo thành những sản phẩm trang sức cao cấp, chất lượng cao. Không chỉ dành riêng cho phái nữ, Long Beach Pearl còn chế tác những chiếc vòng tay dây da ngọc trai dành cho nam giới. ",
-//                                     createdAt: "2023-12-28T13:56:17.000Z",
-//                                     updatedAt: "2023-12-28T13:56:17.000Z",
-//                                     TourPackages: {
-//                                         tourScheduleId: 49,
-//                                         packageId: 2,
-//                                         createdAt: "2024-01-01T19:15:45.000Z",
-//                                         updatedAt: "2024-01-01T19:15:45.000Z"
-//                                     }
-//                                 }
-//                             ]
-//                         },
-//                         {
-//                             id: 50,
-//                             tourId: 7,
-//                             dayIndex: 2,
-//                             daySummary: "LÀNG CHÀI  - ĐẢO KHỈ",
-//                             createdAt: "2024-01-01T19:15:45.000Z",
-//                             updatedAt: "2024-01-01T19:15:45.000Z",
-//                             Packages: [
-//                                 {
-//                                     id: 3,
-//                                     packageName: "Làng Chài Xưa",
-//                                     packageType: "Tham quan",
-//                                     packageAddress: "Nha Trang",
-//                                     packageDescription: "Với lịch sử 300 năm cái nôi của nghề làm nước mắm, trải nghiệm cảm giác lao động trên đồng muối, đi trên con đường rạng xưa, thăm phố cổ Phan Thiết, , thăm nhà lều của hàm hộ nước mắm xưa, đắm chìm cảm xúc trong biển 3D và thích thú khi đi chợ làng chài xưa với bàn tính tay, bàn cân xưa thú vị,…",
-//                                     createdAt: "2023-12-28T13:56:40.000Z",
-//                                     updatedAt: "2023-12-28T13:56:40.000Z",
-//                                     TourPackages: {
-//                                         tourScheduleId: 50,
-//                                         packageId: 3,
-//                                         createdAt: "2024-01-01T19:15:45.000Z",
-//                                         updatedAt: "2024-01-01T19:15:45.000Z"
-//                                     }
-//                                 },
-//                                 {
-//                                     id: 4,
-//                                     packageName: "Hòn Lao - Đảo Khỉ",
-//                                     packageType: "Tham quan",
-//                                     packageAddress: "Nha Trang",
-//                                     packageDescription: "nơi có hơn 1000 chú khỉ đang được bảo tồn và sinh sống tự nhiên. Quý khách tự do tắm biển, thư giãn, tham quan xem chương trình biểu diễn xiếc Khỉ, đua chó, khỉ bơi lội hoặc trải nghiệm các môn thể thao trên bãi biển và trò chơi: canô kéo dù, mô tô nước, đua xe công thức 1, bắn súng sơn, cưỡi đà điểu … (chi phí tự túc).",
-//                                     createdAt: "2023-12-28T13:57:03.000Z",
-//                                     updatedAt: "2023-12-30T14:01:17.000Z",
-//                                     TourPackages: {
-//                                         tourScheduleId: 50,
-//                                         packageId: 4,
-//                                         createdAt: "2024-01-01T19:15:45.000Z",
-//                                         updatedAt: "2024-01-01T19:15:45.000Z"
-//                                     }
-//                                 }
-//                             ]
-//                         }
-//                     ],
-//                     TourAdditionalImages: [
-//                         {
-//                             id: 57,
-//                             tourId: 7,
-//                             additionalImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F4f8c1fad44e0e4cf?alt=media&token=8964f20c-6825-45f2-bca1-4bf2165dd839",
-//                             createdAt: "2024-01-01T19:15:45.000Z",
-//                             updatedAt: "2024-01-01T19:15:45.000Z"
-//                         },
-//                         {
-//                             id: 58,
-//                             tourId: 7,
-//                             additionalImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2Ff6a3039af3368d85?alt=media&token=c3f660b4-0ecb-4fe9-bb6a-94ad054e9537",
-//                             createdAt: "2024-01-01T19:15:45.000Z",
-//                             updatedAt: "2024-01-01T19:15:45.000Z"
-//                         },
-//                         {
-//                             id: 59,
-//                             tourId: 7,
-//                             additionalImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F42c08ccf9e59648a?alt=media&token=d6fb3a22-c0e1-45cf-98b0-cdbab3fbe31c",
-//                             createdAt: "2024-01-01T19:15:45.000Z",
-//                             updatedAt: "2024-01-01T19:15:45.000Z"
-//                         }
-//                     ]
-//                 }
-//             };
-
-//             // Stub necessary methods to simulate the database query
-//             sandbox.stub(db.Tours, 'findOne').resolves(mockTourData);
-
-//             // ... Stub other necessary methods as needed
-
-//             const result = await getTourById(mockTourId);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'get tour by id successfully',
-//                 EC: '0',
-//                 DT: mockTourData
-//             });
-//         });
-
-//         it('should handle error during getTourById', async () => {
-//             // Mock data for the test
-//             const mockTourId = 1;
-
-//             // Stub necessary methods to simulate an error during the database query
-//             sandbox.stub(db.Tours, 'findOne').rejects(new Error('Database error'));
-
-//             // ... Stub other necessary methods as needed
-
-//             const result = await getTourById(mockTourId);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'Database error',
-//                 EC: '1',
-//                 DT: ''
-//             });
-//         });
-//     })
-
-//     describe('getTourWithPagination', () => {
-//         it('should get all tours successfully when page and limit are 0', async () => {
-//             // Mock data for the test
-//             const mockTours = [{ id: 1, tourName: 'Tour 1' }, { id: 2, tourName: 'Tour 2' }];
-
-//             // Stub necessary methods to simulate the database query
-//             sandbox.stub(db.Tours, 'findAll').resolves(mockTours);
-
-//             const result = await getTourWithPagination(0, 0);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'get data successfully',
-//                 EC: '0',
-//                 DT: mockTours
-//             });
-//         });
-
-//         it('should get paginated tours successfully when page and limit are not 0', async () => {
-//             // Mock data for the test
-//             const mockPage = 1;
-//             const mockLimit = 10;
-//             const mockTourData = {
-//                 count: 20,
-//                 rows: [{ id: 1, tourName: 'Tour 1' }, { id: 2, tourName: 'Tour 2' }]
-//             };
-
-//             // Stub necessary methods to simulate the database query
-//             sandbox.stub(db.Tours, 'findAndCountAll').resolves(mockTourData);
-
-//             const result = await getTourWithPagination(mockPage, mockLimit);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'get data successfully',
-//                 EC: '0',
-//                 DT: {
-//                     totalRows: mockTourData.count,
-//                     totalPages: 2,
-//                     tours: mockTourData.rows
-//                 }
-//             });
-//         });
-
-//         it('should handle error during getTourWithPagination', async () => {
-//             // Mock data for the test
-//             const mockPage = 1;
-//             const mockLimit = 10;
-
-//             // Stub necessary methods to simulate an error during the database query
-//             sandbox.stub(db.Tours, 'findAndCountAll').rejects(new Error('Database error'));
-
-//             const result = await getTourWithPagination(mockPage, mockLimit);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'Database error',
-//                 EC: '1',
-//                 DT: ''
-//             });
-//         });
-//     })
-
-//     describe('updateTour', () => {
-//         it('should update tour successfully', async () => {
-//             // Mock data for the test
-//             const mockTourData = {
-//                 id: 1,
-//                 tourGeneralInformation: {
-//                     tourName: 'Updated Tour',
-//                     totalDay: 5,
-//                     totalNight: 4,
-//                     addressList: ['Location 1', 'Location 2'],
-//                     tourPrice: 1000,
-//                     tourStatus: 'Active',
-//                 },
-//                 mainImage: 'updated-main-image.jpg',
-//                 additionalImages: [1, 2, 3], // Assuming these are valid additional image IDs
-//                 tourSchedule: [
-//                     [
-//                         { value: 4 }, // Assuming this is a valid package ID
-//                         { value: 5 },
-//                     ],
-//                     [
-//                         { value: 6 },
-//                         { value: 7 },
-//                     ],
-//                 ],
-//                 daySummaries: ['Day 1 Summary', 'Day 2 Summary'],
-//             };
-
-//             // Stub necessary methods to simulate the database queries
-//             sandbox.stub(db.Tours, 'findOne').resolves({ id: 1 }); // Assuming the tour exists
-//             sandbox.stub(db.Tours, 'update').resolves([1]); // Mock the update result
-//             sandbox.stub(db.TourAdditionalImages, 'destroy').resolves(2); // Mock the destroy result
-//             sandbox.stub(db.TourSchedules, 'findAll').resolves([{ id: 1 }, { id: 2 }]);
-//             sandbox.stub(db.TourPackages, 'destroy').resolves(2); // Mock the destroy result
-//             sandbox.stub(db.TourSchedules, 'destroy').resolves(2); // Mock the destroy result
-//             sandbox.stub(db.TourAdditionalImages, 'create').resolves({ id: 3 }); // Mock the create result
-//             sandbox.stub(db.TourSchedules, 'create').resolves({ id: 4 }); // Mock the create result
-//             sandbox.stub(db.TourPackages, 'create').resolves({ id: 5 }); // Mock the create result
-
-//             const result = await updateTour(mockTourData);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'update package successfully',
-//                 EC: '0',
-//                 DT: '',
-//             });
-//         });
-
-//         it('should handle not found data during updateTour', async () => {
-//             // Mock data for the test
-//             const mockTourData = {
-//                 id: 1,
-//                 // ... other data
-//             };
-
-//             // Stub the findOne method to simulate not finding the tour
-//             sandbox.stub(db.Tours, 'findOne').resolves(null);
-
-//             const result = await updateTour(mockTourData);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'not found data',
-//                 EC: '0',
-//                 DT: '',
-//             });
-//         });
-
-//         it('should handle database error during updateTour', async () => {
-//             // Mock data for the test
-//             const mockTourData = {
-//                 id: 1,
-//                 // ... other data
-//             };
-
-//             // Stub necessary methods to simulate a database error
-//             sandbox.stub(db.Tours, 'findOne').throws(new Error('Database error'));
-
-//             const result = await updateTour(mockTourData);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'Database error',
-//                 EC: '1',
-//                 DT: '',
-//             });
-//         });
-
-//     })
-
-//     describe('deleteTour', () => {
-//         it('should delete tour successfully', async () => {
-//             // Mock data for the test
-//             const mockTourId = 1;
-
-//             // Stub necessary methods to simulate the database queries
-//             sandbox.stub(db.Tours, 'findOne').resolves({ id: mockTourId }); // Assuming the tour exists
-//             sandbox.stub(db.TourAdditionalImages, 'destroy').resolves(2); // Mock the destroy result
-//             sandbox.stub(db.TourSchedules, 'findAll').resolves([{ id: 1 }, { id: 2 }]);
-//             sandbox.stub(db.TourPackages, 'destroy').resolves(2); // Mock the destroy result
-//             sandbox.stub(db.TourSchedules, 'destroy').resolves(2); // Mock the destroy result
-//             sandbox.stub(db.Tours, 'destroy').resolves(1); // Mock the destroy result
-
-//             const result = await deleteTour(mockTourId);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'delete tour successfully',
-//                 EC: '0',
-//                 DT: '',
-//             });
-//         });
-
-//         it('should handle not found tour during deleteTour', async () => {
-//             // Mock data for the test
-//             const mockTourId = 1;
-
-//             // Stub the findOne method to simulate not finding the tour
-//             sandbox.stub(db.Tours, 'findOne').resolves(null);
-
-//             const result = await deleteTour(mockTourId);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'not found tour',
-//                 EC: '0',
-//                 DT: '',
-//             });
-//         });
-
-//         it('should handle database error during deleteTour', async () => {
-//             // Mock data for the test
-//             const mockTourId = 1;
-
-//             // Stub necessary methods to simulate a database error
-//             sandbox.stub(db.Tours, 'findOne').throws(new Error('Database error'));
-
-//             const result = await deleteTour(mockTourId);
-
-//             // Assertions
-//             expect(result).to.deep.equal({
-//                 EM: 'error deleting tour',
-//                 EC: '1',
-//                 DT: '',
-//             });
-//         });
-//     })
-// });
+describe('Tour API Service', () => {
+    let sandbox;
+
+    beforeEach(() => {
+        sandbox = sinon.createSandbox();
+    });
+
+    afterEach(() => {
+        sandbox.restore();
+    });
+
+    describe('getTourPlanning', () => {
+        it('should get tour planning count successfully', async () => {
+            const mockIncompletedTourCount = 5; // Replace with the actual count
+
+            // Stub the count method to return a predefined count
+            sandbox.stub(db.Tours, 'count').resolves(mockIncompletedTourCount);
+
+            const result = await getTourPlanning();
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'get tour is planning successfully',
+                EC: '0',
+                DT: mockIncompletedTourCount
+            });
+        });
+
+        it('should handle errors during tour planning count retrieval', async () => {
+            // Stub the count method to throw an error
+            sandbox.stub(db.Tours, 'count').rejects(new Error('Simulated error'));
+
+            const result = await getTourPlanning();
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'error getting tour planning count',
+                EC: '1',
+                DT: undefined
+            });
+        });
+    });
+
+    // describe('createTour', () => {
+    //     it('should create a tour successfully', async () => {
+    //         // Mock data for the test
+    //         const mockTourData = {
+    //             tourGeneralInformation: {
+    //                 tourName: 'tourName',
+    //                 totalDay: 2,
+    //                 totalNight: 2,
+    //                 addressList: 'Đà Lạt|Nha Trang',
+    //                 tourPrice: 5000000,
+    //                 tourStatus: 'Completed'
+    //             },
+    //             mainImage: 'mainImage',
+    //             additionalImages: ['img1', 'img2'],
+    //             tourSchedule: [[{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }], [{ label: 'Thác Bobla', value: 12 }, { label: 'Ga Đà Lạt', value: 13 }]],
+    //             daySummaries: ["Thác - Ga", "Ga- Thác"]
+    //         };
+
+    //         // Stub necessary methods to simulate the creation process
+    //         sandbox.stub(db.Tours, 'create').resolves({ id: 1 }); // Stub the create method
+
+    //         // ... Stub other necessary methods as needed
+
+    //         const result = await createTour(mockTourData);
+
+    //         // Assertions
+    //         expect(result).to.deep.equal({
+    //             EM: 'create tour successfully',
+    //             EC: '0',
+    //             DT: ''
+    //         });
+    //     });
+
+    //     it('should handle error during tour creation', async () => {
+    //         // Mock data for the test
+    //         const mockTourData = {
+    //             // ... provide the required data for creating a tour
+    //         };
+
+    //         // Stub necessary methods to simulate an error during the creation process
+    //         sandbox.stub(db.Tours, 'create').rejects(new Error('Database error'));
+
+    //         // ... Stub other necessary methods as needed
+
+    //         const result = await createTour(mockTourData);
+
+    //         // Assertions
+    //         expect(result).to.deep.equal({
+    //             EM: 'Database error',
+    //             EC: '1',
+    //             DT: ''
+    //         });
+    //     });
+    // })
+
+    describe('getTourById', () => {
+        it('should get tour by id successfully', async () => {
+            // Mock data for the test
+            const mockTourId = 1;
+            const mockTourData = {
+                id: mockTourId,
+                "DT": {
+                    id: 7,
+                    tourName: "Thành phố Hồ Chí Minh - Chợ Bến Thành - Suối Tiên",
+                    totalDay: 2,
+                    totalNight: 2,
+                    addressList: "Nha Trang",
+                    tourPrice: "2000000",
+                    tourStatus: "Completed",
+                    mainImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F7493164544cca73?alt=media&token=9a6994d7-55c9-484c-ad2c-20760f3bfbe5",
+                    createdAt: "2023-12-28T16:06:02.000Z",
+                    updatedAt: "2024-01-01T19:15:45.000Z",
+                    TourSchedules: [
+                        {
+                            id: 49,
+                            tourId: 7,
+                            dayIndex: 1,
+                            daySummary: "THÁP BÀ - NGỌC TRAI LONG BEACH PEARL",
+                            createdAt: "2024-01-01T19:15:45.000Z",
+                            updatedAt: "2024-01-01T19:15:45.000Z",
+                            Packages: [
+                                {
+                                    id: 1,
+                                    packageName: "Tháp bà Ponagar",
+                                    packageType: "Tham quan",
+                                    packageAddress: "Nha Trang",
+                                    packageDescription: "Được coi là Tháp Bà Ponagar Nha Trang còn có tên gọi khác là Yang Po Inư Nagar hay Yang Pô Ana Gar - Là ngôi đền Chăm Pa nằm trên đỉnh một ngọn đồi nhỏ cao khoảng 10-12 mét so với mực nước biển, ở cửa sông Cái (sông Nha Trang) tại Nha Trang - Khánh Hòa.",
+                                    createdAt: "2023-12-27T13:58:28.000Z",
+                                    updatedAt: "2023-12-27T13:58:28.000Z",
+                                    TourPackages: {
+                                        tourScheduleId: 49,
+                                        packageId: 1,
+                                        createdAt: "2024-01-01T19:15:45.000Z",
+                                        updatedAt: "2024-01-01T19:15:45.000Z"
+                                    }
+                                },
+                                {
+                                    id: 2,
+                                    packageName: "Ngọc trai Long Beach Pearl (đường Trương Hán Siêu)",
+                                    packageType: "Tham quan",
+                                    packageAddress: "Nha Trang",
+                                    packageDescription: "Tham quan, mua sắm các sản phẩm từ ngọc trai - báu vật khơi xa kết hợp cùng sự sáng tạo của người nghệ nhân tạo thành những sản phẩm trang sức cao cấp, chất lượng cao. Không chỉ dành riêng cho phái nữ, Long Beach Pearl còn chế tác những chiếc vòng tay dây da ngọc trai dành cho nam giới. ",
+                                    createdAt: "2023-12-28T13:56:17.000Z",
+                                    updatedAt: "2023-12-28T13:56:17.000Z",
+                                    TourPackages: {
+                                        tourScheduleId: 49,
+                                        packageId: 2,
+                                        createdAt: "2024-01-01T19:15:45.000Z",
+                                        updatedAt: "2024-01-01T19:15:45.000Z"
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            id: 50,
+                            tourId: 7,
+                            dayIndex: 2,
+                            daySummary: "LÀNG CHÀI  - ĐẢO KHỈ",
+                            createdAt: "2024-01-01T19:15:45.000Z",
+                            updatedAt: "2024-01-01T19:15:45.000Z",
+                            Packages: [
+                                {
+                                    id: 3,
+                                    packageName: "Làng Chài Xưa",
+                                    packageType: "Tham quan",
+                                    packageAddress: "Nha Trang",
+                                    packageDescription: "Với lịch sử 300 năm cái nôi của nghề làm nước mắm, trải nghiệm cảm giác lao động trên đồng muối, đi trên con đường rạng xưa, thăm phố cổ Phan Thiết, , thăm nhà lều của hàm hộ nước mắm xưa, đắm chìm cảm xúc trong biển 3D và thích thú khi đi chợ làng chài xưa với bàn tính tay, bàn cân xưa thú vị,…",
+                                    createdAt: "2023-12-28T13:56:40.000Z",
+                                    updatedAt: "2023-12-28T13:56:40.000Z",
+                                    TourPackages: {
+                                        tourScheduleId: 50,
+                                        packageId: 3,
+                                        createdAt: "2024-01-01T19:15:45.000Z",
+                                        updatedAt: "2024-01-01T19:15:45.000Z"
+                                    }
+                                },
+                                {
+                                    id: 4,
+                                    packageName: "Hòn Lao - Đảo Khỉ",
+                                    packageType: "Tham quan",
+                                    packageAddress: "Nha Trang",
+                                    packageDescription: "nơi có hơn 1000 chú khỉ đang được bảo tồn và sinh sống tự nhiên. Quý khách tự do tắm biển, thư giãn, tham quan xem chương trình biểu diễn xiếc Khỉ, đua chó, khỉ bơi lội hoặc trải nghiệm các môn thể thao trên bãi biển và trò chơi: canô kéo dù, mô tô nước, đua xe công thức 1, bắn súng sơn, cưỡi đà điểu … (chi phí tự túc).",
+                                    createdAt: "2023-12-28T13:57:03.000Z",
+                                    updatedAt: "2023-12-30T14:01:17.000Z",
+                                    TourPackages: {
+                                        tourScheduleId: 50,
+                                        packageId: 4,
+                                        createdAt: "2024-01-01T19:15:45.000Z",
+                                        updatedAt: "2024-01-01T19:15:45.000Z"
+                                    }
+                                }
+                            ]
+                        }
+                    ],
+                    TourAdditionalImages: [
+                        {
+                            id: 57,
+                            tourId: 7,
+                            additionalImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F4f8c1fad44e0e4cf?alt=media&token=8964f20c-6825-45f2-bca1-4bf2165dd839",
+                            createdAt: "2024-01-01T19:15:45.000Z",
+                            updatedAt: "2024-01-01T19:15:45.000Z"
+                        },
+                        {
+                            id: 58,
+                            tourId: 7,
+                            additionalImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2Ff6a3039af3368d85?alt=media&token=c3f660b4-0ecb-4fe9-bb6a-94ad054e9537",
+                            createdAt: "2024-01-01T19:15:45.000Z",
+                            updatedAt: "2024-01-01T19:15:45.000Z"
+                        },
+                        {
+                            id: 59,
+                            tourId: 7,
+                            additionalImage: "https://firebasestorage.googleapis.com/v0/b/webbooking-2460b.appspot.com/o/images%2F42c08ccf9e59648a?alt=media&token=d6fb3a22-c0e1-45cf-98b0-cdbab3fbe31c",
+                            createdAt: "2024-01-01T19:15:45.000Z",
+                            updatedAt: "2024-01-01T19:15:45.000Z"
+                        }
+                    ]
+                }
+            };
+
+            // Stub necessary methods to simulate the database query
+            sandbox.stub(db.Tours, 'findOne').resolves(mockTourData);
+
+            // ... Stub other necessary methods as needed
+
+            const result = await getTourById(mockTourId);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'get tour by id successfully',
+                EC: '0',
+                DT: mockTourData
+            });
+        });
+
+        it('should handle error during getTourById', async () => {
+            // Mock data for the test
+            const mockTourId = 1;
+
+            // Stub necessary methods to simulate an error during the database query
+            sandbox.stub(db.Tours, 'findOne').rejects(new Error('Database error'));
+
+            // ... Stub other necessary methods as needed
+
+            const result = await getTourById(mockTourId);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'Database error',
+                EC: '1',
+                DT: ''
+            });
+        });
+    })
+
+    describe('getTourWithPagination', () => {
+        it('should get all tours successfully when page and limit are 0', async () => {
+            // Mock data for the test
+            const mockTours = [{ id: 1, tourName: 'Tour 1' }, { id: 2, tourName: 'Tour 2' }];
+
+            // Stub necessary methods to simulate the database query
+            sandbox.stub(db.Tours, 'findAll').resolves(mockTours);
+
+            const result = await getTourWithPagination(0, 0);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'get data successfully',
+                EC: '0',
+                DT: mockTours
+            });
+        });
+
+        it('should get paginated tours successfully when page and limit are not 0', async () => {
+            // Mock data for the test
+            const mockPage = 1;
+            const mockLimit = 10;
+            const mockTourData = {
+                count: 20,
+                rows: [{ id: 1, tourName: 'Tour 1' }, { id: 2, tourName: 'Tour 2' }]
+            };
+
+            // Stub necessary methods to simulate the database query
+            sandbox.stub(db.Tours, 'findAndCountAll').resolves(mockTourData);
+
+            const result = await getTourWithPagination(mockPage, mockLimit);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'get data successfully',
+                EC: '0',
+                DT: {
+                    totalRows: mockTourData.count,
+                    totalPages: 2,
+                    tours: mockTourData.rows
+                }
+            });
+        });
+
+        it('should handle error during getTourWithPagination', async () => {
+            // Mock data for the test
+            const mockPage = 1;
+            const mockLimit = 10;
+
+            // Stub necessary methods to simulate an error during the database query
+            sandbox.stub(db.Tours, 'findAndCountAll').rejects(new Error('Database error'));
+
+            const result = await getTourWithPagination(mockPage, mockLimit);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'Database error',
+                EC: '1',
+                DT: ''
+            });
+        });
+    })
+
+    describe('updateTour', () => {
+        it('should update tour successfully', async () => {
+            // Mock data for the test
+            const mockTourData = {
+                id: 1,
+                tourGeneralInformation: {
+                    tourName: 'Updated Tour',
+                    totalDay: 5,
+                    totalNight: 4,
+                    addressList: ['Location 1', 'Location 2'],
+                    tourPrice: 1000,
+                    tourStatus: 'Active',
+                },
+                mainImage: 'updated-main-image.jpg',
+                additionalImages: [1, 2, 3], // Assuming these are valid additional image IDs
+                tourSchedule: [
+                    [
+                        { value: 4 }, // Assuming this is a valid package ID
+                        { value: 5 },
+                    ],
+                    [
+                        { value: 6 },
+                        { value: 7 },
+                    ],
+                ],
+                daySummaries: ['Day 1 Summary', 'Day 2 Summary'],
+            };
+
+            // Stub necessary methods to simulate the database queries
+            sandbox.stub(db.Tours, 'findOne').resolves({ id: 1 }); // Assuming the tour exists
+            sandbox.stub(db.Tours, 'update').resolves([1]); // Mock the update result
+            sandbox.stub(db.TourAdditionalImages, 'destroy').resolves(2); // Mock the destroy result
+            sandbox.stub(db.TourSchedules, 'findAll').resolves([{ id: 1 }, { id: 2 }]);
+            sandbox.stub(db.TourPackages, 'destroy').resolves(2); // Mock the destroy result
+            sandbox.stub(db.TourSchedules, 'destroy').resolves(2); // Mock the destroy result
+            sandbox.stub(db.TourAdditionalImages, 'create').resolves({ id: 3 }); // Mock the create result
+            sandbox.stub(db.TourSchedules, 'create').resolves({ id: 4 }); // Mock the create result
+            sandbox.stub(db.TourPackages, 'create').resolves({ id: 5 }); // Mock the create result
+
+            const result = await updateTour(mockTourData);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'update package successfully',
+                EC: '0',
+                DT: '',
+            });
+        });
+
+        it('should handle not found data during updateTour', async () => {
+            // Mock data for the test
+            const mockTourData = {
+                id: 1,
+                // ... other data
+            };
+
+            // Stub the findOne method to simulate not finding the tour
+            sandbox.stub(db.Tours, 'findOne').resolves(null);
+
+            const result = await updateTour(mockTourData);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'not found data',
+                EC: '0',
+                DT: '',
+            });
+        });
+
+        it('should handle database error during updateTour', async () => {
+            // Mock data for the test
+            const mockTourData = {
+                id: 1,
+                // ... other data
+            };
+
+            // Stub necessary methods to simulate a database error
+            sandbox.stub(db.Tours, 'findOne').throws(new Error('Database error'));
+
+            const result = await updateTour(mockTourData);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'Database error',
+                EC: '1',
+                DT: '',
+            });
+        });
+
+    })
+
+    describe('deleteTour', () => {
+        it('should delete tour successfully', async () => {
+            // Mock data for the test
+            const mockTourId = 1;
+
+            // Stub necessary methods to simulate the database queries
+            sandbox.stub(db.Tours, 'findOne').resolves({ id: mockTourId }); // Assuming the tour exists
+            sandbox.stub(db.TourAdditionalImages, 'destroy').resolves(2); // Mock the destroy result
+            sandbox.stub(db.TourSchedules, 'findAll').resolves([{ id: 1 }, { id: 2 }]);
+            sandbox.stub(db.TourPackages, 'destroy').resolves(2); // Mock the destroy result
+            sandbox.stub(db.TourSchedules, 'destroy').resolves(2); // Mock the destroy result
+            sandbox.stub(db.Tours, 'destroy').resolves(1); // Mock the destroy result
+
+            const result = await deleteTour(mockTourId);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'delete tour successfully',
+                EC: '0',
+                DT: '',
+            });
+        });
+
+        it('should handle not found tour during deleteTour', async () => {
+            // Mock data for the test
+            const mockTourId = 1;
+
+            // Stub the findOne method to simulate not finding the tour
+            sandbox.stub(db.Tours, 'findOne').resolves(null);
+
+            const result = await deleteTour(mockTourId);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'not found tour',
+                EC: '0',
+                DT: '',
+            });
+        });
+
+        it('should handle database error during deleteTour', async () => {
+            // Mock data for the test
+            const mockTourId = 1;
+
+            // Stub necessary methods to simulate a database error
+            sandbox.stub(db.Tours, 'findOne').throws(new Error('Database error'));
+
+            const result = await deleteTour(mockTourId);
+
+            // Assertions
+            expect(result).to.deep.equal({
+                EM: 'error deleting tour',
+                EC: '1',
+                DT: '',
+            });
+        });
+    })
+});
 
 describe('Travel API Service', () => {
     let sandbox;
