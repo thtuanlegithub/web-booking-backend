@@ -132,7 +132,6 @@ jobs:
 
     - name: Build
       run: |
-        # Add build commands here if needed
         echo "Build commands go here"
 
     - name: Run tests
@@ -141,5 +140,4 @@ jobs:
 
     - name: Mutation testing
       run: |
-        # Ensure Stryker is configured properly before running this command
         npx stryker run
