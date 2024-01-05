@@ -130,6 +130,10 @@ jobs:
       run: |
         npm install --save-dev @stryker-mutator/mocha-runner
 
+    - name: Build
+      run: |
+        echo "Build commands go here"
+
     - name: Run tests
       run: |
         npm test
