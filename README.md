@@ -34,3 +34,21 @@ This web application is designed to facilitate the booking and management of tou
 
 - **Authentication:**
   - JSON Web Tokens (JWT)
+ 
+ 
+ ## Testing
+
+- **Unit test**
+  - Chai
+  - Sinon
+ 
+- **Mutation test**
+  - Stryker
+ 
+- **Test Coverage**
+
+![Test Coverage](/src/public/img/testLab1UnitTest.png)
+
+![Mutation Score](/src/public/img/testLab1MutationTest.png)
+
+
